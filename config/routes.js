@@ -30,6 +30,12 @@ module.exports.routes = {
   '/': {
     view: 'homepage'
   },
+  '/ta': {
+    view: 'homepage'
+  },
+  '/to': {
+    view: 'homepage'
+  }
 
 
   // Custom routes here...
