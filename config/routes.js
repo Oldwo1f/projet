@@ -1,7 +1,10 @@
-
 var extend = require('node.extend');
-var frontroutes = require("../front/routes.js");
-
+try {
+   var frontroutes = require("../front/routes.js");
+}
+catch (e) {
+   frontroutes={};
+}
 // var routes 
 var routes={
 
