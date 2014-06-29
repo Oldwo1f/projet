@@ -23,6 +23,15 @@
     "grunt-contrib-less": "~0.10.0",
     "grunt-contrib-coffee": "~0.10.1"
   },
+  "devDependencies": {
+    "express": "^4.4.5",
+    "gulp": "^3.8.5",
+    "gulp-livereload": "~1.5.0",
+    "gulp-nodemon": "^1.0.4",
+    "gulp-open": "^0.2.8",
+    "gulp-util": "^2.2.19",
+    "tiny-lr": "0.0.7"
+  },
   "scripts": {
     "start": "node app.js",
     "debug": "node debug app.js"
