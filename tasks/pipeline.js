@@ -28,6 +28,7 @@ var jsFilesToInject = [
   // are brought in here
 
   'bower_components/jquery.js',
+  'bower_components/bootstrap.js',
   'bower_components/angular-file-upload-shim.js',
   'bower_components/angular.js',
   'bower_components/angular-route.js',

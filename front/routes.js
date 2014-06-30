@@ -5,7 +5,8 @@ module.exports= {
   // default view engine) your home page.
   //
   // (Alternatively, remove this and add an `index.html` file in your `assets` directory)
-  '/tata':'front/FrontController.index'
+  '/tata':'front/FrontController.index',
+  '/titi':'front/FrontController.index2'
 
   // include('../front/route.js');
 
