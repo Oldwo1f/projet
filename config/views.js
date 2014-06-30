@@ -51,7 +51,7 @@ module.exports.views = {
   // to your layout file from `views/` folder. (the file extension, ".ejs", should be omitted)
   //
 
-  layout: 'layout'
+  layout: 'false'
 
 
 
