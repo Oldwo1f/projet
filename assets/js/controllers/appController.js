@@ -3,13 +3,13 @@ function appCtrl($scope) {
 
 	$scope.maintabs=[
 	{'name' :'dashboard','active':false},
-	{'name' :'user','active':false},
-	{'name' :'article','active':false},
-	{'name' :'projet','active':false},
+	{'name' :'users','active':false},
+	{'name' :'articles','active':false},
+	{'name' :'projets','active':false},
 	];
 	
 	$scope.$watch('maintabs',function  () {
-		console.log($scope.maintabs);
+		// console.log($scope.maintabs);
 	},true);
 
 

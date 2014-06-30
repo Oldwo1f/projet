@@ -32,11 +32,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
       templateUrl: "/templates/root.html",
 
     })
-    .state('/.user', {
-      url: "user",
+    .state('/.users', {
+      url: "users",
       views: {
-      	'userView':{
-      		templateUrl: "/templates/user.html"
+      	'usersView':{
+      		templateUrl: "/templates/users.html"
 
       	}
       }
@@ -50,20 +50,21 @@ app.config(function($stateProvider, $urlRouterProvider) {
       	}
       }
     })
-    .state('/.projet', {
-      url: "projet",
+    .state('/.projets', {
+      url: "projets",
       views: {
-      	'projetView':{
-      		templateUrl: "/templates/projet.html"
+      	'projetsView':{
+      		templateUrl: "/templates/projets.html"
 
       	}
       }
     })
-    .state('/.article', {
-      url: "article",
+    .state('/.articles', {
+      url: "articles",
       views: {
-      	'articleView':{
-      		templateUrl: "/templates/article.html"
+      	'articlesView':{
+      		templateUrl: "/templates/articles.html",
+          controller:'articlesCtrl'
       	}
       }
     })

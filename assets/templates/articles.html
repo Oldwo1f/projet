@@ -1,0 +1,26 @@
+
+
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead>
+    	<tr>
+	    	<th><input type="checkbox" ></th>
+	    	<th>Titre</th>
+	    	<th>Contenu</th>
+	    	<th>Status</th>
+	    	<th>Date</th>
+    	</tr>
+    </thead>
+    <tbody>
+	    <tr ng-repeat="article in articles" ng-class="{active : article.checked }">
+	    	<td><input type="checkbox" ng-model="article.checked"></td>
+	    	<td>{{article.title}}</td>
+	    	<td>{{article.content}}</td>
+	    	<td>
+	    	<span class="label " ng-class="{'label-info' : article.status=='New','label-success' : article.status=='Actif','label-danger' : article.status=='Inactif'}">{{article.status}}</span>
+	    	</td>
+	    	<td>{{article.date}}</td>
+	    </tr>
+    </tbody>
+  </table>
+</div>
