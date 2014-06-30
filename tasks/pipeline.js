@@ -15,6 +15,7 @@
 // (if you're using LESS with the built-in default config, you'll want
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
+  'bower_components/**/*.css',
   'styles/**/*.css'
 ];
 
@@ -25,6 +26,12 @@ var jsFilesToInject = [
 
   // Dependencies like sails.io.js, jQuery, or Angular
   // are brought in here
+
+  'bower_components/jquery.js',
+  'bower_components/angular-file-upload-shim.js',
+  'bower_components/angular.js',
+  'bower_components/angular-file-upload.js',
+
   'js/dependencies/**/*.js',
 
   // All of the rest of your client-side js files
