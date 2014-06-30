@@ -69,6 +69,7 @@ node_modules
 bower_components
 
 api/controllers/front
+assets/fonts
 
 
 

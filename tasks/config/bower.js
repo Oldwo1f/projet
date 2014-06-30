@@ -15,9 +15,20 @@ console.log('tototo');
             },
             files: {
                 'jquery.js': 'jquery/dist/jquery.min.js',
+                'bootstrap.js': 'bootstrap/dist/js/bootstrap.min.js',
+                'bootstrap.css': 'bootstrap/dist/css/bootstrap.min.css',
                 'angular.js': 'angular/angular.js',
                 'angular-file-upload.js': 'ng-file-upload/angular-file-upload.js',
                 'angular-file-upload-shim.js': 'ng-file-upload-shim/angular-file-upload-shim.js',
+            },
+        },
+        fonts: {
+            options: {
+                destPrefix: 'assets/'
+            },
+            files: {
+                'fonts': 'bootstrap/dist/fonts/*',
+               
             },
         },
         // Javascript
