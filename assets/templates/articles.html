@@ -1,26 +1,39 @@
 
 
 <div class="table-responsive">
-  <table class="table table-hover">
-    <thead>
-    	<tr>
-	    	<th><input type="checkbox" ></th>
-	    	<th>Titre</th>
-	    	<th>Contenu</th>
-	    	<th>Status</th>
-	    	<th>Date</th>
-    	</tr>
-    </thead>
-    <tbody>
-	    <tr ng-repeat="article in articles" ng-class="{active : article.checked }">
-	    	<td><input type="checkbox" ng-model="article.checked"></td>
-	    	<td>{{article.title}}</td>
-	    	<td>{{article.content}}</td>
-	    	<td>
-	    	<span class="label " ng-class="{'label-info' : article.status=='New','label-success' : article.status=='Actif','label-danger' : article.status=='Inactif'}">{{article.status}}</span>
-	    	</td>
-	    	<td>{{article.date}}</td>
-	    </tr>
-    </tbody>
-  </table>
+	<div class="col-xs-9">
+	<button ng-hide="nbChecked"type="button" class="btn btn-info btn-xs ">Ajouter</button>
+		<span ng-show="nbChecked" class="nbselected ">
+			<ng-pluralize class="small" ng-show="nbChecked" count="nbChecked"  when="{'0': 'Aucun article séléctionné','1': '{{nbChecked}} article séléctionné','other': '{{nbChecked}} articles séléctionnés'}" </ng-pluralize>
+		</span>
+		<button ng-show="nbChecked" type="button" class="btn btn-primary btn-xs">Modifier</button>
+		<button ng-show="nbChecked" type="button" class="btn btn-success btn-xs">Publier</button>
+		<button ng-show="nbChecked" type="button" class="btn btn-warning btn-xs">Dépublier</button>
+		<button ng-show="nbChecked" type="button" class="btn btn-danger btn-xs">Supprimer</button>
+	</div>
+	<div class="col-xs-3 pull-right">
+		<input type="search" class=" form-control input-sm" ng-model="slug" placeholder="Recherche . . ." />
+	</div>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+		    	<th><input type="checkbox" ng-model="allchecked" ng-click="checkAll(allchecked)"></th>
+		    	<th>Titre</th>
+		    	<th>Contenu</th>
+		    	<th>Status</th>
+		    	<th>Date</th>
+			</tr>
+		</thead>
+		<tbody>
+		    <tr ng-repeat="article in articles | shearchArticle:'title':slug  " class="animate-repeat"  ng-class="{active : article.checked }">
+		    	<td><input type="checkbox" ng-model="article.checked"></td>
+		    	<td>{{article.title}}</td>
+		    	<td>{{article.content}}</td>
+		    	<td>
+		    	<span class="label " ng-class="{'label-info' : article.status=='New','label-success' : article.status=='Actif','label-warning' : article.status=='Inactif'}">{{article.status}}</span>
+		    	</td>
+		    	<td>{{article.date}}</td>
+		    </tr>
+		</tbody>
+	</table>
 </div>

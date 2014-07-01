@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ui.router','clientresize','ui.bootstrap']);
+var app = angular.module('app', ['ui.router','clientresize','ui.bootstrap','ngAnimate']);
 
 
 // app.config(function($routeProvider) {

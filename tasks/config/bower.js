@@ -18,6 +18,7 @@ console.log('tototo');
                 'bootstrap.js': 'bootstrap/dist/js/bootstrap.min.js',
                 'bootstrap.css': 'bootstrap/dist/css/bootstrap.min.css',
                 'angular.js': 'angular/angular.js',
+                'angular-animate.js': 'angular-animate/angular-animate.min.js',
                 'ui-bootstrap.js': 'angular-bootstrap/ui-bootstrap.min.js',
                 'ui-bootstrap-tpls.js': 'angular-bootstrap/ui-bootstrap-tpls.min.js',
                 'angular-route.js': 'angular-route/angular-route.js',
