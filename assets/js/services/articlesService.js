@@ -10,6 +10,23 @@ app.factory('articlesService', ['$http',function ($http) {
     {id:7,status:'Inactif','title' :'47title article articles','content':'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam iste dolorum sint facere quos corporis, quo ducimus explicabo dolorem at mollitia sequi, enim? Eius ab quisquam, non quia, laudantium qui.'},
     {id:8,status:'Actif','title' :'title article projets','content':'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea suscipit id nulla soluta inventore facilis perspiciatis veritatis, nihil. Quae aperiam obcaecati aliquid soluta delectus recusandae, labore id assumenda, facere sed.'},
     ];
+    service.articles.forEach(function(article) {
+            article.date = randomDate(new Date(2012, 0, 1), new Date())
+            function randomDate(start, end) {
+            return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+            }
+            // service.randomDate(new Date(2012, 0, 1), new Date())
+    })
+    // service.randomDate=function(start, end) {
+    // return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+    // }
+    service.addNew=function(article){
+        //POST ARTICLE TO SAVE IN DB
+        //ON RETURN
+        article.status='New';
+        service.articles.unshift(article);
+    }
+
     console.log('service'); 
     // service.fetchArticles = function() {
     //     var promise = $http.get('/api/article').
