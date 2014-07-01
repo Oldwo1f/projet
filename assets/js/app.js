@@ -23,6 +23,7 @@ var app = angular.module('app', ['ui.router','clientresize','ui.bootstrap','ngAn
 app.config(function($stateProvider, $urlRouterProvider) {
   //
   // For any unmatched url, redirect to /state1
+  $urlRouterProvider.when('/articles',"/articles/articles");
   $urlRouterProvider.otherwise("/dashboard");
   //
   // Now set up the states
@@ -34,6 +35,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     })
     .state('/.users', {
       url: "users",
+      data:{'mainTabs':'users'},
       views: {
       	'usersView':{
       		templateUrl: "/templates/users.html"
@@ -43,6 +45,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
     })
     .state('/.dashboard', {
       url: "dashboard",
+      data:{'mainTabs':'dashboard'},
       views: {
       	'dashboardView':{
       		templateUrl: "/templates/dashboard.html"
@@ -52,20 +55,46 @@ app.config(function($stateProvider, $urlRouterProvider) {
     })
     .state('/.projets', {
       url: "projets",
+      data:{'mainTabs':'projets'},
       views: {
-      	'projetsView':{
-      		templateUrl: "/templates/projets.html"
+        'projetsView':{
+          templateUrl: "/templates/projets.html"
 
-      	}
+        }
       }
     })
     .state('/.articles', {
       url: "articles",
+      data:{'mainTabs':'articles'},
       views: {
-      	'articlesView':{
-      		templateUrl: "/templates/articles.html",
-          controller:'articlesCtrl'
+      	'allarticlesView':{
+      		templateUrl: "/templates/allarticles.html"
       	}
+      },
+      onEnter:function(){
+        console.log('enter Articles');
+
+      }
+    })
+    .state('/.articles.articles', {
+      url: "/articles",
+      data:{'articlesTabs':'articles'},
+      views: {
+        'articlesView':{
+          templateUrl: "/templates/articles.html",
+          controller:'articlesCtrl'
+
+        }
+      }
+    })
+    .state('/.articles.comments', {
+      url: "/comments",
+      data:{'articlesTabs':'comments'},
+      views: {
+        'commentsView':{
+          templateUrl: "/templates/comments.html"
+
+        }
       }
     })
     .state('contact', {

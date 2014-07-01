@@ -5,7 +5,7 @@ app.filter('articlesFilter', function() {
       var pushOK = false;
       for (var i = 0; i < input.length; i++){
       		pushOK = false;
-			if(patt.test(input[i]['title']) || patt.test(input[i]['content']))
+			if(patt.test(input[i]['title']) || patt.test(input[i]['content']) || patt.test(input[i]['category']))
 			{
 				if(actif){
 					if( input[i]['status'] === "Actif")
