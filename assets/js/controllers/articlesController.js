@@ -33,8 +33,8 @@ app.filter('articlesFilter', function() {
     return out;
   };
 });
-app.controller('articlesCtrl',['$scope','filterFilter','articlesService','$filter',
-function articlesCtrl($scope,filterFilter,articlesService,$filter,articlesFilter) {
+app.controller('articlesCtrl',['$scope','filterFilter','articlesService','$filter','$state',
+function articlesCtrl($scope,filterFilter,articlesService,$filter,$state) {
 console.log('appCtrl');
 	$scope.articles= articlesService.articles;
 	$scope.slug = '';
@@ -42,7 +42,7 @@ console.log('appCtrl');
 	$scope.filterInactif = true;
 	$scope.filterNew = true;
 	$scope.newArticle={'working':false,'title':'','date':null}
-	var filteredArray;
+	var filteredArray=$scope.articles;
 	// $scope.$watch('maintabs',function  () {
 	// 	// console.log($scope.maintabs);
 	// },true);
@@ -53,8 +53,14 @@ console.log('appCtrl');
 		// console.log($scope.filterActif);
 		// console.log($scope.filterInactif);
 		// console.log($scope.filterNew);
-		
-		// $scope.allchecked = ($scope.nbChecked == filteredArray.length);
+		$scope.nbChecked = filterFilter(filteredArray,{checked : true}).length;
+		$scope.allchecked = ($scope.nbChecked == filteredArray.length);
+
+		if($state.is('/.articles.articles.edit'))
+		{
+			// $state.go('/.articles.articles')
+		}
+
 
 	},true);
 	// $scope.$watch('slug',function  () {
@@ -68,7 +74,13 @@ console.log('appCtrl');
 	// 	// $scope.allchecked = ($scope.nbChecked == filterFilter($scope.articles,{'name':$scope.slug}).length);
 
 	// },true);
-
+	$scope.$on('$stateChangeStart',
+	function(event, toState, toParams, fromState, fromParams){
+	    // event.preventDefault();
+	    // console.log(fromParams);
+	    // $('tr.ligne[rel="'+fromParams.id+'"]').show();
+	    // console.log('herrreeeee');
+	})
 
 	$scope.submitNewArticle=function() {
 		console.log('submitNewArticle');
@@ -94,5 +106,67 @@ console.log('appCtrl');
 		});
 		$scope.filterMainArray();
 	};
+
+	$scope.linkeditProjet =function(id){
+
+		console.log(filterFilter($scope.articles,{checked : true})[0].id);
+
+
+		if($state.is('/.articles.articles.edit'))
+		{
+			$state.go('^.edit',{id: filterFilter($scope.articles,{checked : true})[0].id})
+		}
+		else
+		{
+			$state.go('.edit',{id: filterFilter($scope.articles,{checked : true})[0].id})
+		}
+	}
+	$scope.dblclick =function(article){
+		$scope.checkAll(true);
+		article.checked = true;
+		$scope.linkeditProjet()
+	}
+
+
+}]);
+
+app.controller('editarticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','$state',
+function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$state) {
+	
+	
+	$scope.article = filterFilter(articlesService.articles,{id:$stateParams.id});
+	$scope.article = $scope.article[0];
+	$scope.article.checked=false
+	setTimeout(function(){
+		// console.log($('tr.ligne[rel="'+$stateParams.id+'"]').);
+		// var lignemodif = ;
+
+		$('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModif')).hide();
+		console.log($('tr.ligneModif'));
+		$(document).bind('click',function(e) {
+			console.log('hehehereree');
+			
+			// console.log($('tbody.AppendLine tr:last-child'));
+			// console.log($('.ligneModif'));
+			// 	console.log($('tbody.AppendLine tr:last-child'));
+			// $('tbody.AppendLine tr:last-child').after(lignemodif);
+		  $state.go('^')
+		  $(document).unbind('click');
+		});
+
+		$('tr.ligneModif').click(function  (e) {
+		  e.stopPropagation();
+			// body...
+		});
+
+	},1)
+
+
+
+	// console.log($('.ligneModif').html());
+	// $('.ligne[rel="'+$stateParams.id+'"]')
+	
+
+	// console.log($scope.article);
 
 }]);

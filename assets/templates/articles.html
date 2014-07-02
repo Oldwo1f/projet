@@ -4,7 +4,7 @@
 	<div class="col-xs-9">
 		<button type="button" class="btn btn-info btn-xs" ng-click="newArticle.working = true;"><span class="glyphicon glyphicon-plus"></span>Ajouter</button>
 
-		<button ng-show="nbChecked === 1" type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-edit"></span>Modifier</button>
+		<button ng-show="nbChecked === 1" type="button" class="btn btn-primary btn-xs"  ng-click="linkeditProjet();" ><span class="glyphicon glyphicon-edit"></span>Modifier</button>
 		<button ng-show="nbChecked" type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-save"></span>Publier</button>
 		<button ng-show="nbChecked" type="button" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-open"></span>Dépublier</button>
 		<button ng-show="nbChecked" type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span>Supprimer</button>
@@ -23,7 +23,7 @@
 	<table class="table table-hover">
 		<thead>
 			<tr>
-		    	<th><input type="checkbox" ng-model="allchecked" ng-click="checkAll(allchecked)"></th>
+		    	<th class="thsbox"><input type="checkbox" ng-model="allchecked" ng-click="checkAll(allchecked)"></th>
 		    	<th class="thtitle" ng-click="order ='title';reverse=false; " style="cursor:pointer">Titre<span ng-show="order==='title'" class="caret"></span></th>
 		    	<th  ng-click="order ='content';reverse=false; " style="cursor:pointer">Contenu<span ng-show="order==='content'" class="caret"></span></th>
 		    	<th class="thcategory" ng-click="order ='category' ;reverse=false;" style="cursor:pointer">Categorie<span ng-show="order==='category'" class="caret"></span></th>
@@ -31,7 +31,7 @@
 		    	<th class="thdate" ng-click="order ='date'; reverse=true" style="cursor:pointer">Date<span ng-show="order==='date'" class="caret"></span></th>
 			</tr>
 		</thead>
-		<tbody>
+		<tbody class="AppendLine">
 			<tr class="ligneDajout" ng-show="newArticle.working">
 				<td colspan="6" class="bg-info">
 				<form class="form-inline" role="form" ng-submit="submitNewArticle()">
@@ -53,7 +53,7 @@
 
 				</td>
 			</tr>
-		    <tr ng-repeat="article in articles | articlesFilter:slug:filterActif:filterInactif:filterNew | orderBy:order:reverse" class="animate-repeat"  ng-class="{active : article.checked }" >
+		    <tr ng-repeat="article in articles | articlesFilter:slug:filterActif:filterInactif:filterNew | orderBy:order:reverse" class="animate-repeat ligne" rel="{{article.id}}"  ng-class="{active : article.checked }"  ng-dblclick="dblclick(article);" >
 		    		<td><input type="checkbox" ng-model="article.checked" ng-change="filterMainArray()"></td>
 			    	<td>{{article.title}}</td>
 			    	<td>{{article.content}}</td>
@@ -65,9 +65,12 @@
 			    	</td>
 			    	<td >{{article.date | date:' dd/MM/yyyy'}}</td>
 		    	
-		    	
+		    		
 				
 		    </tr>
+		    <tr class="ligneModif" ui-view="editarticlesView">
+		    	
+			</tr>
 		</tbody>
 	</table>
 </div>

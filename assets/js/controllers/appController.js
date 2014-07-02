@@ -40,7 +40,7 @@ function appCtrl($scope) {
 				}
 			};
 		}
-	    
+	    // if(toState.url)
 	})
 
 
