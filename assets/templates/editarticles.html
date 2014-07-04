@@ -1,20 +1,41 @@
-<td><input type="checkbox" checked></td>
-<td  colspan="5" >
+<td  colspan="6" >
 
 
-<form class="form-inline" role="form" ng-submit="submitNewArticle()">
-	<div class="form-group">
-	    <input type="text" name="title" class="form-control input-sm" ng-model="article.title" placeholder="Titre">
-	 </div>
-	 <div class="form-group">
-	    <input type="date" name="date" ng-model="newArticle.date" class="form-control input-sm"  placeholder="Titre">
-	 </div>
-	 <div class="form-group pull-right ">
+<form class="form" role="form" ng-submit="submitNewArticle()">
+	<div class="row">
+
+		<div class="form-group col-sm-9">
+		<label for="">Titre</label>
+		    <input type="text" name="title" class="form-control input-sm" ng-model="article.title" placeholder="Titre">
+		 </div>
+		 <div class="form-group col-sm-3">
+		 <label for="">Date</label>
+		    <input type="date" name="date" ng-model="newArticle.date" class="form-control input-sm"  placeholder="Titre">
+		 </div>
+		 <div class="form-group col-sm-12">
+		    <textarea class="ck-editor" ng-model="article.content"></textarea>
+		 </div>
+		 <div class="form-group col-sm-4">
+		 <label for="">Catégorie</label>
+		    <select class="form-control" ng-model="article.category">
+			  <option>Biotech</option>
+			  <option>alimentation</option>
+			  <option>Energie Future</option>
+			</select>
+		 </div>
+		 <div class="form-group col-sm-4">
+		 <label for="">Status</label>
+		    <select class="form-control" ng-model="article.status">
+			  <option>Actif</option>
+			  <option>Inactif</option>
+			</select>
+		 </div>
+	</div>
+	 <div class="form-group col-sm-1 pull-right ">
 	    <div class=" input-sm btn btn-danger btn-xs"  ng-click="newArticle={'working':false,'title':'','date':null};" value="Annuler">Annuler</div>
 	 </div>
-
-	 <div class="form-group pull-right ">
-	    <input type="submit"  class="form-control input-sm btn btn-success btn-xs"   value="Ajouter">
+	 <div class="form-group col-sm-3 pull-right ">
+	    <input type="submit"  class="form-control input-sm btn btn-success btn-xs"   value="Enregister">
 	 </div>
 </form>	
 </td>

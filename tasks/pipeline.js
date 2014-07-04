@@ -33,6 +33,7 @@ var jsFilesToInject = [
   'bower_components/angular.js',
   'bower_components/angular-animate.js',
   'bower_components/ui-bootstrap.js',
+  'bower_components/ckeditor/ckeditor.js',
   'bower_components/ui-bootstrap-tpls.js',
   'bower_components/angular-ui-router.js',
   'bower_components/angular-route.js',

@@ -1,24 +1,66 @@
 var app = angular.module('app', ['ui.router','clientresize','ui.bootstrap','ngAnimate']);
 
 
-// app.config(function($routeProvider) {
-// 		$routeProvider
+app.directive('ckEditor', [function () {
+        return {
+            require: '?ngModel',
+            restrict: 'C',
+            link: function (scope, elm, attr, model) {
+                var isReady = false;
+                var data = [];
+                var ck = CKEDITOR.replace(elm[0]);
+                
+                function setData() {
+                    if (!data.length) {
+                        return;
+                    }
+                    
+                    var d = data.splice(0, 1);
+                    ck.setData(d[0] || '<span></span>', function () {
+                        setData();
+                        isReady = true;
+                    });
+                }
 
-// 			// route for the home page
-// 			// .when('/', {
-// 			// 	templateUrl : '/toto',
-// 			// })
+                ck.on('instanceReady', function (e) {
+                    if (model) {
+                        setData();
+                    }
+                });
+                
+                elm.bind('$destroy', function () {
+                    ck.destroy(false);
+                });
 
-// 			// route for the about page
-// 			.when('/', {
-// 				templateUrl : '/tata',
-// 			})
+                if (model) {
+                    ck.on('change', function () {
+                        scope.$apply(function () {
+                            var data = ck.getData();
+                            if (data == '<span></span>') {
+                                data = null;
+                            }
+                            model.$setViewValue(data);
+                        });
+                    });
 
-// 			// route for the contact page
-// 			.when('/contact', {
-// 				templateUrl : '/titi',
-// 			});
-// 	});
+                    model.$render = function (value) {
+                        if (model.$viewValue === undefined) {
+                            model.$setViewValue(null);
+                            model.$viewValue = null;
+                        }
+
+                        data.push(model.$viewValue);
+
+                        if (isReady) {
+                            isReady = false;
+                            setData();
+                        }
+                    };
+                }
+                
+            }
+        };
+    }]);
 
 app.config(function($stateProvider, $urlRouterProvider) {
   //
