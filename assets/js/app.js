@@ -1,6 +1,27 @@
 var app = angular.module('app', ['ui.router','clientresize','ui.bootstrap','ngAnimate']);
 
 
+Array.prototype.getIndexBy = function (name, value) {
+    for (var i = 0; i < this.length; i++) {
+        if (this[i][name] == value) {
+            return i;
+        }
+    }
+}
+app.directive('dateFix', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function (scope, element, attr, ngModel) {
+            element.on('change', function() {
+                scope.$apply(function () {
+                    ngModel.$setViewValue(element.val());
+                });         
+            });
+        }
+    };
+});
+
 app.directive('ckEditor', [function () {
         return {
             require: '?ngModel',

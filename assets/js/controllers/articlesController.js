@@ -81,7 +81,23 @@ console.log('appCtrl');
 	    // $('tr.ligne[rel="'+fromParams.id+'"]').show();
 	    // console.log('herrreeeee');
 	})
-
+	$scope.newarticle =function() {
+		$scope.newArticle.working = true;
+		setTimeout(function(){
+			$(document).bind('click',function(e) {
+				console.log('newarticle');
+			  $scope.exitNew();
+			  $scope.$apply();
+			  $(document).unbind('click');
+			});
+		},1);
+		$('tr.ligneDajout').click(function  (e) {
+		  e.stopPropagation();
+		});
+	};
+	$scope.exitNew=function() {
+		$scope.newArticle={'working':false,'title':'','date':null};
+	};
 	$scope.submitNewArticle=function() {
 		console.log('submitNewArticle');
 		articlesService.addNew($scope.newArticle);
@@ -126,47 +142,54 @@ console.log('appCtrl');
 		article.checked = true;
 		$scope.linkeditProjet()
 	}
+	$scope.removeselected=function() {
+		filterFilter(filteredArray,{checked : true}).forEach(function(item) {
+			articlesService.remove(item);
+			$scope.nbChecked--;
+		})
+		$scope.$apply();
+	};
 
 
 }]);
 
-app.controller('editarticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','$state',
-function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$state) {
+app.controller('editarticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','$state','$filter',
+function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$state,$filter) {
 	
 	
 	$scope.article = filterFilter(articlesService.articles,{id:$stateParams.id});
 	$scope.article = $scope.article[0];
-	$scope.article.checked=false
-	setTimeout(function(){
-		// console.log($('tr.ligne[rel="'+$stateParams.id+'"]').);
-		// var lignemodif = ;
+	$scope.article.checked=false;
 
+	$scope.articleToEdit = angular.copy($scope.article);
+	$scope.articleToEdit.date =  $filter("date")($scope.articleToEdit.date, 'yyyy-MM-dd');
+	//GESTION CLICK OUT
+	setTimeout(function(){
 		$('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModif')).hide();
 		console.log($('tr.ligneModif'));
 		$(document).bind('click',function(e) {
-			console.log('hehehereree');
-			
-			// console.log($('tbody.AppendLine tr:last-child'));
-			// console.log($('.ligneModif'));
-			// 	console.log($('tbody.AppendLine tr:last-child'));
-			// $('tbody.AppendLine tr:last-child').after(lignemodif);
 		  $state.go('^')
 		  $(document).unbind('click');
 		});
 
 		$('tr.ligneModif').click(function  (e) {
 		  e.stopPropagation();
-			// body...
 		});
 
 	},1)
+	$scope.exit=function() {
 
+		$state.go('^')
 
+	}
 
-	// console.log($('.ligneModif').html());
-	// $('.ligne[rel="'+$stateParams.id+'"]')
-	
+	$scope.submitEditArticle=function() {
+		console.log('submitNewArticle');
 
-	// console.log($scope.article);
+		articlesService.edit($scope.articleToEdit);
+		$state.go('^')
+
+	};
+
 
 }]);

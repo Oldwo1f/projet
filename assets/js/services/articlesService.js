@@ -27,6 +27,27 @@ app.factory('articlesService', ['$http',function ($http) {
         service.articles.unshift(article);
     }
 
+    service.edit=function(article){
+        //POST DB CHANGE
+        //ON RETURN
+        var id = article.id;
+        service.articles.splice(service.articles.getIndexBy('id',id),1,article)
+
+    }
+    service.remove=function(article){
+        //POST DB CHANGE
+        //ON RETURN
+        var id = article.id;
+        
+
+        console.log(service.articles.getIndexBy('id',id));
+        service.articles.splice(service.articles.getIndexBy('id',id),1)
+        // service.articles
+        console.log(service.articles);
+
+
+    }
+ 
     console.log('service'); 
     // service.fetchArticles = function() {
     //     var promise = $http.get('/api/article').

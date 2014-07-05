@@ -2,12 +2,12 @@
 
 <div class="table-responsive">
 	<div class="col-xs-9">
-		<button type="button" class="btn btn-info btn-xs" ng-click="newArticle.working = true;"><span class="glyphicon glyphicon-plus"></span>Ajouter</button>
+		<button type="button" class="btn btn-info btn-xs" ng-click="newarticle()"><span class="glyphicon glyphicon-plus"></span>Ajouter</button>
 
 		<button ng-show="nbChecked === 1" type="button" class="btn btn-primary btn-xs"  ng-click="linkeditProjet();" ><span class="glyphicon glyphicon-edit"></span>Modifier</button>
 		<button ng-show="nbChecked" type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-save"></span>Publier</button>
 		<button ng-show="nbChecked" type="button" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-open"></span>Dépublier</button>
-		<button ng-show="nbChecked" type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span>Supprimer</button>
+		<button ng-show="nbChecked" type="button" ng-click="removeselected()" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span>Supprimer</button>
 		<div  class="nbselected ">
 			<ng-pluralize class="small"  count="nbChecked"  when="{'0': 'Aucun article séléctionné','1': '{{nbChecked}} article séléctionné','other': '{{nbChecked}} articles séléctionnés'}" </ng-pluralize>
 		</div>
@@ -20,7 +20,7 @@
 			<span class="label label-info" ><input type="checkbox" ng-model="filterNew" ng-change="filterMainArray()"><label for="">new</label></span>
 		</div>
 	</div>
-	<table class="table table-hover">
+	<table class="table table-striped">
 		<thead>
 			<tr>
 		    	<th class="thsbox"><input type="checkbox" ng-model="allchecked" ng-click="checkAll(allchecked)"></th>
@@ -32,7 +32,7 @@
 			</tr>
 		</thead>
 		<tbody class="AppendLine">
-			<tr class="ligneDajout" ng-show="newArticle.working">
+			<tr class="ligneDajout bg-info" ng-show="newArticle.working">
 				<td colspan="6" class="bg-info">
 				<form class="form-inline" role="form" ng-submit="submitNewArticle()">
 					<div class="form-group">
@@ -42,7 +42,7 @@
 					    <input type="date" name="date" ng-model="newArticle.date" class="form-control input-sm"  placeholder="Titre">
 					 </div>
 					 <div class="form-group pull-right ">
-					    <div class=" input-sm btn btn-danger btn-xs"  ng-click="newArticle={'working':false,'title':'','date':null};" value="Annuler">Annuler</div>
+					    <div class=" input-sm btn btn-danger btn-xs"  ng-click="exitNew()" value="Annuler">Annuler</div>
 					 </div>
 
 					 <div class="form-group pull-right ">
