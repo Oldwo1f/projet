@@ -50,7 +50,7 @@ console.log('appCtrl');
 	articlesService.fetchArticles().then(function (data) {
 		console.log('.then');
 		console.log(data);
-        $scope.articles = articlesService.articles = data;
+         filteredArray = $scope.articles =articlesService.articles = data;
     });
 
 	$scope.$watch('articles',function () {
@@ -103,6 +103,7 @@ console.log('appCtrl');
 	$scope.exitNew=function() {
 		$('input[name="title"]').removeClass('bg-danger');
 		$scope.newArticle={'working':false,'title':'','date':null};
+		$(document).unbind('click');
 	};
 	$scope.submitNewArticle=function() {
 		$(document).unbind('click');
@@ -206,7 +207,7 @@ function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$sta
 	
 	$scope.article = filterFilter(articlesService.articles,{id:$stateParams.id});
 	$scope.article = $scope.article[0];
-	$scope.article.checked=false;
+	// $scope.article.checked=false;
 
 	$scope.articleToEdit = angular.copy($scope.article);
 	$scope.articleToEdit.date =  $filter("date")($scope.articleToEdit.date, 'yyyy-MM-dd');

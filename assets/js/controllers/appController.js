@@ -9,7 +9,7 @@ function appCtrl($scope) {
 	];
 	$scope.articlestabs=[
 	{'title':'Articles','name' :'articles','active':false},
-	// {'name' :'category','active':false},
+	{'title' :'Catégories','name' :'category','active':false},
 	{'title':'Commentaires','name' :'comments','active':false}
 	];
 	

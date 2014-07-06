@@ -192,6 +192,51 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                         }
                                       })
 
+                        .state('/.articles.category', {
+                          url: "/category",
+                          data:{'articlesTabs':'category'},
+                          views: {
+                            'categoryView':{
+                              templateUrl: "/templates/articlescategory.html",
+                               controller:'articlescategoryCtrl'
+                            }
+                          }
+                        })
+                                      .state('/.articles.category.edit', {
+                                        url: "/edit/:id",
+                                        // data:{'articlesTabs':'articles'},
+                                        views: {
+                                          'editarticlescategoryView':{
+                                            templateUrl: "/templates/editarticlescategory.html",
+                                            controller:'editarticlescategoryCtrl'
+                                          }
+                                        },
+                                        onEnter:function($state) {
+                                          $('tr.ligneModif').show();
+                                        },
+                                        onExit:function($state) {
+                                          $('tr.ligne[rel="'+$state.params.id+'"]').show();
+                                          $('tr.ligneModif').hide();
+                                        }
+                                      })
+                                      .state('/.articles.category.editimage', {
+                                        url: "/editimage/:id",
+                                        // data:{'articlesTabs':'articles'},
+                                        views: {
+                                          'editimagesarticlescategoryView':{
+                                            templateUrl: "/templates/editimagescategory.html",
+                                            controller:'editimagearticlescategoryCtrl'
+                                          }
+                                        },
+                                        onEnter:function($state) {
+                                          $('tr.ligneModif').show();
+                                        },
+                                        onExit:function($state) {
+                                          $('tr.ligne[rel="'+$state.params.id+'"]').show();
+                                          $('tr.ligneModif').hide();
+                                        }
+                                      })
+
                         .state('/.articles.comments', {
                           url: "/comments",
                           data:{'articlesTabs':'comments'},
