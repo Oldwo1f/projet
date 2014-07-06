@@ -36,7 +36,7 @@ app.filter('articlesFilter', function() {
 app.controller('articlesCtrl',['$scope','filterFilter','articlesService','$filter','$state',
 function articlesCtrl($scope,filterFilter,articlesService,$filter,$state) {
 console.log('appCtrl');
-	$scope.articles= articlesService.articles;
+	$scope.articles= [];
 	$scope.slug = '';
 	$scope.filterActif = true;
 	$scope.filterInactif = true;
@@ -47,8 +47,13 @@ console.log('appCtrl');
 	// 	// console.log($scope.maintabs);
 	// },true);
 
+	articlesService.fetchArticles().then(function (data) {
+		console.log('.then');
+		console.log(data);
+        $scope.articles = articlesService.articles = data;
+    });
 
-	$scope.$watch('articles',function  () {
+	$scope.$watch('articles',function () {
 		// console.log($scope.slug);
 		// console.log($scope.filterActif);
 		// console.log($scope.filterInactif);
@@ -96,13 +101,31 @@ console.log('appCtrl');
 		});
 	};
 	$scope.exitNew=function() {
+		$('input[name="title"]').removeClass('bg-danger');
 		$scope.newArticle={'working':false,'title':'','date':null};
 	};
 	$scope.submitNewArticle=function() {
+		$(document).unbind('click');
 		console.log('submitNewArticle');
-		articlesService.addNew($scope.newArticle);
-		$scope.newArticle={'working':false,'title':'','date':null}
-		$scope.order='false';
+		articlesService.addNew($scope.newArticle).then(function success(data) {
+			console.log('.thenNew');
+			console.log(data);
+			$scope.order='false';
+			$scope.exitNew();
+		},function error(data) {
+			console.log('this error');
+			console.log(data.error);
+			if(data.error.error ==='E_VALIDATION')
+			{
+				console.log(data.error.invalidAttributes.title);
+				if(data.error.invalidAttributes.title)
+				{
+					console.log('here');
+					$('input[name="title"]').addClass('bg-danger');
+				}
+			}
+		});
+		
 	};
 
 
@@ -209,9 +232,19 @@ function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$sta
 		console.log('submitNewArticle');
 		console.log(stay);
 
-		articlesService.edit($scope.articleToEdit);
-		if(stay==='leave')
-			$scope.exit()
+		articlesService.edit($scope.articleToEdit).then(function success(data) {
+			if(stay==='leave')
+				$scope.exit()
+		},function error(data) {
+			console.log('this error');
+			console.log(data.error);
+			if(data.error.error ==='E_VALIDATION')
+			{
+				console.log(data.error.invalidAttributes);
+				
+			}
+		});
+
 		// $('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModif')).hide();
 	};
 

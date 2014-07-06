@@ -8,7 +8,12 @@
 module.exports = {
 
   attributes: {
-
+  		title : {type:'string',required:true},
+  		content : {type:'text'},
+  		date : {type:'datetime'},
+  		rank : {type:'int'},
+  		category : {type:'string'},
+  		status : {type:'string'},
   }
 };
 
