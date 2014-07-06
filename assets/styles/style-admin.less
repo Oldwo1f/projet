@@ -1,0 +1,93 @@
+body {
+font-family: sans-serif, Arial, Verdana, "Trebuchet MS";
+font-size: 12px;
+color: #333;
+background-color: #fff;
+ margin: 0px; 
+}
+
+div.tab-pane {
+border: 1px solid #dFdFdF;
+border-bottom-left-radius: 5px;
+border-bottom-right-radius: 5px;
+border-top: none;
+margin-bottom:5px;
+top: 0px;
+padding-top: 20px;
+position: relative;
+padding:20px 20px 20px 20px;
+}
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+.ui-sortable-handle{cursor: move;}
+div#app{width:100%;}
+div.form-group > div.form-control {padding: 5px;}
+div.form-group .form-control.pull-right {margin-left: 5px;}
+#app .bg-info {background-color: #d9edf7;}
+.table-striped>tbody>tr.bg-info>td, .table-striped>tbody>tr.bg-info>th {
+ background-color: transparent; 
+}
+#app .cke{border-radius: 5px;border:none;}
+#app .cke_inner{border-radius: 5px;}
+#app .cke_top{background: #d9edf7;border-top-left-radius: 5px;border-top-right-radius: 5px;border:none;}
+#app .cke_bottom{background: #d9edf7;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;border:none;}
+
+div.FilterBox input[type="checkbox"]{position:relative;top:4px;margin-right: 4px; text-align:right;}
+
+table {}
+.thsbox{width:30px;}
+.thstatus{width:70px;}
+.thdate{width:120px;}
+.thtitle{}
+.thimgs{width:250px;}
+.thcategory{width:120px;}
+
+button > span.glyphicon {
+	margin-right:5px;
+}
+
+div.add{
+	height : 100px;
+	width : 100%;
+	background:orangered;
+}
+
+.ligneDajout{/*height:100px;*/}
+.ligneDajout input[name="title"]{width:500px;}
+.ligneDajout input[type="submit"]{width:200px;}
+.ligneDajout .btn {margin-right: 5px;margin-left: 5px;line-height: 27px;}
+
+
+.listimages{margin:0;padding:0;}
+.listimages li {display:inline-block;list-style:none; margin-left:3px;}
+
+.listbigimages{margin:0;padding:0;}
+.listbigimages li {display:inline-block;list-style:none; margin-left:10px; margin-bottom:10px;}
+
+
+.table>tbody>tr>td{vertical-align:middle;}
+
+
+.animate-repeat {
+  box-sizing:border-box;
+}
+
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter,
+.animate-repeat.ng-leave {
+  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+}
+
+.animate-repeat.ng-leave.ng-leave-active,
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter {
+  opacity:0;
+  max-height:0;
+}
+
+.animate-repeat.ng-leave,
+.animate-repeat.ng-move.ng-move-active,
+.animate-repeat.ng-enter.ng-enter-active {
+  opacity:1;
+  max-height:40px;
+}

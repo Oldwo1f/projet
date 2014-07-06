@@ -8,9 +8,19 @@
 module.exports = {
 	
 	index:function(req,res) {
+		res.locals.layout = 'layout';
 
 
 		return res.view('admin');
+	},
+	contact:function(req,res) {
+
+		return res.view('contact');
+	},
+	dashboard:function(req,res) {
+
+
+		return res.view('dashboard');
 	}
 };
 

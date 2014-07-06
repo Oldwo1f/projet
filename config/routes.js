@@ -8,7 +8,9 @@ catch (e) {
 // var routes 
 var routes={
 
-  '/': 'BackofficeController.index'
+  '/': 'BackofficeController.index',
+  '/dashboard': 'BackofficeController.dashboard',
+  '/contact': 'BackofficeController.contact'
   
 
 };

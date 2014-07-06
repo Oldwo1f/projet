@@ -1,0 +1,42 @@
+<td  colspan="6" class="bg-info">
+
+
+<form class="form" role="form" >
+	<div class="row">
+
+		<div class="form-group col-sm-9">
+		<label for="">Titre</label>
+		    <input type="text" name="title" class="form-control input-sm" ng-model="articleToEdit.title" placeholder="Titre">
+		 </div>
+		 <div class="form-group col-sm-3">
+		 <label for="">Date</label>
+		    <input type="date" name="date" date-fix ng-model="articleToEdit.date" class="form-control input-sm"  placeholder="Titre">
+		 </div>
+		 <div class="form-group col-sm-12">
+		    <textarea class="ck-editor" ng-model="articleToEdit.content"></textarea>
+		 </div>
+		 <div class="form-group col-sm-4">
+		 <label for="">Catégorie</label>
+		    <select class="form-control" ng-model="articleToEdit.category">
+			  <option>Biotech</option>
+			  <option>alimentation</option>
+			  <option>Energie Future</option>
+			</select>
+		 </div>
+		 <div class="form-group col-sm-4">
+		 <label for="">Status</label>
+		    <select class="form-control" ng-model="articleToEdit.status">
+			  <option>Actif</option>
+			  <option>Inactif</option>
+			</select>
+		 </div>
+	</div>
+	 <div class="form-group form-inline col-sm-4 pull-right ">
+	    <div class="form-control input-sm btn btn-danger btn-xs pull-right"  ng-click="exit()" value="Annuler">Annuler</div>
+	    <div   class="form-control input-sm btn btn-success btn-xs pull-right" ng-click="submitEditArticle('leave')" >Enregister</div>
+	    <!-- <div   class="form-control input-sm btn btn-success btn-xs pull-right" ng-click="submitEditArticle('stay')" >Enregister et rester</div> -->
+	    <!-- <input type="submit"  class="form-control input-sm btn btn-success btn-xs pull-right"   value="Enregister et rester"> -->
+	 </div>
+
+</form>	
+</td>
