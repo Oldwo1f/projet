@@ -1,10 +1,13 @@
 <td  colspan="6" class="bg-info" style="position:relative">
 
-	<ul class="listbigimages">
-		<li ng-repeat="image in article.images">
+	<ul class="listbigimages" ui-sortable ng-model="articleToEdit.images">
+		<li ng-repeat="image in articleToEdit.images ">
 			<img ng-src="{{image.urlBig}}" alt="{{image.name}}" >
 		</li>
 	</ul>
+	<div class="form-group form-inline col-sm-2 pull-right ">
+		<div class="form-control input-sm btn btn-success btn-xs pull-right" ng-click="addImg()" >Enregister l'ordre</div>
+	</div>
 	<hr>
 	<clientresize  multiple="true" boxsize="500" itemid="IDArticleToEdit" itemtype="'article'" steps="[  
           {  

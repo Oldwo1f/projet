@@ -59,7 +59,7 @@
 			    	<td ng-dblclick="dblclick(article);">{{article.title}}</td>
 			    	<td ng-dblclick="dblclickimage(article)">
 			    		<ul class="listimages">
-			    			<li ng-repeat="image in article.images | limitTo:4">
+			    			<li ng-repeat="image in article.images | limitTo:4 | orderBy:'rank'">
 			    				<img ng-src="{{image.url}}" alt="{{image.name}}" width="30px" height="30px">
 			    			</li>
 			    			<li ng-show="article.images.length-4 > 0" ><small class="badge">+{{ article.images.length - 4}}</small></li>

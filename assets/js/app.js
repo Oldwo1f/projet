@@ -1,6 +1,13 @@
-var app = angular.module('app', ['ui.router','clientresize','ui.bootstrap','ngAnimate']);
+var app = angular.module('app', ['ui.router','clientresize','ui.bootstrap','ngAnimate','ui.sortable']);
 
-
+function clearSelection() {
+    if(document.selection && document.selection.empty) {
+        document.selection.empty();
+    } else if(window.getSelection) {
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+    }
+} 
 Array.prototype.getIndexBy = function (name, value) {
     for (var i = 0; i < this.length; i++) {
         if (this[i][name] == value) {

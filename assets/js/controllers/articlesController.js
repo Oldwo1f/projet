@@ -154,11 +154,14 @@ console.log('appCtrl');
 	$scope.dblclick =function(article){
 		$scope.checkAll(true);
 		article.checked = true;
+		clearSelection();
 		$scope.linkeditProjet()
+
 	}
 	$scope.dblclickimage =function(article){
 		$scope.checkAll(true);
 		article.checked = true;
+		clearSelection();
 		$scope.linkeditimages()
 	}
 	$scope.removeselected=function() {
@@ -222,7 +225,7 @@ function editimagearticlesCtrl($scope,$stateParams,filterFilter,articlesService 
 	$scope.article = $scope.article[0];
 	$scope.article.checked=false;
 
-	// $scope.articleToEdit = angular.copy($scope.article);
+	$scope.articleToEdit = angular.copy($scope.article);
 	// $scope.articleToEdit.date =  $filter("date")($scope.articleToEdit.date, 'yyyy-MM-dd');
 	//GESTION CLICK OUT
 	setTimeout(function(){
@@ -235,11 +238,19 @@ function editimagearticlesCtrl($scope,$stateParams,filterFilter,articlesService 
 		$('tr.ligneModifIMG').click(function  (e) {
 		  e.stopPropagation();
 		});
+		$('tr.ligne[rel="'+$stateParams.id+'"]').click(function  (e) {
+		  e.stopPropagation();
+		});
 
 	},1)
 	$scope.exit=function() {
 		$('tr.ligne[rel="'+$stateParams.id+'"]').removeClass('bg-info');
+
 		$state.go('^')
+	}	
+
+	$scope.addImg=function() {
+		articlesService.addImg($scope.articleToEdit);
 	}
 
 	// $scope.submitEditArticle=function(stay) {
