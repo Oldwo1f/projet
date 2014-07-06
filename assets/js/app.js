@@ -167,6 +167,23 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                           $('tr.ligneModif').hide();
                                         }
                                       })
+                                      .state('/.articles.articles.editimage', {
+                                        url: "/editimage/:id",
+                                        // data:{'articlesTabs':'articles'},
+                                        views: {
+                                          'editimagesarticlesView':{
+                                            templateUrl: "/templates/editimages.html",
+                                            controller:'editimagearticlesCtrl'
+                                          }
+                                        },
+                                        onEnter:function($state) {
+                                          $('tr.ligneModif').show();
+                                        },
+                                        onExit:function($state) {
+                                          $('tr.ligne[rel="'+$state.params.id+'"]').show();
+                                          $('tr.ligneModif').hide();
+                                        }
+                                      })
 
                         .state('/.articles.comments', {
                           url: "/comments",

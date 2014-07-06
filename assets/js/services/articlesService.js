@@ -1,7 +1,6 @@
 app.factory('articlesService', ['$http',function ($http) {
     var service = {};
     service.articles=[
-    {id:1,'category':'alimentation',status:'Actif','title' :'7title article dashboard','content':'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates modi id voluptas architecto impedit itaque, iste porro inventore vero omnis, dolore, adipisci quos sapiente quibusdam consequatur error. Quae veritatis, distinctio!'},
     {id:2,'category':'Biotech',status:'New','title' :'7title article users','content':'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti adipisci laudantium alias vel, illo dignissimos tenetur, excepturi earum placeat est iure. Sed ullam et recusandae iure dignissimos non aliquam voluptate.'},
     {id:3,'category':'Energie Future',status:'Inactif','title' :'477title article articles','content':'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam iste dolorum sint facere quos corporis, quo ducimus explicabo dolorem at mollitia sequi, enim? Eius ab quisquam, non quia, laudantium qui.'},
     {id:4,'category':'Biotech',status:'Actif','title' :'4title article projets','content':'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea suscipit id nulla soluta inventore facilis perspiciatis veritatis, nihil. Quae aperiam obcaecati aliquid soluta delectus recusandae, labore id assumenda, facere sed.'},
@@ -10,6 +9,81 @@ app.factory('articlesService', ['$http',function ($http) {
     {id:7,'category':'Energie Future',status:'Inactif','title' :'47title article articles','content':'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam iste dolorum sint facere quos corporis, quo ducimus explicabo dolorem at mollitia sequi, enim? Eius ab quisquam, non quia, laudantium qui.'},
     {id:8,'category':'alimentation',status:'Actif','title' :'title article projets','content':'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea suscipit id nulla soluta inventore facilis perspiciatis veritatis, nihil. Quae aperiam obcaecati aliquid soluta delectus recusandae, labore id assumenda, facere sed.'},
     ];
+    service.colors=['5D8AA8','C9FFE5','9966CC','FBCEB1','87A96B','FE6F5E','E97451','800020']
+
+    service.articles.forEach(function(article) {
+
+        if(article.id %2 == 0)
+        {
+            article.images=[
+                {
+                    name:"tototo",
+                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20',
+                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20'
+                },
+                {
+                    name:"tototo2",
+                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20',
+                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20'
+                },
+                {
+                    name:"tototo3",
+                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20',
+                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20'
+                }
+            ]
+        }else{
+            article.images=[
+                {
+                    name:"tototo",
+                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20',
+                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20'
+                },
+                {
+                    name:"tototo2",
+                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20',
+                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20'
+                },
+                {
+                    name:"tototo3",
+                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20',
+                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20'
+                },
+                {
+                    name:"tototo3",
+                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20',
+                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20'
+                },
+                {
+                    name:"tototo3",
+                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20',
+                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20'
+                },
+                {
+                    name:"tototo3",
+                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20',
+                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20'
+                }
+            ]
+        }
+
+    });
+
+
+
+
+
+
+    console.log(service.articles);
+
+
+
+
+
+
+
+
+
     service.articles.forEach(function(article) {
             article.date = randomDate(new Date(2012, 0, 1), new Date())
             function randomDate(start, end) {
@@ -40,7 +114,6 @@ app.factory('articlesService', ['$http',function ($http) {
         var id = article.id;
         
 
-        console.log(service.articles.getIndexBy('id',id));
         service.articles.splice(service.articles.getIndexBy('id',id),1)
         // service.articles
         console.log(service.articles);

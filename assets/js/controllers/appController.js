@@ -8,9 +8,9 @@ function appCtrl($scope) {
 	{'title':'Gestion des projets','name' :'projets','active':false,'viewName':'projetsView'},
 	];
 	$scope.articlestabs=[
-	{'title':'Tous mes articles','name' :'articles','active':false},
+	{'title':'Articles','name' :'articles','active':false},
 	// {'name' :'category','active':false},
-	{'title':'Gestion des commentaires','name' :'comments','active':false}
+	{'title':'Commentaires','name' :'comments','active':false}
 	];
 	
 

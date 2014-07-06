@@ -1,3 +1,11 @@
+body {
+font-family: sans-serif, Arial, Verdana, "Trebuchet MS";
+font-size: 12px;
+color: #333;
+background-color: #fff;
+ margin: 0px; 
+}
+
 div.tab-pane {
 border: 1px solid #dFdFdF;
 border-bottom-left-radius: 5px;
@@ -11,12 +19,17 @@ padding:20px 20px 20px 20px;
 }
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
-
-#app .bg-info {
-/*background-color: red;*/
-background-color: #d9edf7;
+div#app{width:100%;}
+div.form-group > div.form-control {padding: 5px;}
+div.form-group .form-control.pull-right {margin-left: 5px;}
+#app .bg-info {background-color: #d9edf7;}
+.table-striped>tbody>tr.bg-info>td, .table-striped>tbody>tr.bg-info>th {
+ background-color: transparent; 
 }
-
+#app .cke{border-radius: 5px;border:none;}
+#app .cke_inner{border-radius: 5px;}
+#app .cke_top{background: #d9edf7;border-top-left-radius: 5px;border-top-right-radius: 5px;border:none;}
+#app .cke_bottom{background: #d9edf7;border-bottom-left-radius: 5px;border-bottom-right-radius: 5px;border:none;}
 
 div.FilterBox input[type="checkbox"]{position:relative;top:4px;margin-right: 4px; text-align:right;}
 
@@ -24,7 +37,8 @@ div.FilterBox input[type="checkbox"]{position:relative;top:4px;margin-right: 4px
 .thsbox{width:30px;}
 .thstatus{width:70px;}
 .thdate{width:120px;}
-.thtitle{width:250px;}
+.thtitle{}
+.thimgs{width:250px;}
 .thcategory{width:120px;}
 
 button > span.glyphicon {
@@ -43,9 +57,14 @@ div.add{
 .ligneDajout .btn {margin-right: 5px;margin-left: 5px;line-height: 27px;}
 
 
+.listimages{margin:0;padding:0;}
+.listimages li {display:inline-block;list-style:none; margin-left:3px;}
+
+.listbigimages{margin:0;padding:0;}
+.listbigimages li {display:inline-block;list-style:none; margin-left:10px;}
 
 
-
+.table>tbody>tr>td{vertical-align:middle;}
 
 
 .animate-repeat {

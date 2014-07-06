@@ -1,0 +1,22 @@
+<td  colspan="6" class="bg-info" style="position:relative">
+
+	<ul class="listbigimages">
+		<li ng-repeat="image in article.images">
+			<img ng-src="{{image.urlBig}}" alt="{{image.name}}" >
+		</li>
+	</ul>
+	<hr>
+	<clientresize  multiple="true" boxsize="500" itemid="IDArticleToEdit" itemtype="'article'" steps="[  
+          {  
+            'title':'miniature',
+            'folder':'thumbs',
+            'width': 200,
+            'height':300
+          },{  
+            'title':'thumbs',
+            'folder':'thumbs2',
+            'width': 600,
+            'height':400
+          }
+        ]"  class="cl-wrapper"></clientresize>
+</td>

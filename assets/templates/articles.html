@@ -4,7 +4,8 @@
 	<div class="col-xs-9">
 		<button type="button" class="btn btn-info btn-xs" ng-click="newarticle()"><span class="glyphicon glyphicon-plus"></span>Ajouter</button>
 
-		<button ng-show="nbChecked === 1" type="button" class="btn btn-primary btn-xs"  ng-click="linkeditProjet();" ><span class="glyphicon glyphicon-edit"></span>Modifier</button>
+		<button ng-show="nbChecked === 1" type="button" class="btn btn-primary btn-xs"  ng-click="linkeditProjet();" ><span class="glyphicon glyphicon-edit"></span>Editer</button>
+		<button ng-show="nbChecked === 1" type="button" class="btn btn-primary btn-xs"  ng-click="linkeditimages();" ><span class="glyphicon glyphicon-picture"></span>Gerer les images</button>
 		<button ng-show="nbChecked" type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-save"></span>Publier</button>
 		<button ng-show="nbChecked" type="button" class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-open"></span>Dépublier</button>
 		<button ng-show="nbChecked" type="button" ng-click="removeselected()" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span>Supprimer</button>
@@ -25,7 +26,7 @@
 			<tr>
 		    	<th class="thsbox"><input type="checkbox" ng-model="allchecked" ng-click="checkAll(allchecked)"></th>
 		    	<th class="thtitle" ng-click="order ='title';reverse=false; " style="cursor:pointer">Titre<span ng-show="order==='title'" class="caret"></span></th>
-		    	<th  ng-click="order ='content';reverse=false; " style="cursor:pointer">Contenu<span ng-show="order==='content'" class="caret"></span></th>
+		    	<th  class="thimgs"  style="cursor:pointer">Images</th>
 		    	<th class="thcategory" ng-click="order ='category' ;reverse=false;" style="cursor:pointer">Categorie<span ng-show="order==='category'" class="caret"></span></th>
 		    	<th class="thstatus" ng-click="order ='status' ;reverse=false;" style="cursor:pointer">Status<span ng-show="order==='status'" class="caret"></span></th>
 		    	<th class="thdate" ng-click="order ='date'; reverse=true" style="cursor:pointer">Date<span ng-show="order==='date'" class="caret"></span></th>
@@ -53,22 +54,32 @@
 
 				</td>
 			</tr>
-		    <tr ng-repeat="article in articles | articlesFilter:slug:filterActif:filterInactif:filterNew | orderBy:order:reverse" class="animate-repeat ligne" rel="{{article.id}}"  ng-class="{active : article.checked }"  ng-dblclick="dblclick(article);" >
-		    		<td><input type="checkbox" ng-model="article.checked" ng-change="filterMainArray()"></td>
-			    	<td>{{article.title}}</td>
-			    	<td>{{article.content}}</td>
-			    	<td>
+		    <tr ng-repeat="article in articles | articlesFilter:slug:filterActif:filterInactif:filterNew | orderBy:order:reverse" class="animate-repeat ligne" rel="{{article.id}}"  ng-class="{active : article.checked }"   >
+		    		<td ng-dblclick="dblclick(article);"><input type="checkbox" ng-model="article.checked" ng-change="filterMainArray()"></td>
+			    	<td ng-dblclick="dblclick(article);">{{article.title}}</td>
+			    	<td ng-dblclick="dblclickimage(article)">
+			    		<ul class="listimages">
+			    			<li ng-repeat="image in article.images | limitTo:4">
+			    				<img ng-src="{{image.url}}" alt="{{image.name}}" width="30px" height="30px">
+			    			</li>
+			    			<li ng-show="article.images.length-4 > 0" ><small class="badge">+{{ article.images.length - 4}}</small></li>
+			    		</ul>
+			    	</td>
+			    	<td ng-dblclick="dblclick(article);">
 			    	<span class="label label-default" >{{article.category}}</span>
 			    	</td>
-			    	<td>
+			    	<td ng-dblclick="dblclick(article);">
 			    	<span class="label " ng-class="{'label-info' : article.status=='New','label-success' : article.status=='Actif','label-warning' : article.status=='Inactif'}">{{article.status}}</span>
 			    	</td>
-			    	<td >{{article.date | date:' dd/MM/yyyy'}}</td>
+			    	<td ng-dblclick="dblclick(article);">{{article.date | date:' dd/MM/yyyy'}}</td>
 		    	
 		    		
 				
 		    </tr>
 		    <tr class="ligneModif" ui-view="editarticlesView">
+		    	
+			</tr>
+		    <tr class="ligneModifIMG" ui-view="editimagesarticlesView">
 		    	
 			</tr>
 		</tbody>

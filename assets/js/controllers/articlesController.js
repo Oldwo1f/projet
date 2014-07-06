@@ -56,10 +56,10 @@ console.log('appCtrl');
 		$scope.nbChecked = filterFilter(filteredArray,{checked : true}).length;
 		$scope.allchecked = ($scope.nbChecked == filteredArray.length);
 
-		if($state.is('/.articles.articles.edit'))
-		{
-			// $state.go('/.articles.articles')
-		}
+		// if($state.is('/.articles.articles.edit'))
+		// {
+		// 	$state.go('/.articles.articles')
+		// }
 
 
 	},true);
@@ -128,7 +128,7 @@ console.log('appCtrl');
 		console.log(filterFilter($scope.articles,{checked : true})[0].id);
 
 
-		if($state.is('/.articles.articles.edit'))
+		if($state.is('/.articles.articles.edit') || $state.is('/.articles.articles.editimage'))
 		{
 			$state.go('^.edit',{id: filterFilter($scope.articles,{checked : true})[0].id})
 		}
@@ -137,17 +137,38 @@ console.log('appCtrl');
 			$state.go('.edit',{id: filterFilter($scope.articles,{checked : true})[0].id})
 		}
 	}
+	$scope.linkeditimages =function(id){
+
+		console.log(filterFilter($scope.articles,{checked : true})[0].id);
+
+
+		if($state.is('/.articles.articles.edit') || $state.is('/.articles.articles.editimage'))
+		{
+			$state.go('^.editimage',{id: filterFilter($scope.articles,{checked : true})[0].id})
+		}
+		else
+		{
+			$state.go('.editimage',{id: filterFilter($scope.articles,{checked : true})[0].id})
+		}
+	}
 	$scope.dblclick =function(article){
 		$scope.checkAll(true);
 		article.checked = true;
 		$scope.linkeditProjet()
 	}
+	$scope.dblclickimage =function(article){
+		$scope.checkAll(true);
+		article.checked = true;
+		$scope.linkeditimages()
+	}
 	$scope.removeselected=function() {
+
 		filterFilter(filteredArray,{checked : true}).forEach(function(item) {
 			articlesService.remove(item);
-			$scope.nbChecked--;
 		})
-		$scope.$apply();
+			
+		setTimeout(function() {$scope.nbChecked =0;$scope.$apply();},1)
+		// $scope.$apply();
 	};
 
 
@@ -168,7 +189,7 @@ function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$sta
 		$('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModif')).hide();
 		console.log($('tr.ligneModif'));
 		$(document).bind('click',function(e) {
-		  $state.go('^')
+		  $scope.exit()
 		  $(document).unbind('click');
 		});
 
@@ -178,18 +199,58 @@ function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$sta
 
 	},1)
 	$scope.exit=function() {
-
 		$state.go('^')
-
 	}
 
-	$scope.submitEditArticle=function() {
+	$scope.submitEditArticle=function(stay) {
 		console.log('submitNewArticle');
+		console.log(stay);
 
 		articlesService.edit($scope.articleToEdit);
-		$state.go('^')
-
+		if(stay==='leave')
+			$scope.exit()
+		// $('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModif')).hide();
 	};
+
+
+}]);
+app.controller('editimagearticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','$state','$filter',
+function editimagearticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$state,$filter) {
+	
+	console.log('editimagearticlesCtrl');
+	$scope.article = filterFilter(articlesService.articles,{id:$stateParams.id});
+	$scope.article = $scope.article[0];
+	$scope.article.checked=false;
+
+	// $scope.articleToEdit = angular.copy($scope.article);
+	// $scope.articleToEdit.date =  $filter("date")($scope.articleToEdit.date, 'yyyy-MM-dd');
+	//GESTION CLICK OUT
+	setTimeout(function(){
+		$('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModifIMG')).addClass('bg-info');
+		$(document).bind('click',function(e) {
+		  $scope.exit()
+		  $(document).unbind('click');
+		});
+
+		$('tr.ligneModifIMG').click(function  (e) {
+		  e.stopPropagation();
+		});
+
+	},1)
+	$scope.exit=function() {
+		$('tr.ligne[rel="'+$stateParams.id+'"]').removeClass('bg-info');
+		$state.go('^')
+	}
+
+	// $scope.submitEditArticle=function(stay) {
+	// 	console.log('submitNewArticle');
+	// 	console.log(stay);
+
+	// 	articlesService.edit($scope.articleToEdit);
+	// 	if(stay==='leave')
+	// 		$scope.exit()
+	// 	// $('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModif')).hide();
+	// };
 
 
 }]);
