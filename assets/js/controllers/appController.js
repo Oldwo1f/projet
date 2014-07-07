@@ -21,6 +21,7 @@ function appCtrl($scope) {
 	$scope.$on('$stateChangeStart', 
 	function(event, toState, toParams, fromState, fromParams){
 		console.log(toState);
+		console.log(toParams);
 		var deep = toState.url.split('/');
 		for (var i = $scope.maintabs.length - 1; i >= 0; i--) {
 			if(typeof toState.data != "undefined"){

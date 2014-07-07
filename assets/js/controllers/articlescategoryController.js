@@ -1,30 +1,24 @@
 
-app.controller('articlescategoryCtrl',['$scope','filterFilter','articlescategoryService','$filter','$state',
-function articlescategoryCtrl($scope,filterFilter,articlescategoryService,$filter,$state) {
-	$scope.categories= [];
+app.controller('articlescategoryCtrl',['$scope','filterFilter','articlescategoryService','$filter','$state','categories',
+function articlescategoryCtrl($scope,filterFilter,articlescategoryService,$filter,$state,categories) {
+	$scope.categories= categories;
 	$scope.newCat={'working':false,'title':'','date':null}
 	var filteredArray=$scope.categories;
-	// $scope.$watch('maintabs',function  () {
-	// 	// console.log($scope.maintabs);
+	$scope.categoryEditing = 0;
+
+
+	// $scope.$watch('articles',function () {
+
+	// 	$scope.nbChecked = filterFilter(filteredArray,{checked : true}).length;
+	// 	$scope.allchecked = ($scope.nbChecked == filteredArray.length);
+
+	// 	// if($state.is('/.articles.articles.edit'))
+	// 	// {
+	// 	// 	$state.go('/.articles.articles')
+	// 	// }
+
+
 	// },true);
-
-	articlescategoryService.fetchCategories().then(function (data) {
-         filteredArray = $scope.categories =articlescategoryService.categories = data;
-         $scope.filterMainArray();
-    });
-
-	$scope.$watch('articles',function () {
-
-		$scope.nbChecked = filterFilter(filteredArray,{checked : true}).length;
-		$scope.allchecked = ($scope.nbChecked == filteredArray.length);
-
-		// if($state.is('/.articles.articles.edit'))
-		// {
-		// 	$state.go('/.articles.articles')
-		// }
-
-
-	},true);
 
 
 	$scope.newCategory =function() {
@@ -87,10 +81,12 @@ function articlescategoryCtrl($scope,filterFilter,articlescategoryService,$filte
 	};
 
 	$scope.linkeditCat =function(id){
-			$state.go('/.articles.category.edit',{id: filterFilter($scope.categories,{checked : true})[0].id})
+		$scope.categoryEditing = filterFilter($scope.categories,{checked : true})[0].id;
+		$state.go('/.articles.category.edit',{id: $scope.categoryEditing});
 	}
 	$scope.linkeditimages =function(id){
-			$state.go('/.articles.category.editimage',{id: filterFilter($scope.categories,{checked : true})[0].id})
+		$scope.categoryImageEditing = filterFilter($scope.categories,{checked : true})[0].id;
+		$state.go('/.articles.category.editimage',{id: $scope.categoryEditing});
 	}
 	$scope.dblclick =function(category){
 		$scope.checkAll(true);
@@ -112,58 +108,58 @@ function articlescategoryCtrl($scope,filterFilter,articlescategoryService,$filte
 		})
 			
 		setTimeout(function() {$scope.nbChecked =0;$scope.$apply();},1)
-		// $scope.$apply();
 	};
 
 
 }]);
 
-app.controller('editarticlescategoryCtrl',['$scope','$stateParams','filterFilter','articlescategoryService','$state','$filter',
-function editarticlescategoryCtrl($scope,$stateParams,filterFilter,articlescategoryService ,$state,$filter) {
+app.controller('editarticlescategoryCtrl',['$scope','$stateParams','filterFilter','articlescategoryService','$state','$filter','category',
+function editarticlescategoryCtrl($scope,$stateParams,filterFilter,articlescategoryService ,$state,$filter,category) {
 	
-	
-	$scope.category = filterFilter(articlescategoryService.categories,{id:$stateParams.id});
-	$scope.category = $scope.category[0];
-	// $scope.category.checked=false;
-
+	$scope.category = category
+	// category.state = 'edit'
 	$scope.categoryToEdit = angular.copy($scope.category);
-	//GESTION CLICK OUT
-	setTimeout(function(){
-		$('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModif')).hide();
-		console.log($('tr.ligneModif'));
-		$(document).bind('click',function(e) {
-		  $scope.exitCat()
-		  $(document).unbind('click');
-		});
 
-		$('tr.ligneModif').click(function  (e) {
-		  e.stopPropagation();
-		});
 
-	},1)
-	$scope.exitCat=function() {
-		$state.go('/.articles.category')
-	}
 
-	$scope.submitEditCategory=function(stay) {
-		console.log('submitNewArticle');
-		console.log(stay);
 
-		articlescategoryService.edit($scope.categoryToEdit).then(function success(data) {
-			if(stay==='leave')
-				$scope.exitCat()
-		},function error(data) {
-			console.log('this error');
-			console.log(data.error);
-			if(data.error.error ==='E_VALIDATION')
-			{
-				console.log(data.error.invalidAttributes);
+	// //GESTION CLICK OUT
+	// setTimeout(function(){
+	// 	$('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModif')).hide();
+	// 	console.log($('tr.ligneModif'));
+	// 	$(document).bind('click',function(e) {
+	// 	  $scope.exitCat()
+	// 	  $(document).unbind('click');
+	// 	});
+
+	// 	$('tr.ligneModif').click(function  (e) {
+	// 	  e.stopPropagation();
+	// 	});
+
+	// },1)
+	// $scope.exitCat=function() {
+	// 	$state.go('/.articles.category')
+	// }
+
+	// $scope.submitEditCategory=function(stay) {
+	// 	console.log('submitNewArticle');
+	// 	console.log(stay);
+
+	// 	articlescategoryService.edit($scope.categoryToEdit).then(function success(data) {
+	// 		if(stay==='leave')
+	// 			$scope.exitCat()
+	// 	},function error(data) {
+	// 		console.log('this error');
+	// 		console.log(data.error);
+	// 		if(data.error.error ==='E_VALIDATION')
+	// 		{
+	// 			console.log(data.error.invalidAttributes);
 				
-			}
-		});
+	// 		}
+	// 	});
 
-		// $('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModif')).hide();
-	};
+	// 	// $('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModif')).hide();
+	// };
 
 
 }]);

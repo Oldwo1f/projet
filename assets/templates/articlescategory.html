@@ -21,7 +21,7 @@
 			</tr>
 		</thead>
 		<tbody class="AppendLine">
-			<tr class="ligneDajout bg-info" ng-show="newCat.working">
+		<!-- 	<tr class="ligneDajout bg-info" ng-show="newCat.working">
 				<td colspan="6" class="bg-info">
 				<form class="form-inline" role="form" ng-submit="submitNewArticle()">
 					<div class="form-group">
@@ -38,11 +38,11 @@
 
 
 				</td>
-			</tr>
+			</tr> -->
 		    <tr ng-repeat="category in categories" class="animate-repeat ligne" rel="{{category.id}}"  ng-class="{active : category.checked }"   >
-		    		<td ng-dblclick="dblclick(category);"><input type="checkbox" ng-model="category.checked" ng-change="filterMainArray()"></td>
-			    	<td ng-dblclick="dblclick(category);">{{category.title}}</td>
-			    	<td ng-dblclick="dblclickimage(category)">
+		    		<td ng-hide="categoryEditing == category.id || categoryImageEditing == category.id  " ng-dblclick="dblclick(category);"><input type="checkbox" ng-model="category.checked" ng-change="filterMainArray()"></td>
+			    	<td ng-hide="categoryEditing == category.id || categoryImageEditing == category.id  " ng-dblclick="dblclick(category);">{{category.title}}</td>
+			    	<td ng-hide="categoryEditing == category.id || categoryImageEditing == category.id  " ng-dblclick="dblclickimage(category)">
 			    		<ul class="listimages">
 			    			<li ng-repeat="image in category.images | limitTo:4 | orderBy:'rank'">
 			    				<img ng-src="{{image.url}}" alt="{{image.name}}" width="30px" height="30px">
@@ -50,11 +50,13 @@
 			    			<li ng-show="category.images.length-4 > 0" ><small class="badge">+{{ category.images.length - 4}}</small></li>
 			    		</ul>
 			    	</td>
-			    	
+
+
+			    	<td colspan="3" ng-show="categoryEditing == category.id" class="ligneModif bg-info" ui-view="editarticlescategoryView"></td>
+		   			<td colspan="3" ng-show="categoryImageEditing == category.id" class="ligneModifIMG bg-info" ui-view="editimagesarticlescategoryView"></td>
 		    	
 		    </tr>
-		    <tr class="ligneModif" ui-view="editarticlescategoryView"></tr>
-		    <tr class="ligneModifIMG" ui-view="editimagesarticlescategoryView"></tr>
+		   
 		</tbody>
 	</table>
 </div>

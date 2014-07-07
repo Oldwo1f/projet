@@ -92,6 +92,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                             controller:'editarticlesCtrl'
                                           }
                                         },
+                                        resolve:{
+                                          art:  function(articlesService,$stateParams){
+                                            return articlesService.fetchArticle($stateParams.id);
+                                          },
+                                          category:  function(articlescategoryService){
+                                            return articlescategoryService.fetchCategories();
+                                          }
+                                        },
                                         onEnter:function($state) {
                                           $('tr.ligneModif').show();
                                         },
@@ -124,7 +132,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
                           views: {
                             'categoryView':{
                               templateUrl: "/templates/articlescategory.html",
-                               controller:'articlescategoryCtrl'
+                              controller:'articlescategoryCtrl',
+                              resolve:{
+                                categories : function(articlescategoryService) {
+                                  return articlescategoryService.fetchCategories();
+                                }
+                              }
                             }
                           }
                         })
@@ -134,16 +147,23 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                         views: {
                                           'editarticlescategoryView':{
                                             templateUrl: "/templates/editarticlescategory.html",
-                                            controller:'editarticlescategoryCtrl'
+                                            controller:'editarticlescategoryCtrl',
+                                            resolve:{
+                                              category : function(articlescategoryService,$stateParams) {
+                                                console.log('resolveEDitCat');
+                                                return articlescategoryService.fetchCategory($stateParams.id);
+                                              }
+                                            }
                                           }
-                                        },
-                                        onEnter:function($state) {
-                                          $('tr.ligneModif').show();
-                                        },
-                                        onExit:function($state) {
-                                          $('tr.ligne[rel="'+$state.params.id+'"]').show();
-                                          $('tr.ligneModif').hide();
                                         }
+                                        // ,
+                                        // onEnter:function($state) {
+                                        //   $('tr.ligneModif').show();
+                                        // },
+                                        // onExit:function($state) {
+                                        //   $('tr.ligne[rel="'+$state.params.id+'"]').show();
+                                        //   $('tr.ligneModif').hide();
+                                        // }
                                       })
                                       .state('/.articles.category.editimage', {
                                         url: "/editimage/:id",
@@ -151,16 +171,22 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                         views: {
                                           'editimagesarticlescategoryView':{
                                             templateUrl: "/templates/editimagescategory.html",
-                                            controller:'editimagearticlescategoryCtrl'
+                                            controller:'editimagearticlescategoryCtrl',
+                                            resolve:{
+                                              category : function(articlescategoryService,$stateParams) {
+                                                return articlescategoryService.fetchCategory($stateParams.id);
+                                              }
+                                            }
                                           }
-                                        },
-                                        onEnter:function($state) {
-                                          $('tr.ligneModif').show();
-                                        },
-                                        onExit:function($state) {
-                                          $('tr.ligne[rel="'+$state.params.id+'"]').show();
-                                          $('tr.ligneModif').hide();
                                         }
+                                        // ,
+                                        // onEnter:function($state) {
+                                        //   $('tr.ligneModif').show();
+                                        // },
+                                        // onExit:function($state) {
+                                        //   $('tr.ligne[rel="'+$state.params.id+'"]').show();
+                                        //   $('tr.ligneModif').hide();
+                                        // }
                                       })
 
                         .state('/.articles.comments', {

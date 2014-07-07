@@ -172,19 +172,18 @@ function articlesCtrl($scope,filterFilter,articlesService,articlescategoryServic
 
 }]);
 
-app.controller('editarticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','articlescategoryService','$state','$filter',
-function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService,articlescategoryService ,$state,$filter) {
+app.controller('editarticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','articlescategoryService','$state','$filter','art','catgories',
+function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService,articlescategoryService ,$state,$filter,art,catgories) {
+	console.log(art);
 	
 	
-	$scope.article = filterFilter(articlesService.articles,{id:$stateParams.id});
-	$scope.article = $scope.article[0];
+	$scope.articleToEdit = art;
+	
 
-	articlescategoryService.fetchCategories().then(function (data) {
-         $scope.categories = data;
-    });
-	// $scope.article.checked=false;
+         $scope.categories = catgories;
+    
 
-	$scope.articleToEdit = angular.copy($scope.article);
+	// $scope.articleToEdit = angular.copy($scope.article);
 	$scope.articleToEdit.date =  $filter("date")($scope.articleToEdit.date, 'yyyy-MM-dd');
 
 	$scope.currentCatId = $scope.articleToEdit.category[0].id;
@@ -207,7 +206,6 @@ function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService,artic
 
 	$scope.submitEditArticle=function(stay) {
 		articlesService.edit($scope.articleToEdit).then(function success(data) {
-				$scope.$apply();
 				$scope.exit()
 		},function error(data) {
 			console.log('this error');

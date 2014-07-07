@@ -8,50 +8,63 @@ app.factory('articlesService', ['$http','$q',function ($http,$q) {
 
         $http.get('/article').success(function (data,status) {
             service.articles =data;
-            service.colors=['5D8AA8','C9FFE5','9966CC','FBCEB1','87A96B','FE6F5E','E97451','800020']
+    //         service.colors=['5D8AA8','C9FFE5','9966CC','FBCEB1','87A96B','FE6F5E','E97451','800020']
 
-    service.articles.forEach(function(article) {
+    // service.articles.forEach(function(article) {
 
-            article.images=[
-                {
-                    name:"tototo",
-                    rank:1,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=1',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=1'
-                },
-                {
-                    name:"tototo2",
-                    rank:3,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=3',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=3'
-                },
-                {
-                    name:"tototo3",
-                    rank:2,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=2',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=2'
-                },
-                {
-                    name:"tototo3",
-                    rank:5,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=5',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=5'
-                },
-                {
-                    name:"tototo3",
-                    rank:7,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=7',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=7'
-                },
-                {
-                    name:"tototo3",
-                    rank:4,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=4',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=4'
-                }
-            ]
+    //         article.images=[
+    //             {
+    //                 name:"tototo",
+    //                 rank:1,
+    //                 url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=1',
+    //                 urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=1'
+    //             },
+    //             {
+    //                 name:"tototo2",
+    //                 rank:3,
+    //                 url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=3',
+    //                 urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=3'
+    //             },
+    //             {
+    //                 name:"tototo3",
+    //                 rank:2,
+    //                 url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=2',
+    //                 urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=2'
+    //             },
+    //             {
+    //                 name:"tototo3",
+    //                 rank:5,
+    //                 url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=5',
+    //                 urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=5'
+    //             },
+    //             {
+    //                 name:"tototo3",
+    //                 rank:7,
+    //                 url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=7',
+    //                 urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=7'
+    //             },
+    //             {
+    //                 name:"tototo3",
+    //                 rank:4,
+    //                 url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=4',
+    //                 urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=4'
+    //             }
+    //         ]
 
-    });
+    // });
+            deferred.resolve(data);
+        }).error(function (data,status) {
+            deferred.reject('error perso');
+            console.log('ERROR');
+        })
+
+        return deferred.promise;
+    };
+    service.fetchArticle= function(id) {
+        var deferred = $q.defer();
+        $http.get('/article/'+id).success(function (data,status) {
+            console.log('fetchArticle');
+
             deferred.resolve(data);
         }).error(function (data,status) {
             deferred.reject('error perso');

@@ -72,6 +72,22 @@ app.factory('articlescategoryService', ['$http','$q',function ($http,$q) {
     
 
 
+    service.fetchCategory= function(id) {
+        var deferred = $q.defer();
+
+        $http.get('/category/'+id).success(function (data,status) {
+           
+            deferred.resolve(data);
+        }).error(function (data,status) {
+            deferred.reject('error perso');
+            console.log('ERROR');
+        })
+
+        return deferred.promise;
+    };
+    
+
+
 
     service.addNew=function(category){
         var deferred = $q.defer();
