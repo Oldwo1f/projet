@@ -35,7 +35,6 @@ app.filter('articlesFilter', function() {
 });
 app.controller('articlesCtrl',['$scope','filterFilter','articlesService','articlescategoryService','$filter','$state',
 function articlesCtrl($scope,filterFilter,articlesService,articlescategoryService,$filter,$state) {
-console.log('appCtrl');
 	$scope.articles= [];
 	$scope.categories= [];
 	$scope.slug = '';
@@ -49,8 +48,6 @@ console.log('appCtrl');
 	// },true);
 
 	articlesService.fetchArticles().then(function (data) {
-		console.log('.then');
-		console.log(data);
          filteredArray = $scope.articles =articlesService.articles = data;
     });
 
@@ -92,7 +89,6 @@ console.log('appCtrl');
 		$scope.newArticle.working = true;
 		setTimeout(function(){
 			$(document).bind('click',function(e) {
-				console.log('newarticle');
 			  $scope.exitNew();
 			  $scope.$apply();
 			  $(document).unbind('click');
@@ -109,10 +105,7 @@ console.log('appCtrl');
 	};
 	$scope.submitNewArticle=function() {
 		$(document).unbind('click');
-		console.log('submitNewArticle');
 		articlesService.addNew($scope.newArticle).then(function success(data) {
-			console.log('.thenNew');
-			console.log(data);
 			$scope.order='false';
 			$scope.exitNew();
 		},function error(data) {
@@ -123,7 +116,6 @@ console.log('appCtrl');
 				console.log(data.error.invalidAttributes.title);
 				if(data.error.invalidAttributes.title)
 				{
-					console.log('here');
 					$('input[name="title"]').addClass('bg-danger');
 				}
 			}
@@ -188,8 +180,6 @@ function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService,artic
 	$scope.article = $scope.article[0];
 
 	articlescategoryService.fetchCategories().then(function (data) {
-		console.log('.then');
-		console.log(data);
          $scope.categories = data;
     });
 	// $scope.article.checked=false;
@@ -198,12 +188,9 @@ function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService,artic
 	$scope.articleToEdit.date =  $filter("date")($scope.articleToEdit.date, 'yyyy-MM-dd');
 
 	$scope.currentCatId = $scope.articleToEdit.category[0].id;
-console.log($scope.articleToEdit.category);
-console.log($scope.currentCatId);
 	//GESTION CLICK OUT
 	setTimeout(function(){
 		$('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModif')).hide();
-		console.log($('tr.ligneModif'));
 		$(document).bind('click',function(e) {
 		  $scope.exit()
 		  $(document).unbind('click');
@@ -219,14 +206,8 @@ console.log($scope.currentCatId);
 	}
 
 	$scope.submitEditArticle=function(stay) {
-		console.log('submitNewArticle');
-		console.log(stay);
-console.log($scope.articleToEdit);
 		articlesService.edit($scope.articleToEdit).then(function success(data) {
-			if(stay==='leave')
-				console.log(data);
-				// $scope.article = $scope.articleToEdit = data;
-				// $scope.articles.findBy('')
+				$scope.$apply();
 				$scope.exit()
 		},function error(data) {
 			console.log('this error');
