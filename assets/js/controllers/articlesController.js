@@ -33,10 +33,11 @@ app.filter('articlesFilter', function() {
     return out;
   };
 });
-app.controller('articlesCtrl',['$scope','filterFilter','articlesService','$filter','$state',
-function articlesCtrl($scope,filterFilter,articlesService,$filter,$state) {
+app.controller('articlesCtrl',['$scope','filterFilter','articlesService','articlescategoryService','$filter','$state',
+function articlesCtrl($scope,filterFilter,articlesService,articlescategoryService,$filter,$state) {
 console.log('appCtrl');
 	$scope.articles= [];
+	$scope.categories= [];
 	$scope.slug = '';
 	$scope.filterActif = true;
 	$scope.filterInactif = true;
@@ -52,6 +53,7 @@ console.log('appCtrl');
 		console.log(data);
          filteredArray = $scope.articles =articlesService.articles = data;
     });
+
 
 	$scope.$watch('articles',function () {
 		// console.log($scope.slug);
@@ -148,32 +150,10 @@ console.log('appCtrl');
 	};
 
 	$scope.linkeditProjet =function(id){
-
-		console.log(filterFilter($scope.articles,{checked : true})[0].id);
-
-
-		if($state.is('/.articles.articles.edit') || $state.is('/.articles.articles.editimage'))
-		{
-			$state.go('^.edit',{id: filterFilter($scope.articles,{checked : true})[0].id})
-		}
-		else
-		{
-			$state.go('.edit',{id: filterFilter($scope.articles,{checked : true})[0].id})
-		}
+			$state.go('/.articles.articles.edit',{id: filterFilter($scope.articles,{checked : true})[0].id})
 	}
 	$scope.linkeditimages =function(id){
-
-		console.log(filterFilter($scope.articles,{checked : true})[0].id);
-
-
-		if($state.is('/.articles.articles.edit') || $state.is('/.articles.articles.editimage'))
-		{
-			$state.go('^.editimage',{id: filterFilter($scope.articles,{checked : true})[0].id})
-		}
-		else
-		{
-			$state.go('.editimage',{id: filterFilter($scope.articles,{checked : true})[0].id})
-		}
+			$state.go('/.articles.articles.editimage',{id: filterFilter($scope.articles,{checked : true})[0].id})
 	}
 	$scope.dblclick =function(article){
 		$scope.checkAll(true);
@@ -195,22 +175,31 @@ console.log('appCtrl');
 		})
 			
 		setTimeout(function() {$scope.nbChecked =0;$scope.$apply();},1)
-		// $scope.$apply();
 	};
 
 
 }]);
 
-app.controller('editarticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','$state','$filter',
-function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$state,$filter) {
+app.controller('editarticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','articlescategoryService','$state','$filter',
+function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService,articlescategoryService ,$state,$filter) {
 	
 	
 	$scope.article = filterFilter(articlesService.articles,{id:$stateParams.id});
 	$scope.article = $scope.article[0];
+
+	articlescategoryService.fetchCategories().then(function (data) {
+		console.log('.then');
+		console.log(data);
+         $scope.categories = data;
+    });
 	// $scope.article.checked=false;
 
 	$scope.articleToEdit = angular.copy($scope.article);
 	$scope.articleToEdit.date =  $filter("date")($scope.articleToEdit.date, 'yyyy-MM-dd');
+
+	$scope.currentCatId = $scope.articleToEdit.category[0].id;
+console.log($scope.articleToEdit.category);
+console.log($scope.currentCatId);
 	//GESTION CLICK OUT
 	setTimeout(function(){
 		$('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModif')).hide();
@@ -226,15 +215,18 @@ function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$sta
 
 	},1)
 	$scope.exit=function() {
-		$state.go('^')
+		$state.go('/.articles.articles')
 	}
 
 	$scope.submitEditArticle=function(stay) {
 		console.log('submitNewArticle');
 		console.log(stay);
-
+console.log($scope.articleToEdit);
 		articlesService.edit($scope.articleToEdit).then(function success(data) {
 			if(stay==='leave')
+				console.log(data);
+				// $scope.article = $scope.articleToEdit = data;
+				// $scope.articles.findBy('')
 				$scope.exit()
 		},function error(data) {
 			console.log('this error');

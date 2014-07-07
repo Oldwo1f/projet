@@ -87,32 +87,10 @@ function articlescategoryCtrl($scope,filterFilter,articlescategoryService,$filte
 	};
 
 	$scope.linkeditCat =function(id){
-
-		console.log(filterFilter($scope.categories,{checked : true})[0].id);
-
-
-		if($state.is('/.articles.category.edit') || $state.is('/.articles.category.editimage'))
-		{
-			$state.go('^.edit',{id: filterFilter($scope.categories,{checked : true})[0].id})
-		}
-		else
-		{
-			$state.go('.edit',{id: filterFilter($scope.categories,{checked : true})[0].id})
-		}
+			$state.go('/.articles.category.edit',{id: filterFilter($scope.categories,{checked : true})[0].id})
 	}
 	$scope.linkeditimages =function(id){
-
-		console.log(filterFilter($scope.categories,{checked : true})[0].id);
-
-
-		if($state.is('/.articles.category.edit') || $state.is('/.articles.category.editimage'))
-		{
-			$state.go('^.editimage',{id: filterFilter($scope.categories,{checked : true})[0].id})
-		}
-		else
-		{
-			$state.go('.editimage',{id: filterFilter($scope.categories,{checked : true})[0].id})
-		}
+			$state.go('/.articles.category.editimage',{id: filterFilter($scope.categories,{checked : true})[0].id})
 	}
 	$scope.dblclick =function(category){
 		$scope.checkAll(true);
@@ -154,7 +132,7 @@ function editarticlescategoryCtrl($scope,$stateParams,filterFilter,articlescateg
 		$('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModif')).hide();
 		console.log($('tr.ligneModif'));
 		$(document).bind('click',function(e) {
-		  $scope.exit()
+		  $scope.exitCat()
 		  $(document).unbind('click');
 		});
 
@@ -163,8 +141,8 @@ function editarticlescategoryCtrl($scope,$stateParams,filterFilter,articlescateg
 		});
 
 	},1)
-	$scope.exit=function() {
-		$state.go('^')
+	$scope.exitCat=function() {
+		$state.go('/.articles.category')
 	}
 
 	$scope.submitEditCategory=function(stay) {
@@ -173,7 +151,7 @@ function editarticlescategoryCtrl($scope,$stateParams,filterFilter,articlescateg
 
 		articlescategoryService.edit($scope.categoryToEdit).then(function success(data) {
 			if(stay==='leave')
-				$scope.exit()
+				$scope.exitCat()
 		},function error(data) {
 			console.log('this error');
 			console.log(data.error);

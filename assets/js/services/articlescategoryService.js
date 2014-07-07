@@ -75,9 +75,15 @@ app.factory('articlescategoryService', ['$http','$q',function ($http,$q) {
 
     service.addNew=function(category){
         var deferred = $q.defer();
+        var working = category.working;
+        var checked = category.checked;
+        delete category.working;
+        delete category.checked;
 
         //POST ARTICLE TO SAVE IN DB
         $http.post('/category',category).success(function (data,status) {
+            data.working = working;
+            data.checked = checked;
             service.categories.unshift(data);
             deferred.resolve(data);
         }).error(function (data,status) {
@@ -89,7 +95,13 @@ app.factory('articlescategoryService', ['$http','$q',function ($http,$q) {
 
     service.edit=function(category){
         var deferred = $q.defer();
+        var working = category.working;
+        var checked = category.checked;
+        delete category.working;
+        delete category.checked;
         $http.put('/category/'+category.id,category).success(function (data,status) {
+            data.working = working;
+            data.checked = checked;
             service.categories.splice(service.categories.getIndexBy('id',category.id),1,category)
             deferred.resolve(data);
         }).error(function (data,status) {

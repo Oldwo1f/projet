@@ -14,6 +14,9 @@ module.exports = {
   		rank : {type:'int'},
   		category : {type:'string'},
   		status : {type:'string'},
+  		category: {
+			collection: 'category',
+		}
   }
 };
 
