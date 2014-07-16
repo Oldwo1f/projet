@@ -6,6 +6,12 @@
   "keywords": [],
   "dependencies": {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+    "async": "^0.9.0",
+    "connect-redis": "^1.4.5",
+    "easyimage": "^1.0.0",
+>>>>>>> Stashed changes
 =======
     "async": "^0.9.0",
     "connect-redis": "^1.4.5",

@@ -9,6 +9,7 @@ function clearSelection() {
     }
 } 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 Array.prototype.getIndexBy = function (name, value) {
     for (var i = 0; i < this.length; i++) {
         if (this[i][name] == value) {
@@ -91,6 +92,8 @@ app.directive('ckEditor', [function () {
         };
     }]);
 =======
+=======
+>>>>>>> Stashed changes
 // Array.prototype.getIndexBy = function (name, value) {
 //     for (var i = 0; i < this.length; i++) {
 //         if (this[i][name] == value) {
@@ -98,6 +101,9 @@ app.directive('ckEditor', [function () {
 //         }
 //     }
 // }
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
 >>>>>>> Stashed changes
 
 app.config(function($stateProvider, $urlRouterProvider) {
