@@ -5,14 +5,7 @@ function articlescategoryCtrl($scope,filterFilter,articlescategoryService,$filte
 	$scope.newCat={'working':false,'title':'','date':null}
 	var filteredArray=$scope.categories;
 	$scope.categoryEditing = 0;
-<<<<<<< HEAD
-	setTimeout(function() {
-		$scope.categoryEditing = 0;
-		$scope.filterMainArray();
 
-	},1)
-	
-=======
 
 
 	// $scope.$watch('articles',function () {
@@ -27,7 +20,6 @@ function articlescategoryCtrl($scope,filterFilter,articlescategoryService,$filte
 
 
 	// },true);
->>>>>>> api_article
 
 
 	$scope.newCategory =function() {
@@ -90,21 +82,18 @@ function articlescategoryCtrl($scope,filterFilter,articlescategoryService,$filte
 	};
 
 	$scope.linkeditCat =function(id){
-<<<<<<< HEAD
 		// $scope.categoryEditing = filterFilter($scope.categories,{checked : true})[0].id;
 		$state.go('/.articles.category.edit',{id: filterFilter($scope.categories,{checked : true})[0].id});
 	}
 	$scope.linkeditimages =function(id){
 		// $scope.categoryImageEditing = ;
 		$state.go('/.articles.category.editimage',{id: filterFilter($scope.categories,{checked : true})[0].id});
-=======
 		$scope.categoryEditing = filterFilter($scope.categories,{checked : true})[0].id;
 		$state.go('/.articles.category.edit',{id: $scope.categoryEditing});
 	}
 	$scope.linkeditimages =function(id){
 		$scope.categoryImageEditing = filterFilter($scope.categories,{checked : true})[0].id;
 		$state.go('/.articles.category.editimage',{id: $scope.categoryEditing});
->>>>>>> api_article
 	}
 	$scope.dblclick =function(category){
 		$scope.checkAll(true);
@@ -137,7 +126,6 @@ function editarticlescategoryCtrl($scope,$stateParams,filterFilter,articlescateg
 	$scope.category = category
 	// category.state = 'edit'
 	$scope.categoryToEdit = angular.copy($scope.category);
-<<<<<<< HEAD
 	$scope.$parent.categoryEditing= $stateParams.id;
 	//GESTION CLICK OUT
 	setTimeout(function(){
@@ -179,7 +167,6 @@ function editarticlescategoryCtrl($scope,$stateParams,filterFilter,articlescateg
 
 		// $('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModif')).hide();
 	};
-=======
 
 
 
@@ -221,7 +208,6 @@ function editarticlescategoryCtrl($scope,$stateParams,filterFilter,articlescateg
 
 	// 	// $('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModif')).hide();
 	// };
->>>>>>> api_article
 
 
 }]);

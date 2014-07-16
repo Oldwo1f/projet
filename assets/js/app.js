@@ -8,16 +8,7 @@ function clearSelection() {
         sel.removeAllRanges();
     }
 } 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-Array.prototype.getIndexBy = function (name, value) {
-    for (var i = 0; i < this.length; i++) {
-        if (this[i][name] == value) {
-            return i;
-        }
-    }
-}
-<<<<<<< HEAD
+
 app.directive('dateFix', function() {
     return {
         restrict: 'A',
@@ -92,22 +83,7 @@ app.directive('ckEditor', [function () {
             }
         };
     }]);
-=======
-=======
->>>>>>> Stashed changes
-// Array.prototype.getIndexBy = function (name, value) {
-//     for (var i = 0; i < this.length; i++) {
-//         if (this[i][name] == value) {
-//             return i;
-//         }
-//     }
-// }
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> api_article
+
 
 app.config(function($stateProvider, $urlRouterProvider) {
   //
@@ -219,11 +195,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                         }
                                       })
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-=======
->>>>>>> api_article
+
                         .state('/.articles.category', {
                           url: "/category",
                           data:{'articlesTabs':'category'},
@@ -254,7 +226,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                             }
                                           }
                                         }
-<<<<<<< HEAD
                                         ,
                                         onEnter:function($stateParams) {
                                           // $('td.ligneModif').show();
@@ -268,7 +239,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
                                           $('.ligneInvisible').append($('td.ligneModif'));
                                         }
-=======
                                         // ,
                                         // onEnter:function($state) {
                                         //   $('tr.ligneModif').show();
@@ -277,7 +247,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                         //   $('tr.ligne[rel="'+$state.params.id+'"]').show();
                                         //   $('tr.ligneModif').hide();
                                         // }
->>>>>>> api_article
                                       })
                                       .state('/.articles.category.editimage', {
                                         url: "/editimage/:id",
@@ -303,10 +272,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                         // }
                                       })
 
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> api_article
+
                         .state('/.articles.comments', {
                           url: "/comments",
                           data:{'articlesTabs':'comments'},
