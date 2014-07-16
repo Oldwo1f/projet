@@ -84,11 +84,61 @@ module.exports = {
 
 	      	}, function(err){
 			    // results is now an array of stats for each file
-			    console.log('finishall');
-			    return res.json({
-			        message: files.length + ' file(s) uploaded successfully!',
-			        files: files
-			      });
+
+
+			    try{
+	      			fs.mkdirSync('.tmp/uploads/adminThumbs');
+      			}
+      			catch(e){
+      				console.log(e);
+      			}
+
+
+	      		easyimg.thumbnail(
+				    {
+				        src:'.tmp/uploads/'+files[0].filename,
+				        dst:'.tmp/uploads/adminThumbs/'+files[0].filename,
+				        width:200, height:200
+				        // cropwidth:item.cropWidth, cropheight:item.cropHeight,
+				        // x:item.x, y:item.y,
+				        // gravity: 'NorthWest',fill:true
+				    }).then(
+				    function success(image) {
+				        
+			    		console.log('finishall');
+			    		var img = files[0]
+
+
+				    		// console.log(results[0]);
+			    		Image.create(img).exec(function(err,img) {
+
+			    			console.log('gamecreated');
+			    			console.log(img);
+			    			return res.json({
+							message: files.length + ' file(s) uploaded successfully!',
+							files: img
+						});
+			    		});
+
+
+						
+
+				    },
+				    function error(err){
+				    	console.log('rescropErr');
+				    	console.log(err);
+				    	// if (err) {
+				     //    	console.log('resizeError');
+				     //    	console.log(err);
+				     //    		throw err;
+				     //    }
+				    }
+				);
+
+
+
+
+			   
 			});
 
 
