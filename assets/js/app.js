@@ -17,6 +17,7 @@ Array.prototype.getIndexBy = function (name, value) {
         }
     }
 }
+<<<<<<< HEAD
 app.directive('dateFix', function() {
     return {
         restrict: 'A',
@@ -105,6 +106,8 @@ app.directive('ckEditor', [function () {
 >>>>>>> Stashed changes
 =======
 >>>>>>> Stashed changes
+=======
+>>>>>>> api_article
 
 app.config(function($stateProvider, $urlRouterProvider) {
   //
@@ -182,6 +185,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                             controller:'editarticlesCtrl'
                                           }
                                         },
+                                        resolve:{
+                                          art:  function(articlesService,$stateParams){
+                                            return articlesService.fetchArticle($stateParams.id);
+                                          },
+                                          category:  function(articlescategoryService){
+                                            return articlescategoryService.fetchCategories();
+                                          }
+                                        },
                                         onEnter:function($state) {
                                           $('tr.ligneModif').show();
                                         },
@@ -208,8 +219,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                         }
                                       })
 
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
+=======
+>>>>>>> api_article
                         .state('/.articles.category', {
                           url: "/category",
                           data:{'articlesTabs':'category'},
@@ -240,6 +254,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                             }
                                           }
                                         }
+<<<<<<< HEAD
                                         ,
                                         onEnter:function($stateParams) {
                                           // $('td.ligneModif').show();
@@ -253,6 +268,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
 
                                           $('.ligneInvisible').append($('td.ligneModif'));
                                         }
+=======
+                                        // ,
+                                        // onEnter:function($state) {
+                                        //   $('tr.ligneModif').show();
+                                        // },
+                                        // onExit:function($state) {
+                                        //   $('tr.ligne[rel="'+$state.params.id+'"]').show();
+                                        //   $('tr.ligneModif').hide();
+                                        // }
+>>>>>>> api_article
                                       })
                                       .state('/.articles.category.editimage', {
                                         url: "/editimage/:id",
@@ -278,7 +303,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                         // }
                                       })
 
+<<<<<<< HEAD
 >>>>>>> Stashed changes
+=======
+>>>>>>> api_article
                         .state('/.articles.comments', {
                           url: "/comments",
                           data:{'articlesTabs':'comments'},

@@ -62,10 +62,10 @@ app.filter('articlesFilter', function() {
     return out;
   };
 });
-app.controller('articlesCtrl',['$scope','filterFilter','articlesService','$filter','$state',
-function articlesCtrl($scope,filterFilter,articlesService,$filter,$state) {
-console.log('appCtrl');
-	$scope.articles= articlesService.articles;
+app.controller('articlesCtrl',['$scope','filterFilter','articlesService','articlescategoryService','$filter','$state',
+function articlesCtrl($scope,filterFilter,articlesService,articlescategoryService,$filter,$state) {
+	$scope.articles= [];
+	$scope.categories= [];
 	$scope.slug = '';
 	$scope.filterActif = true;
 	$scope.filterInactif = true;
@@ -76,8 +76,12 @@ console.log('appCtrl');
 	// 	// console.log($scope.maintabs);
 	// },true);
 
+	articlesService.fetchArticles().then(function (data) {
+         filteredArray = $scope.articles =articlesService.articles = data;
+    });
 
-	$scope.$watch('articles',function  () {
+
+	$scope.$watch('articles',function () {
 		// console.log($scope.slug);
 		// console.log($scope.filterActif);
 		// console.log($scope.filterInactif);
@@ -114,7 +118,6 @@ console.log('appCtrl');
 		$scope.newArticle.working = true;
 		setTimeout(function(){
 			$(document).bind('click',function(e) {
-				console.log('newarticle');
 			  $scope.exitNew();
 			  $scope.$apply();
 			  $(document).unbind('click');
@@ -125,13 +128,28 @@ console.log('appCtrl');
 		});
 	};
 	$scope.exitNew=function() {
+		$('input[name="title"]').removeClass('bg-danger');
 		$scope.newArticle={'working':false,'title':'','date':null};
+		$(document).unbind('click');
 	};
 	$scope.submitNewArticle=function() {
-		console.log('submitNewArticle');
-		articlesService.addNew($scope.newArticle);
-		$scope.newArticle={'working':false,'title':'','date':null}
-		$scope.order='false';
+		$(document).unbind('click');
+		articlesService.addNew($scope.newArticle).then(function success(data) {
+			$scope.order='false';
+			$scope.exitNew();
+		},function error(data) {
+			console.log('this error');
+			console.log(data.error);
+			if(data.error.error ==='E_VALIDATION')
+			{
+				console.log(data.error.invalidAttributes.title);
+				if(data.error.invalidAttributes.title)
+				{
+					$('input[name="title"]').addClass('bg-danger');
+				}
+			}
+		});
+		
 	};
 
 
@@ -153,32 +171,10 @@ console.log('appCtrl');
 	};
 
 	$scope.linkeditProjet =function(id){
-
-		console.log(filterFilter($scope.articles,{checked : true})[0].id);
-
-
-		if($state.is('/.articles.articles.edit') || $state.is('/.articles.articles.editimage'))
-		{
-			$state.go('^.edit',{id: filterFilter($scope.articles,{checked : true})[0].id})
-		}
-		else
-		{
-			$state.go('.edit',{id: filterFilter($scope.articles,{checked : true})[0].id})
-		}
+			$state.go('/.articles.articles.edit',{id: filterFilter($scope.articles,{checked : true})[0].id})
 	}
 	$scope.linkeditimages =function(id){
-
-		console.log(filterFilter($scope.articles,{checked : true})[0].id);
-
-
-		if($state.is('/.articles.articles.edit') || $state.is('/.articles.articles.editimage'))
-		{
-			$state.go('^.editimage',{id: filterFilter($scope.articles,{checked : true})[0].id})
-		}
-		else
-		{
-			$state.go('.editimage',{id: filterFilter($scope.articles,{checked : true})[0].id})
-		}
+			$state.go('/.articles.articles.editimage',{id: filterFilter($scope.articles,{checked : true})[0].id})
 	}
 	$scope.dblclick =function(article){
 		$scope.checkAll(true);
@@ -200,26 +196,29 @@ console.log('appCtrl');
 		})
 			
 		setTimeout(function() {$scope.nbChecked =0;$scope.$apply();},1)
-		// $scope.$apply();
 	};
 
 
 }]);
 
-app.controller('editarticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','$state','$filter',
-function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$state,$filter) {
+app.controller('editarticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','articlescategoryService','$state','$filter','art','catgories',
+function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService,articlescategoryService ,$state,$filter,art,catgories) {
+	console.log(art);
 	
 	
-	$scope.article = filterFilter(articlesService.articles,{id:$stateParams.id});
-	$scope.article = $scope.article[0];
-	$scope.article.checked=false;
+	$scope.articleToEdit = art;
+	
 
-	$scope.articleToEdit = angular.copy($scope.article);
+         $scope.categories = catgories;
+    
+
+	// $scope.articleToEdit = angular.copy($scope.article);
 	$scope.articleToEdit.date =  $filter("date")($scope.articleToEdit.date, 'yyyy-MM-dd');
+
+	$scope.currentCatId = $scope.articleToEdit.category[0].id;
 	//GESTION CLICK OUT
 	setTimeout(function(){
 		$('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModif')).hide();
-		console.log($('tr.ligneModif'));
 		$(document).bind('click',function(e) {
 		  $scope.exit()
 		  $(document).unbind('click');
@@ -231,16 +230,22 @@ function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$sta
 
 	},1)
 	$scope.exit=function() {
-		$state.go('^')
+		$state.go('/.articles.articles')
 	}
 
 	$scope.submitEditArticle=function(stay) {
-		console.log('submitNewArticle');
-		console.log(stay);
+		articlesService.edit($scope.articleToEdit).then(function success(data) {
+				$scope.exit()
+		},function error(data) {
+			console.log('this error');
+			console.log(data.error);
+			if(data.error.error ==='E_VALIDATION')
+			{
+				console.log(data.error.invalidAttributes);
+				
+			}
+		});
 
-		articlesService.edit($scope.articleToEdit);
-		if(stay==='leave')
-			$scope.exit()
 		// $('tr.ligne[rel="'+$stateParams.id+'"]').after($('.ligneModif')).hide();
 	};
 

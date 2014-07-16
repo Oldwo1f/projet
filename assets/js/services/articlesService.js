@@ -1,89 +1,79 @@
-app.factory('articlesService', ['$http',function ($http) {
+app.factory('articlesService', ['$http','$q',function ($http,$q) {
     var service = {};
-    service.articles=[
-    {id:2,'category':'Biotech',status:'New','title' :'7title article users','content':'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti adipisci laudantium alias vel, illo dignissimos tenetur, excepturi earum placeat est iure. Sed ullam et recusandae iure dignissimos non aliquam voluptate.'},
-    {id:3,'category':'Energie Future',status:'Inactif','title' :'477title article articles','content':'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam iste dolorum sint facere quos corporis, quo ducimus explicabo dolorem at mollitia sequi, enim? Eius ab quisquam, non quia, laudantium qui.'},
-    {id:4,'category':'Biotech',status:'Actif','title' :'4title article projets','content':'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea suscipit id nulla soluta inventore facilis perspiciatis veritatis, nihil. Quae aperiam obcaecati aliquid soluta delectus recusandae, labore id assumenda, facere sed.'},
-    {id:5,'category':'Energie Future',status:'Actif','title' :'4title article dashboard','content':'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates modi id voluptas architecto impedit itaque, iste porro inventore vero omnis, dolore, adipisci quos sapiente quibusdam consequatur error. Quae veritatis, distinctio!'},
-    {id:6,'category':'Biotech',status:'New','title' :'7744title article users','content':'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corrupti adipisci laudantium alias vel, illo dignissimos tenetur, excepturi earum placeat est iure. Sed ullam et recusandae iure dignissimos non aliquam voluptate.'},
-    {id:7,'category':'Energie Future',status:'Inactif','title' :'47title article articles','content':'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam iste dolorum sint facere quos corporis, quo ducimus explicabo dolorem at mollitia sequi, enim? Eius ab quisquam, non quia, laudantium qui.'},
-    {id:8,'category':'alimentation',status:'Actif','title' :'title article projets','content':'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea suscipit id nulla soluta inventore facilis perspiciatis veritatis, nihil. Quae aperiam obcaecati aliquid soluta delectus recusandae, labore id assumenda, facere sed.'},
-    ];
-    service.colors=['5D8AA8','C9FFE5','9966CC','FBCEB1','87A96B','FE6F5E','E97451','800020']
+    service.articles=[];
+    
 
-    service.articles.forEach(function(article) {
+    service.fetchArticles= function() {
+        var deferred = $q.defer();
 
-        if(article.id %2 == 0)
-        {
-            article.images=[
-                {
-                    name:"tototo",
-                    rank:1,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=1',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=1'
-                },
-                {
-                    name:"tototo2",
-                    rank:2,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=2',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=2'
-                },
-                {
-                    name:"tototo3",
-                    rank:3,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=3',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=3'
-                }
-            ]
-        }else{
-            article.images=[
-                {
-                    name:"tototo",
-                    rank:1,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=1',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=1'
-                },
-                {
-                    name:"tototo2",
-                    rank:3,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=3',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=3'
-                },
-                {
-                    name:"tototo3",
-                    rank:2,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=2',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=2'
-                },
-                {
-                    name:"tototo3",
-                    rank:5,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=5',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=5'
-                },
-                {
-                    name:"tototo3",
-                    rank:7,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=7',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=7'
-                },
-                {
-                    name:"tototo3",
-                    rank:4,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=4',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=4'
-                }
-            ]
-        }
+        $http.get('/article').success(function (data,status) {
+            service.articles =data;
+    //         service.colors=['5D8AA8','C9FFE5','9966CC','FBCEB1','87A96B','FE6F5E','E97451','800020']
 
-    });
+    // service.articles.forEach(function(article) {
 
+    //         article.images=[
+    //             {
+    //                 name:"tototo",
+    //                 rank:1,
+    //                 url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=1',
+    //                 urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=1'
+    //             },
+    //             {
+    //                 name:"tototo2",
+    //                 rank:3,
+    //                 url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=3',
+    //                 urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=3'
+    //             },
+    //             {
+    //                 name:"tototo3",
+    //                 rank:2,
+    //                 url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=2',
+    //                 urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=2'
+    //             },
+    //             {
+    //                 name:"tototo3",
+    //                 rank:5,
+    //                 url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=5',
+    //                 urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=5'
+    //             },
+    //             {
+    //                 name:"tototo3",
+    //                 rank:7,
+    //                 url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=7',
+    //                 urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=7'
+    //             },
+    //             {
+    //                 name:"tototo3",
+    //                 rank:4,
+    //                 url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=4',
+    //                 urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=4'
+    //             }
+    //         ]
 
+    // });
+            deferred.resolve(data);
+        }).error(function (data,status) {
+            deferred.reject('error perso');
+            console.log('ERROR');
+        })
 
+        return deferred.promise;
+    };
+    service.fetchArticle= function(id) {
+        var deferred = $q.defer();
+        $http.get('/article/'+id).success(function (data,status) {
+            console.log('fetchArticle');
 
+            deferred.resolve(data);
+        }).error(function (data,status) {
+            deferred.reject('error perso');
+            console.log('ERROR');
+        })
 
-
-    console.log(service.articles);
+        return deferred.promise;
+    };
+    
 
 
 
@@ -93,39 +83,69 @@ app.factory('articlesService', ['$http',function ($http) {
 
 
 
-    service.articles.forEach(function(article) {
-            article.date = randomDate(new Date(2012, 0, 1), new Date())
-            function randomDate(start, end) {
-            return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-            }
-            // service.randomDate(new Date(2012, 0, 1), new Date())
-    })
+
+
+    // service.articles.forEach(function(article) {
+    //         article.date = randomDate(new Date(2012, 0, 1), new Date())
+    //         function randomDate(start, end) {
+    //         return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+    //         }
+    //         // service.randomDate(new Date(2012, 0, 1), new Date())
+    // })
     // service.randomDate=function(start, end) {
     // return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
     // }
     service.addNew=function(article){
-        //POST ARTICLE TO SAVE IN DB
-        //ON RETURN
+        var deferred = $q.defer();
         article.status='New';
-        service.articles.unshift(article);
+
+        var working = article.working;
+        var checked = article.checked;
+        delete article.working;
+        delete article.checked;
+        //POST ARTICLE TO SAVE IN DB
+        $http.post('/article',article).success(function (data,status) {
+
+            data.working = working;
+            data.checked = checked;
+            service.articles.unshift(data);
+            deferred.resolve(data);
+        }).error(function (data,status) {
+             deferred.reject(data);
+        })
+        
+        return deferred.promise;      
     }
 
     service.edit=function(article){
-        //POST DB CHANGE
-        //ON RETURN
-        var id = article.id;
-        service.articles.splice(service.articles.getIndexBy('id',id),1,article)
-
+        var deferred = $q.defer();
+         var working = article.working;
+        var checked = article.checked;
+        delete article.working;
+        delete article.checked;
+        $http.put('/article/'+article.id,article).success(function (data,status) {
+            data.working = working;
+            data.checked = checked;
+            console.log(data);
+            service.articles.splice(service.articles.getIndexBy('id',article.id),1,article)
+            deferred.resolve(data);
+        }).error(function (data,status) {
+            deferred.reject(data);
+        })
+        return deferred.promise;
     }
     service.remove=function(article){
         //POST DB CHANGE
         //ON RETURN
-        var id = article.id;
+         $http.delete('/article/'+article.id).success(function (data,status) {
+            service.articles.splice(service.articles.getIndexBy('id',article.id),1)
+
+        }).error(function (data,status) {
+            console.log('ERROR');
+        })
         
 
-        service.articles.splice(service.articles.getIndexBy('id',id),1)
-        // service.articles
-        console.log(service.articles);
+        
 
 
     }
