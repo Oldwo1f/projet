@@ -36,7 +36,8 @@
   right:0;z-index:110;text-align:right;
   }
     .cl-whiteBox{background:white;}
-    .cl-header{background:orange;}
+    .cl-header{background:black;height:50px}
+    .cl-header>*{display:inline-block;margin:10px;color:white;}
     .allStep{}
     .allStep li{ display:inline-block;}
     .allStep li.active{ font-weight:bold;}
@@ -119,10 +120,8 @@
   <div class="modal-dialog mymodaldialog">
         <div class="cl-whiteBox" >
             <div class="cl-header">
-                <span class="title">Merci de redimensionner vos images</span>
-                <ol class="allStep breadcrumb">
-                    <li ng-repeat="step in steps" ng-class="{ active : currentstep == $index }">{{step.title}}</li>
-                </ol>
+                <div class="imgCount ">Images {{currentImg}}/ {{countImg}}</div>
+                <li ng-repeat="step in steps" ng-class="{ active : currentstep == $index }">{{step.title}}</li>
             </div>
             <div class="cl-imgContainer">
 

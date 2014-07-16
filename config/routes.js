@@ -9,6 +9,7 @@ catch (e) {
 var routes={
 
   '/': 'BackofficeController.index',
+  '/home': 'BackofficeController.home',
   '/dashboard': 'BackofficeController.dashboard',
   '/contact': 'BackofficeController.contact'
   

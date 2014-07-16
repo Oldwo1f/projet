@@ -8,6 +8,7 @@ function clearSelection() {
         sel.removeAllRanges();
     }
 } 
+<<<<<<< Updated upstream
 Array.prototype.getIndexBy = function (name, value) {
     for (var i = 0; i < this.length; i++) {
         if (this[i][name] == value) {
@@ -89,6 +90,15 @@ app.directive('ckEditor', [function () {
             }
         };
     }]);
+=======
+// Array.prototype.getIndexBy = function (name, value) {
+//     for (var i = 0; i < this.length; i++) {
+//         if (this[i][name] == value) {
+//             return i;
+//         }
+//     }
+// }
+>>>>>>> Stashed changes
 
 app.config(function($stateProvider, $urlRouterProvider) {
   //
@@ -192,6 +202,77 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                         }
                                       })
 
+<<<<<<< Updated upstream
+=======
+                        .state('/.articles.category', {
+                          url: "/category",
+                          data:{'articlesTabs':'category'},
+                          views: {
+                            'categoryView':{
+                              templateUrl: "/templates/articlescategory.html",
+                              controller:'articlescategoryCtrl',
+                              resolve:{
+                                categories : function(articlescategoryService) {
+                                  return articlescategoryService.fetchCategories();
+                                }
+                              }
+                            }
+                          }
+                        })
+                                      .state('/.articles.category.edit', {
+                                        url: "/edit/:id",
+                                        // data:{'articlesTabs':'articles'},
+                                        views: {
+                                          'editarticlescategoryView':{
+                                            templateUrl: "/templates/editarticlescategory.html",
+                                            controller:'editarticlescategoryCtrl',
+                                            resolve:{
+                                              category : function(articlescategoryService,$stateParams) {
+                                                console.log('resolveEDitCat');
+                                                return articlescategoryService.fetchCategory($stateParams.id);
+                                              }
+                                            }
+                                          }
+                                        }
+                                        ,
+                                        onEnter:function($stateParams) {
+                                          // $('td.ligneModif').show();
+                                          setTimeout(function() {
+                                            console.log();
+                                            $('tr[rel="'+$stateParams.id+'"]').append($('td.ligneModif'));
+                                          },1)
+                                          
+                                        },
+                                        onExit:function($stateParams) {
+
+                                          $('.ligneInvisible').append($('td.ligneModif'));
+                                        }
+                                      })
+                                      .state('/.articles.category.editimage', {
+                                        url: "/editimage/:id",
+                                        // data:{'articlesTabs':'articles'},
+                                        views: {
+                                          'editimagesarticlescategoryView':{
+                                            templateUrl: "/templates/editimagescategory.html",
+                                            controller:'editimagearticlescategoryCtrl',
+                                            resolve:{
+                                              category : function(articlescategoryService,$stateParams) {
+                                                return articlescategoryService.fetchCategory($stateParams.id);
+                                              }
+                                            }
+                                          }
+                                        }
+                                        // ,
+                                        // onEnter:function($state) {
+                                        //   $('tr.ligneModif').show();
+                                        // },
+                                        // onExit:function($state) {
+                                        //   $('tr.ligne[rel="'+$state.params.id+'"]').show();
+                                        //   $('tr.ligneModif').hide();
+                                        // }
+                                      })
+
+>>>>>>> Stashed changes
                         .state('/.articles.comments', {
                           url: "/comments",
                           data:{'articlesTabs':'comments'},

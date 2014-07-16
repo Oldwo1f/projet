@@ -1,3 +1,32 @@
+
+app.controller('uploadCtrl',['$scope','filterFilter','articlesService','articlescategoryService','$filter',
+function uploadCtrl($scope,filterFilter,articlesService,articlescategoryService,$filter) {
+
+
+
+	console.log('HERE');
+
+
+}]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.filter('articlesFilter', function() {
   return function(input,regex,actif,inactif,New) {
       var patt = new RegExp(regex);      

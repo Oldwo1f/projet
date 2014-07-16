@@ -13,6 +13,12 @@ module.exports = {
 
 		return res.view('admin');
 	},
+	home:function(req,res) {
+		res.locals.layout = 'layout';
+
+
+		return res.view('homepage');
+	},
 	contact:function(req,res) {
 
 		return res.view('contact');
