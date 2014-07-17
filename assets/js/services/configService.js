@@ -7,7 +7,7 @@ app.factory('configService', ['$http','$q',function ($http,$q) {
         imageResize:{
             article:[
                 {  
-                    'title':'miniature',
+                    'title':'mini',
                     'folder':'thumbs',
                     'width': 200,
                     'height':300
