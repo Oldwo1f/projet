@@ -5,8 +5,10 @@ clientResize.directive('clientresize', function() {
       restrict: 'E',
       templateUrl:'/js/modules/clientresize.html',
       scope:{ multiple:'=',boxsize :'=boxsize',itemid:"=itemid", itemtype:"=itemtype",steps :'=steps',uploadurl :'=uploadurl'},
-      controller :function($scope,$http,$upload) {
+      controller :function($scope,$http,$upload,configService) {
       		console.log('controller');
+
+      		console.log(configService);
       		//ATTRIBUT
       		$scope.uploadArray = [];
       		

@@ -1,5 +1,5 @@
-app.controller('appCtrl',['$scope',
-function appCtrl($scope) {
+app.controller('appCtrl',['$scope','configService',
+function appCtrl($scope,configService) {
 
 	$scope.maintabs=[
 	{'title':'Dashboard','name' :'dashboard','active':false,'viewName':'dashboardView'},
@@ -15,7 +15,9 @@ function appCtrl($scope) {
 	
 
 
+	$scope.articleResizeImageSteps= configService.frontConfig.imageResize.articleCategory;
 
+	console.log($scope.articleResizeImageSteps);
 
 
 	$scope.$on('$stateChangeStart', 

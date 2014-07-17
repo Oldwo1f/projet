@@ -71,6 +71,7 @@ bower_components
 api/controllers/front
 assets/fonts
 upload
+config/routesclients.js
 
 
 

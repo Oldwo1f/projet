@@ -288,5 +288,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
       url: "/contact",
       templateUrl: "/templates/contact.html"
     });
+  
    
 });

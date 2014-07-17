@@ -1,9 +1,0 @@
-console.log('FRONT CONFIG');
-console.log('FRONT CONFIG');
-console.log('FRONT CONFIG');
-console.log('FRONT CONFIG');
-console.log('FRONT CONFIG');
-console.log('FRONT CONFIG');
-console.log('FRONT CONFIG');
-console.log('FRONT CONFIG');
-console.log('FRONT CONFIG');

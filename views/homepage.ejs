@@ -1,22 +1,6 @@
-<div ng-app="app" ng-controller="uploadCtrl">
+<div ng-app="app"  ng-controller="appCtrl">
 
-<clientresize  multiple="true" boxsize="500" itemid="IDArticleToEdit" itemtype="'article'" uploadurl="image/upload" steps="[  
-          {  
-            'title':'miniature',
-            'folder':'thumbs',
-            'width': 200,
-            'height':300
-          },{  
-            'title':'thumbs',
-            'folder':'thumbs2',
-            'width': 600,
-            'height':400
-          },{  
-            'title':'square',
-            'folder':'thumbs3',
-            'width': 400,
-            'height':400
-          }
-        ]"  class="cl-wrapper"></clientresize>
-
+<div ng-controller="uploadCtrl">
+<clientresize  multiple="true" boxsize="500" itemid="IDArticleToEdit" itemtype="'article'" uploadurl="image/upload" steps="articleResizeImageSteps"  class="cl-wrapper"></clientresize>
+</div>
 </div>
