@@ -21,7 +21,7 @@ module.exports = {
 			console.log('reciever');
 			file.filename=safeFilename(sid.generate()+'-'+file.filename)
 			var output = require('fs').createWriteStream('.tmp/uploads/'+file.filename);
-			
+
 			var transfert = file.pipe(output);
 			transfert.on('finish', function () {
 			console.log('endPipe'); 
