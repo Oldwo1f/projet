@@ -1,17 +1,9 @@
 app.controller('appCtrl',['$scope','configService',
 function appCtrl($scope,configService) {
 
-	$scope.maintabs=[
-	{'title':'Dashboard','name' :'dashboard','active':false,'viewName':'dashboardView'},
-	{'title':'Gestions des utilisateurs','name' :'users','active':false,'viewName':'usersView'},
-	{'title':'Gestion du blog','name' :'articles','active':false,'viewName':'allarticlesView'},
-	{'title':'Gestion des projets','name' :'projets','active':false,'viewName':'projetsView'},
-	];
-	$scope.articlestabs=[
-	{'title':'Articles','name' :'articles','active':false},
-	{'title' :'Catégories','name' :'category','active':false},
-	{'title':'Commentaires','name' :'comments','active':false}
-	];
+	$scope.maintabs=configService.maintabs;
+	$scope.articlestabs=configService.articlestabs;
+	$scope.projectstabs=configService.projectstabs;
 	
 
 

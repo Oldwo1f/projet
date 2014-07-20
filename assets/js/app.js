@@ -118,16 +118,32 @@ app.config(function($stateProvider, $urlRouterProvider) {
             	}
             }
           })
-          .state('/.projets', {
-            url: "projets",
-            data:{'mainTabs':'projets'},
+          .state('/.projects', {
+            url: "projects",
+            data:{'mainTabs':'projects'},
             views: {
               'projetsView':{
-                templateUrl: "/templates/projets.html"
+                templateUrl: "/templates/project/allprojects.html"
 
               }
             }
           })
+                       .state('/.projects.projectscategory', {
+                          url: "/projects/category",
+                          data:{'projectsTabs':'category'},
+                          views: {
+                            'projectscategoryView':{
+                              templateUrl: "/templates/project/projectscategory.html",
+                              // controller:'projetscategoryCtrl',
+                              // resolve:{
+                              //   categories : function(articlescategoryService) {
+                              //     return articlescategoryService.fetchCategories();
+                              //   }
+                              // }
+                            }
+                          }
+                        })
+
           .state('/.articles', {
             url: "articles",
             data:{'mainTabs':'articles'},

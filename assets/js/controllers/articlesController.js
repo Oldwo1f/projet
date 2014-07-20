@@ -201,15 +201,15 @@ function articlesCtrl($scope,filterFilter,articlesService,articlescategoryServic
 
 }]);
 
-app.controller('editarticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','articlescategoryService','$state','$filter','art','catgories',
-function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService,articlescategoryService ,$state,$filter,art,catgories) {
+app.controller('editarticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','articlescategoryService','$state','$filter','art','category',
+function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService,articlescategoryService ,$state,$filter,art,category) {
 	console.log(art);
 	
 	
 	$scope.articleToEdit = art;
 	
 
-         $scope.categories = catgories;
+         $scope.categories = category;
     
 
 	// $scope.articleToEdit = angular.copy($scope.article);
