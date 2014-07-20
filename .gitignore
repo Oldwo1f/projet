@@ -71,6 +71,7 @@ bower_components
 api/controllers/front
 assets/fonts
 upload
+config/routesclients.js
 
 
 
@@ -118,4 +119,8 @@ nbproject
 .idea
 .node_history
 
+<<<<<<< HEAD
 config/routesclients.js
+=======
+assets/js/services/configService.js
+>>>>>>> image

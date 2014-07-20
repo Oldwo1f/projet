@@ -17,10 +17,7 @@
 		 </div>
 		 <div class="form-group col-sm-4">
 		 <label for="">Catégorie</label>
-		    <select class="form-control" ng-model="articleToEdit.category">
-			  <option>Biotech</option>
-			  <option>alimentation</option>
-			  <option>Energie Future</option>
+		    <select class="form-control" ng-model="articleToEdit.category[0].id" ng-options="cat.id as cat.title for cat in categories">
 			</select>
 		 </div>
 		 <div class="form-group col-sm-4">

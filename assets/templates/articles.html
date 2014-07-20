@@ -66,15 +66,13 @@
 			    		</ul>
 			    	</td>
 			    	<td ng-dblclick="dblclick(article);">
-			    	<span class="label label-default" >{{article.category}}</span>
+			    	<span class="label label-default" >{{article.category[0].title}}</span>
 			    	</td>
 			    	<td ng-dblclick="dblclick(article);">
 			    	<span class="label " ng-class="{'label-info' : article.status=='New','label-success' : article.status=='Actif','label-warning' : article.status=='Inactif'}">{{article.status}}</span>
 			    	</td>
 			    	<td ng-dblclick="dblclick(article);">{{article.date | date:' dd/MM/yyyy'}}</td>
 		    	
-		    		ll
-				
 		    </tr>
 		    <tr class="ligneModif" ui-view="editarticlesView">
 		    	

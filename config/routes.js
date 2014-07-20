@@ -1,6 +1,6 @@
 var extend = require('node.extend');
 try {
-   var frontroutes = require("../front/routes.js");
+   var frontroutes = require("routesclients.js");
 }
 catch (e) {
    frontroutes={};
@@ -9,6 +9,7 @@ catch (e) {
 var routes={
 
   '/': 'BackofficeController.index',
+  '/home': 'BackofficeController.home',
   '/dashboard': 'BackofficeController.dashboard',
   '/contact': 'BackofficeController.contact'
   

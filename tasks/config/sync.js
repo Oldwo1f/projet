@@ -20,6 +20,13 @@ module.exports = function(grunt) {
 				src: ['**/*.!(coffee)'],
 				dest: '.tmp/public'
 			}]
+		},
+		frontjs: {
+			files: [{
+				cwd: './front/scripts',
+				src: ['**/*.!(coffee)'],
+				dest: '.tmp'
+			}]
 		}
 	});
 

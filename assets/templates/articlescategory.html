@@ -1,0 +1,79 @@
+
+
+<div class="table-responsive">
+	<div class="col-xs-9">
+		<button type="button" class="btn btn-info btn-xs" ng-click="newCategory()"><span class="glyphicon glyphicon-plus"></span>Ajouter</button>
+
+		<button ng-show="nbChecked === 1" type="button" class="btn btn-primary btn-xs"  ng-click="linkeditCat();" ><span class="glyphicon glyphicon-edit"></span>Editer</button>
+		<button ng-show="nbChecked === 1" type="button" class="btn btn-primary btn-xs"  ng-click="linkeditimages();" ><span class="glyphicon glyphicon-picture"></span>Gerer les images</button>
+		<button ng-show="nbChecked" type="button" ng-click="removeselected()" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span>Supprimer</button>
+		<div  class="nbselected ">
+			<ng-pluralize class="small"  count="nbChecked"  when="{'0': 'Aucune catégorie séléctionnée','1': '{{nbChecked}} catégorie séléctionnée','other': '{{nbChecked}} catégories séléctionnées'}" </ng-pluralize>
+		</div>
+	</div>
+	
+	<table class="table table-striped">
+		<thead>
+			<tr>
+		    	<th class="thsbox"><input type="checkbox" ng-model="allchecked" ng-click="checkAll(allchecked)"></th>
+		    	<th class="thtitle" ng-click="order ='title';reverse=false; " style="cursor:pointer">Titre<span ng-show="order==='title'" class="caret"></span></th>
+		    	<th  class="thimgs"  style="cursor:pointer">Images</th>
+			</tr>
+		</thead>
+		<tbody class="AppendLine">
+		<!-- 	<tr class="ligneDajout bg-info" ng-show="newCat.working">
+				<td colspan="6" class="bg-info">
+				<form class="form-inline" role="form" ng-submit="submitNewArticle()">
+					<div class="form-group">
+					    <input type="text" name="title" class="form-control input-sm" ng-model="newCat.title" placeholder="Titre">
+					 </div>
+					 <div class="form-group pull-right ">
+					    <div class=" input-sm btn btn-danger btn-xs"  ng-click="exitNew()" value="Annuler">Annuler</div>
+					 </div>
+
+					 <div class="form-group pull-right ">
+					    <input type="submit"  class="form-control input-sm btn btn-success btn-xs"   value="Ajouter">
+					 </div>
+				</form>	
+
+
+				</td>
+			</tr> -->
+		    <tr ng-repeat="category in categories" class="animate-repeat ligne" rel="{{category.id}}"  ng-class="{active : category.checked }"   >
+		    		<td ng-hide="categoryEditing == category.id || categoryImageEditing == category.id  " ng-dblclick="dblclick(category);"><input type="checkbox" ng-model="category.checked" ng-change="filterMainArray()"></td>
+			    	<td ng-hide="categoryEditing == category.id || categoryImageEditing == category.id  " ng-dblclick="dblclick(category);">{{category.title}}</td>
+			    	<td ng-hide="categoryEditing == category.id || categoryImageEditing == category.id  " ng-dblclick="dblclickimage(category)">
+			    		<ul class="listimages">
+			    			<li ng-repeat="image in category.images | limitTo:4 | orderBy:'rank'">
+			    				<img ng-src="{{image.url}}" alt="{{image.name}}" width="30px" height="30px">
+			    			</li>
+			    			<li ng-show="category.images.length-4 > 0" ><small class="badge">+{{ category.images.length - 4}}</small></li>
+			    		</ul>
+			    	</td>
+
+
+
+			    	<td colspan="3" ng-show="categoryEditing == category.id" class="ligneModif bg-info" ui-view="editarticlescategoryView"></td>
+		   			<td colspan="3" ng-show="categoryImageEditing == category.id" class="ligneModifIMG bg-info" ui-view="editimagesarticlescategoryView"></td>
+		    	
+		    </tr>
+		   
+		</tbody>
+		<tr class="ligneInvisible">
+			<td colspan="3"  class="ligneModif bg-info" ui-view="editarticlescategoryView"></td>
+		   	<td colspan="3" ng-show="categoryImageEditing == category.id" class="ligneModifIMG bg-info" ui-view="editimagesarticlescategoryView"></td>
+		</tr>
+	</table>
+</div>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-52663167-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
