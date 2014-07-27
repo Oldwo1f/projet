@@ -16,7 +16,7 @@
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
   'bower_components/**/*.css',
-  'styles/**/*.css'
+  'styles/backoffice/**/*.css'
 ];
 
 
@@ -39,11 +39,11 @@ var jsFilesToInject = [
   'bower_components/angular-route.js',
   'bower_components/angular-file-upload.js',
 
-  'js/dependencies/**/*.js',
+  // 'js/dependencies/**/*.js',
 
   // All of the rest of your client-side js files
   // will be injected here in no particular order.
-  'js/**/*.js'
+  'js/backoffice/**/*.js'
 ];
 
 

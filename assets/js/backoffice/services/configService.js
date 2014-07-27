@@ -27,13 +27,8 @@ app.factory('configService', ['$http','$q',function ($http,$q) {
                 {  
                     'title':'miniature',
                     'folder':'thumbs',
-                    'width': 300,
-                    'height':200
-                },{  
-                    'title':'thumbs',
-                    'folder':'thumbs2',
-                    'width': 800,
-                    'height':600
+                    'width': 400,
+                    'height':400
                 }
             ],
         }

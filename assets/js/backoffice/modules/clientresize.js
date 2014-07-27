@@ -3,7 +3,7 @@ var clientResize = angular.module('clientresize',['angularFileUpload']);
 clientResize.directive('clientresize', function() {
     return {
       restrict: 'E',
-      templateUrl:'/js/modules/clientresize.html',
+      templateUrl:'js/backoffice/modules/clientresize.html',
       scope:{ multiple:'=',boxsize :'=boxsize',itemid:"=itemid", itemtype:"=itemtype",steps :'=steps',uploadurl :'=uploadurl'},
       controller :function($scope,$http,$upload,configService) {
       		console.log('controller');

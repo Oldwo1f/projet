@@ -71,7 +71,13 @@ bower_components
 api/controllers/front
 assets/fonts
 upload
-config/routesclients.js
+config/front/routesclients.js
+views/front
+assets/styles/front
+assets/js/front
+assets/images/front
+api/models/front
+api/policies/front
 
 
 

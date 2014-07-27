@@ -19,6 +19,12 @@ module.exports = {
 
 		return res.view('homepage');
 	},
+	vid:function(req,res) {
+		res.locals.layout = '';
+
+
+		return res.view('testplugin');
+	},
 	contact:function(req,res) {
 
 		return res.view('contact');
