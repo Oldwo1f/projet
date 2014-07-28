@@ -16,7 +16,8 @@
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
   'bower_components/**/*.css',
-  'styles/backoffice/**/*.css'
+  'styles/backoffice/**/*.css',
+  'styles/backoffice/**/importer.less'
 ];
 
 
