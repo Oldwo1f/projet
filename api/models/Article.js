@@ -15,7 +15,7 @@ module.exports = {
   		category : {type:'string'},
   		status : {type:'string'},
   		category: {
-			collection: 'category',
+			collection: 'categoryArticle',
 		}
   }
 };

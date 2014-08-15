@@ -39,6 +39,8 @@ var jsFilesToInject = [
   'bower_components/angular-ui-router.js',
   'bower_components/angular-route.js',
   'bower_components/angular-file-upload.js',
+  'bower_components/ng-table.js',
+  'bower_components/angular-loading-bar.js',
 
   // 'js/dependencies/**/*.js',
 

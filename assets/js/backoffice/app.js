@@ -1,5 +1,10 @@
-var app = angular.module('app', ['ui.router','clientresize','ui.bootstrap','ngAnimate','ui.sortable']);
+var app = angular.module('app', ['ui.router','clientresize','ui.bootstrap','ngAnimate','ui.sortable','ngTable','angular-loading-bar']);
 
+
+app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
+    cfpLoadingBarProvider.includeBar = true;
+  }])
+// cfpLoadingBar.start();
 function clearSelection() {
     if(document.selection && document.selection.empty) {
         document.selection.empty();
@@ -7,88 +12,24 @@ function clearSelection() {
         var sel = window.getSelection();
         sel.removeAllRanges();
     }
-} 
-
-app.directive('dateFix', function() {
-    return {
-        restrict: 'A',
-        require: 'ngModel',
-        link: function (scope, element, attr, ngModel) {
-            element.on('change', function() {
-                scope.$apply(function () {
-                    ngModel.$setViewValue(element.val());
-                });         
-            });
-        }
-    };
-});
-
-app.directive('ckEditor', [function () {
-        return {
-            require: '?ngModel',
-            restrict: 'C',
-            link: function (scope, elm, attr, model) {
-                var isReady = false;
-                var data = [];
-                var ck = CKEDITOR.replace(elm[0]);
-                
-                function setData() {
-                    if (!data.length) {
-                        return;
-                    }
-                    
-                    var d = data.splice(0, 1);
-                    ck.setData(d[0] || '<span></span>', function () {
-                        setData();
-                        isReady = true;
-                    });
-                }
-
-                ck.on('instanceReady', function (e) {
-                    if (model) {
-                        setData();
-                    }
-                });
-                
-                elm.bind('$destroy', function () {
-                    ck.destroy(false);
-                });
-
-                if (model) {
-                    ck.on('change', function () {
-                        scope.$apply(function () {
-                            var data = ck.getData();
-                            if (data == '<span></span>') {
-                                data = null;
-                            }
-                            model.$setViewValue(data);
-                        });
-                    });
-
-                    model.$render = function (value) {
-                        if (model.$viewValue === undefined) {
-                            model.$setViewValue(null);
-                            model.$viewValue = null;
-                        }
-
-                        data.push(model.$viewValue);
-
-                        if (isReady) {
-                            isReady = false;
-                            setData();
-                        }
-                    };
-                }
-                
-            }
-        };
-    }]);
-
+}
+function getIndexInBy(arr,property,value) {
+  for(var i in arr)
+  {
+      // console.log(i);
+      // console.log(property);
+      // console.log(arr[i][property]);
+      // console.log(value);
+      if(arr[i][property] ===value)
+        return i;
+  }
+};
 
 app.config(function($stateProvider, $urlRouterProvider) {
   //
   // For any unmatched url, redirect to /state1
   $urlRouterProvider.when('/articles',"/articles/articles");
+  $urlRouterProvider.when('/projects',"/projects/projects");
   $urlRouterProvider.otherwise("/dashboard");
   //
   // Now set up the states
@@ -129,12 +70,27 @@ app.config(function($stateProvider, $urlRouterProvider) {
             }
           })
                        .state('/.projects.projectscategory', {
-                          url: "/projects/category",
+                          url: "/category",
                           data:{'projectsTabs':'category'},
                           views: {
                             'projectscategoryView':{
                               templateUrl: "/templates/project/projectscategory.html",
                               // controller:'projetscategoryCtrl',
+                              // resolve:{
+                              //   categories : function(articlescategoryService) {
+                              //     return articlescategoryService.fetchCategories();
+                              //   }
+                              // }
+                            }
+                          }
+                        })
+                       .state('/.projects.projects', {
+                          url: "/projects",
+                          data:{'projectsTabs':'projects'},
+                          views: {
+                            'projectsView':{
+                              templateUrl: "/templates/project/projects.html",
+                              controller:'projectsCtrl',
                               // resolve:{
                               //   categories : function(articlescategoryService) {
                               //     return articlescategoryService.fetchCategories();
@@ -149,7 +105,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             data:{'mainTabs':'articles'},
             views: {
             	'allarticlesView':{
-            		templateUrl: "/templates/allarticles.html"
+            		templateUrl: "/templates/blog/allarticles.html"
             	}
             },
             onEnter:function(){
@@ -162,7 +118,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
                           data:{'articlesTabs':'articles'},
                           views: {
                             'articlesView':{
-                              templateUrl: "/templates/articles.html",
+                              templateUrl: "/templates/blog/articles.html",
                               controller:'articlesCtrl'
 
                             }
@@ -173,7 +129,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                         // data:{'articlesTabs':'articles'},
                                         views: {
                                           'editarticlesView':{
-                                            templateUrl: "/templates/editarticles.html",
+                                            templateUrl: "/templates/blog/editarticles.html",
                                             controller:'editarticlesCtrl'
                                           }
                                         },
@@ -198,7 +154,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                         // data:{'articlesTabs':'articles'},
                                         views: {
                                           'editimagesarticlesView':{
-                                            templateUrl: "/templates/editimages.html",
+                                            templateUrl: "/templates/blog/editimages.html",
                                             controller:'editimagearticlesCtrl'
                                           }
                                         },
@@ -217,7 +173,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
                           data:{'articlesTabs':'category'},
                           views: {
                             'categoryView':{
-                              templateUrl: "/templates/articlescategory.html",
+                              templateUrl: "/templates/blog/articlescategory.html",
                               controller:'articlescategoryCtrl',
                               resolve:{
                                 categories : function(articlescategoryService) {
@@ -227,12 +183,20 @@ app.config(function($stateProvider, $urlRouterProvider) {
                             }
                           }
                         })
-                                      .state('/.articles.category.edit', {
+                                      .state('/.articles.category.add', {
+                                        url: "/add",
+                                        views: {
+                                          'addarticlescategoryView':{
+                                            templateUrl: "/templates/blog/addarticlescategory.html",
+                                            controller:'addarticlescategoryCtrl'
+                                          }
+                                        }
+                                        
+                                      }).state('/.articles.category.edit', {
                                         url: "/edit/:id",
-                                        // data:{'articlesTabs':'articles'},
                                         views: {
                                           'editarticlescategoryView':{
-                                            templateUrl: "/templates/editarticlescategory.html",
+                                            templateUrl: "/templates/blog/editarticlescategory.html",
                                             controller:'editarticlescategoryCtrl',
                                             resolve:{
                                               category : function(articlescategoryService,$stateParams) {
@@ -242,34 +206,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                             }
                                           }
                                         }
-                                        ,
-                                        onEnter:function($stateParams) {
-                                          // $('td.ligneModif').show();
-                                          setTimeout(function() {
-                                            console.log();
-                                            $('tr[rel="'+$stateParams.id+'"]').append($('td.ligneModif'));
-                                          },1)
-                                          
-                                        },
-                                        onExit:function($stateParams) {
-
-                                          $('.ligneInvisible').append($('td.ligneModif'));
-                                        }
-                                        // ,
-                                        // onEnter:function($state) {
-                                        //   $('tr.ligneModif').show();
-                                        // },
-                                        // onExit:function($state) {
-                                        //   $('tr.ligne[rel="'+$state.params.id+'"]').show();
-                                        //   $('tr.ligneModif').hide();
-                                        // }
+                                        
                                       })
                                       .state('/.articles.category.editimage', {
                                         url: "/editimage/:id",
                                         // data:{'articlesTabs':'articles'},
                                         views: {
-                                          'editimagesarticlescategoryView':{
-                                            templateUrl: "/templates/editimagescategory.html",
+                                          'editimagearticlescategoryView':{
+                                            templateUrl: "/templates/blog/editimagearticlescategory.html",
                                             controller:'editimagearticlescategoryCtrl',
                                             resolve:{
                                               category : function(articlescategoryService,$stateParams) {
@@ -278,14 +222,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                             }
                                           }
                                         }
-                                        // ,
-                                        // onEnter:function($state) {
-                                        //   $('tr.ligneModif').show();
-                                        // },
-                                        // onExit:function($state) {
-                                        //   $('tr.ligne[rel="'+$state.params.id+'"]').show();
-                                        //   $('tr.ligneModif').hide();
-                                        // }
                                       })
 
 
@@ -294,7 +230,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
                           data:{'articlesTabs':'comments'},
                           views: {
                             'commentsView':{
-                              templateUrl: "/templates/comments.html"
+                              templateUrl: "/templates/blog/comments.html"
 
                             }
                           }

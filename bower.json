@@ -21,6 +21,7 @@
     "ng-file-upload-shim": "~1.4.0",
     "angular-ui-router": "~0.2.10",
     "angular-animate": "~1.2.18",
-    "ckeditor": "~4.4.2"
+    "ckeditor": "~4.4.2",
+    "ng-table": "~0.3.3"
   }
 }

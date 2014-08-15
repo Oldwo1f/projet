@@ -63,7 +63,8 @@ div.add{
 .listimages li {display:inline-block;list-style:none; margin-left:3px;}
 
 .listbigimages{margin:0;padding:0;}
-.listbigimages li {display:inline-block;list-style:none; margin-left:10px; margin-bottom:10px;}
+.listbigimages li {display:inline-block;list-style:none; margin-left:10px; margin-bottom:10px;position:relative;}
+.btnremoveimg {position:absolute;bottom:10px;right:10px;}
 
 
 .table>tbody>tr>td{vertical-align:middle;}
@@ -94,4 +95,23 @@ div.add{
   max-height:40px;
 }
 .ligneInvisible{display:none;}
+
+.modal h2{
+margin-top:0px;
+}
+.modal-vertical-centered {
+   position:absolute;
+  top:50% !important;
+  left:50% !important;
+  transform: translate(-50%, -50%) !important;
+  -ms-transform: translate(-50%, -50%) !important;
+  -webkit-transform: translate(-50%, -50%) !important;
+}
+.modal-content{
+  padding:20px 10px;
+
+}
+form > *{margin-bottom:5px;}
+form .rowbutton {margin-left:5px;margin-right:5px; text-align:right;}
+form .rowbutton div{margin-bottom:5px;}
 

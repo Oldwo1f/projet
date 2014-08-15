@@ -6,6 +6,13 @@
  */
 
 module.exports = {
-	
+	// delete:function(req,res,next) {
+
+		
+
+		// CateoryArticle.find(req.params.id).exec(function() {};)
+		// CateoryArticle.destroy(req.params.id).exec(function() {};)
+
+	// }
 };
 

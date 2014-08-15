@@ -80,7 +80,10 @@ function articlesCtrl($scope,filterFilter,articlesService,articlescategoryServic
          filteredArray = $scope.articles =articlesService.articles = data;
     });
 
-
+	$scope.totalChecked = function()
+ {
+ 	return filterFilter(filteredArray,{checked : true}).length
+ }
 	$scope.$watch('articles',function () {
 		// console.log($scope.slug);
 		// console.log($scope.filterActif);
@@ -170,7 +173,7 @@ function articlesCtrl($scope,filterFilter,articlesService,articlescategoryServic
 		$scope.filterMainArray();
 	};
 
-	$scope.linkeditProjet =function(id){
+	$scope.linkedit =function(id){
 			$state.go('/.articles.articles.edit',{id: filterFilter($scope.articles,{checked : true})[0].id})
 	}
 	$scope.linkeditimages =function(id){

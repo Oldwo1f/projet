@@ -14,7 +14,10 @@ var routes={
   '/home': 'BackofficeController.home',
   '/vid': 'BackofficeController.vid',
   '/dashboard': 'BackofficeController.dashboard',
-  '/contact': 'BackofficeController.contact'
+  '/contact': 'BackofficeController.contact',
+  '/file/image/:size/:name': 'FileController.image',
+  // 'delete /image/:id': 'ImageController.delete'
+  // 'delete /categoryArticle/:id': 'CategoryArticleController.delete'
   
 
 };

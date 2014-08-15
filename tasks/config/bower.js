@@ -31,6 +31,8 @@ console.log('tototo');
                 'angular-ui-router.js': 'angular-ui-router/release/angular-ui-router.min.js',
                 'angular-file-upload.js': 'ng-file-upload/angular-file-upload.js',
                 'angular-file-upload-shim.js': 'ng-file-upload-shim/angular-file-upload-shim.js',
+                'ng-table.js': 'ng-table/ng-table.min.js',
+                'angular-loading-bar.js': 'angular-loading-bar/build/loading-bar.min.js',
             },
         }, 
         fonts: {

@@ -14,53 +14,14 @@ app.factory('articlescategoryService', ['$http','$q',function ($http,$q) {
     service.fetchCategories= function() {
         var deferred = $q.defer();
 
-        $http.get('/category').success(function (data,status) {
+        $http.get('/categoryArticle').success(function (data,status) {
             console.log(data);
             service.categories =data;
             service.colors=['5D8AA8','C9FFE5','9966CC','FBCEB1','87A96B','FE6F5E','E97451','800020']
 
-    service.categories.forEach(function(category) {
+        
 
-            category.images=[
-                {
-                    name:"tototo",
-                    rank:1,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=1',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=1'
-                },
-                {
-                    name:"tototo2",
-                    rank:3,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=3',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=3'
-                },
-                {
-                    name:"tototo3",
-                    rank:2,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=2',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=2'
-                },
-                {
-                    name:"tototo3",
-                    rank:5,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=5',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=5'
-                },
-                {
-                    name:"tototo3",
-                    rank:7,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=7',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=7'
-                },
-                {
-                    name:"tototo3",
-                    rank:4,
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=4',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=4'
-                }
-            ]
-
-    });
+         
             deferred.resolve(data);
         }).error(function (data,status) {
             deferred.reject('error perso');
@@ -75,8 +36,8 @@ app.factory('articlescategoryService', ['$http','$q',function ($http,$q) {
     service.fetchCategory= function(id) {
         var deferred = $q.defer();
 
-        $http.get('/category/'+id).success(function (data,status) {
-           
+        $http.get('/categoryArticle/'+id).success(function (data,status) {
+           console.log(data);
             deferred.resolve(data);
         }).error(function (data,status) {
             deferred.reject('error perso');
@@ -91,15 +52,14 @@ app.factory('articlescategoryService', ['$http','$q',function ($http,$q) {
 
     service.addNew=function(category){
         var deferred = $q.defer();
-        var working = category.working;
-        var checked = category.checked;
-        delete category.working;
-        delete category.checked;
+        // var working = category.working;
+        // var checked = category.checked;
+        // delete category.working;
+        // delete category.checked;
 
         //POST ARTICLE TO SAVE IN DB
-        $http.post('/category',category).success(function (data,status) {
-            data.working = working;
-            data.checked = checked;
+        $http.post('/categoryArticle',category).success(function (data,status) {
+            
             service.categories.unshift(data);
             deferred.resolve(data);
         }).error(function (data,status) {
@@ -111,108 +71,48 @@ app.factory('articlescategoryService', ['$http','$q',function ($http,$q) {
 
     service.edit=function(category){
         var deferred = $q.defer();
-        var working = category.working;
-        var checked = category.checked;
-        delete category.working;
-        delete category.checked;
-        $http.put('/category/'+category.id,category).success(function (data,status) {
-            data.working = working;
-            data.checked = checked;
-            service.categories.splice(service.categories.getIndexBy('id',category.id),1,category)
+        $http.put('/categoryArticle/'+category.id,category).success(function (data,status) {
+
+            console.log(getIndexInBy(service.categories,'id',category.id));
+            console.log(service.categories);
+
+            service.categories.splice(getIndexInBy(service.categories,'id',category.id),1,category)
             deferred.resolve(data);
         }).error(function (data,status) {
             deferred.reject(data);
         })
         return deferred.promise;
     }
-    service.remove=function(category){
-        //POST DB CHANGE
-        //ON RETURN
-         $http.delete('/category/'+category.id).success(function (data,status) {
-            service.categories.splice(service.categories.getIndexBy('id',category.id),1)
+    service.remove=function(catArray){
+
+        for(var i in catArray)
+        {
+            $http.delete('/categoryArticle/'+catArray[i].id).success(function (category,status) {
+                console.log(category);
+                 service.categories.splice(getIndexInBy(service.categories,'id',category.id),1)
+            }).error(function (data,status) {
+                console.log('ERROR');
+            })
+        }
+         
+    }
+    service.removeimage=function(category,image){
+        $http.delete('/image/'+image.id).success(function (data,status) {
+
+            category.images.splice(getIndexInBy(category.images,'id',image.id),1);
+            service.categories.splice(getIndexInBy(service.categories,'id',category.id),1,category)
+
 
         }).error(function (data,status) {
             console.log('ERROR');
         })
-        
-
-        
-
-
     }
-    service.addImg=function(category){
-        //POST DB CHANGE
-        //ON RETURN
-        var id = category.id;
+
+    service.replace=function(category){
         
-        var newimg ={
-                    name:"tototo3",
-                    url:'http://placehold.it/30x30/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20',
-                    urlBig:'http://placehold.it/60x60/'+service.colors[Math.floor((Math.random() * 8))] +'&text=%20'
-                }
-        category.images.push(newimg);
-        service.categories.splice(service.categories.getIndexBy('id',id),1,category)
-        // service.categories
-        console.log(service.categories);
-
-
+        service.categories.splice(getIndexInBy(service.categories,'id',category.id),1,category)
+        return;
     }
- 
-    console.log('service'); 
-    // service.fetchArticles = function() {
-    //     var promise = $http.get('/api/article').
-    //     then(function(data, status, headers, config) {
-    //         console.log(data); 
-    //         return data.data;
-    //     });
-    //     return promise;
-    // };
-    // service.count = function() {
-    //     console.log('count'); 
-    //     var promise = $http.get('/api/article/count').
-    //     then(function(data, status, headers, config) {
-    //         console.log(data.data);
-    //         return data.data;
-    //     });
-    //     console.log('return'); 
-    //     return promise;
-    // };
-    // service.addArticle = function(proj) {
-
-    //     var promise = $http.post('/api/article',proj).
-    //     then(function(data, status, headers, config) {
-    //         return data.data;
-    //     });
-    //     return promise;
-    // };
-    // service.removeImg = function(proj,images) {
-
-    //     var promise = $http.put('/api/article/removeImg',{proj:proj, images:images}).
-    //     then(function(data, status, headers, config) {
-    //         return data.data;
-    //     });
-    //     return promise;
-    // };
-    // service.editArticle = function(proj) {
-
-    //     var promise = $http.put('/api/article',proj).
-    //     then(function(data, status, headers, config) {
-    //         return data.data;
-    //     });
-    //     return promise;
-    // };
-    // service.removeArticles = function(article) {
-    //     console.log('apiremove'); 
-    //     var promise = $http.post('/api/article/remove',article)
-    //     .then(function(data, status, headers, config) {
-    //         console.log(data); 
-    //         return data.data;
-    //     });
-    //     return promise;
-    // };
-    
-
-
 
 
 

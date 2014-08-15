@@ -4,10 +4,10 @@ clientResize.directive('clientresize', function() {
     return {
       restrict: 'E',
       templateUrl:'js/backoffice/modules/clientresize.html',
-      scope:{ multiple:'=',boxsize :'=boxsize',itemid:"=itemid", itemtype:"=itemtype",steps :'=steps',uploadurl :'=uploadurl'},
+      scope:{ callback: '=callback', multiple:'=',boxsize :'=boxsize',itemid:"=itemid", itemtype:"=itemtype",steps :'=steps',uploadurl :'=uploadurl'},
       controller :function($scope,$http,$upload,configService) {
       		console.log('controller');
-
+      		console.log($scope.itemid);
       		console.log(configService);
       		//ATTRIBUT
       		$scope.uploadArray = [];
@@ -45,6 +45,7 @@ clientResize.directive('clientresize', function() {
 		    	var startindex = $scope.uploadArray.length;
 		    	$scope.countImg= $files.length;
 		    	$scope.currentImg=0;
+		    	// $scope.currentstep=0;
 
 		    	for(var i in $files){
 		    		var $f = [];
@@ -91,7 +92,10 @@ clientResize.directive('clientresize', function() {
 			        /* customize how data is added to formData. See #40#issuecomment-28612000 for sample code */
 			        //formDataAppender: function(formData, key, val){}
 
-			        data: {'resizeStuff': JSON.stringify(resizeStuffCopy)}
+			        data: {'resizeStuff': JSON.stringify(resizeStuffCopy),
+			        		'itemId': $scope.itemid,	
+			        		'itemType': $scope.itemtype	
+			    	}
 
 			      }).progress(function(evt) {
 			        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
@@ -99,6 +103,7 @@ clientResize.directive('clientresize', function() {
 			        // file is uploaded successfully
 			        console.log('success upload');
 			        console.log(data);
+			        $scope.$parent.recupImage(data);
 			      });
 			      //.error(...)
 			      //.then(success, error, progress); 
@@ -264,7 +269,10 @@ clientResize.directive('clientresize', function() {
       },
       link:function(scope,elem, attrs) {
       		console.log('link');
-      		$('#myModal').modal({show:false,backdrop:'static'});
+      		$('body > #myModal').remove()
+      		$('body').prepend($('#myModal'));
+      		
+      		$('#myModal').modal({show:false});
       		$('#slider').slider({min:0.2,max:1.5,value:1, step:0.05,tooltip:'hide'}).on('slide', function(ev){
     			scope.currentzoom=ev.value;
     			var originalWidth = $(this).parent().parent().parent().find('.cl-imgContainer img').attr('originalWidth');

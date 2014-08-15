@@ -1,0 +1,32 @@
+<div class="modal fade editimageModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-vertical-centered">
+    <div class="modal-content" >
+	<h2>Gestion des images <small>{{category.title}}</small></h2>
+	<ul class="listbigimages" ui-sortable="sortableOptions" ng-model="category.images">
+		<li ng-repeat="image in category.images ">
+			<img ng-src="file/image/adminThumbs/{{image.filename}}" alt="{{image.filename}}" width="200" height="200" >
+			<button type="button" ng-click="removeimage(image)" class="btn btn-danger btn-xs btnremoveimg"><span class="glyphicon glyphicon-trash"></span>Supprimer</button>
+		</li>
+	</ul>
+	<div class="form-group form-inline col-sm-2 pull-right ">
+		<div class="form-control input-sm btn btn-success btn-xs pull-right" ng-click="addImg()" >Enregister l'ordre</div>
+	</div>
+	<hr>
+	<clientresize  callback="recupImage" multiple="true" boxsize="500" itemid="category.id" itemtype="'categoryarticle'" steps="[  
+          {  
+            'title':'miniature',
+            'folder':'thumbs',
+            'width': 200,
+            'height':300
+          },{  
+            'title':'thumbs',
+            'folder':'thumbs2',
+            'width': 600,
+            'height':400
+          }
+        ]"  class="cl-wrapper"></clientresize>
+
+    </div>
+
+  </div>
+</div>

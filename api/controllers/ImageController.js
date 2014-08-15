@@ -9,7 +9,19 @@ var easyimg = require('easyimage');
 var async = require('async');
 var sid = require('shortid');
 module.exports = {
+	delete:function(req,res,next) {
+
+		console.log('COCOCOCOCOCOCOCOCOOOOOOOOOOOOOOOOOL');
+		console.log(req.params.id);
+
+		next();
+
+		
+	},
 	upload:function(req,res) {
+
+		console.log(req.body.itemId);
+		console.log(req.body.itemType);
 		res.setTimeout(0);
 		sid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$@');
 		sid.seed(10);
@@ -45,9 +57,11 @@ module.exports = {
 	      		// console.log(item.x);
 	      		// console.log(fs.exists('.tmp/uploads/'+item.folder));
       			try{
-	      			fs.mkdirSync('.tmp/uploads/'+item.folder)
+	      			fs.mkdirSync('uploads/'+item.folder)
+
       			}
       			catch(e){
+      				sails.log('error mkdir');
       				console.log(e);
       			}
 
@@ -55,7 +69,7 @@ module.exports = {
 	      		easyimg.rescrop(
 				    {
 				        src:'.tmp/uploads/'+files[0].filename,
-				        dst:'.tmp/uploads/'+item.folder+'/'+files[0].filename,
+				        dst:'uploads/'+item.folder+'/'+files[0].filename,
 				        width:item.originalWidth*item.zoom, height:item.originalHeight*item.zoom,
 				        cropwidth:item.cropWidth, cropheight:item.cropHeight,
 				        x:item.x, y:item.y,
@@ -87,17 +101,17 @@ module.exports = {
 
 
 			    try{
-	      			fs.mkdirSync('.tmp/uploads/adminThumbs');
+	      			fs.mkdirSync('uploads/adminThumbs');
       			}
       			catch(e){
-      				console.log(e);
+      				// console.log(e);
       			}
 
 
 	      		easyimg.thumbnail(
 				    {
 				        src:'.tmp/uploads/'+files[0].filename,
-				        dst:'.tmp/uploads/adminThumbs/'+files[0].filename,
+				        dst:'uploads/adminThumbs/'+files[0].filename,
 				        width:200, height:200
 				        // cropwidth:item.cropWidth, cropheight:item.cropHeight,
 				        // x:item.x, y:item.y,
@@ -108,17 +122,37 @@ module.exports = {
 			    		console.log('finishall');
 			    		var img = files[0]
 
+			    		
+			    		switch(req.body.itemType){
 
+			    			case 'categoryarticle':
+			    				console.log('totototototot');
+			    				CategoryArticle.findOne(req.body.itemId).populate('images').exec(function(err,categoryarticle) {
+console.log(err);
+					    			console.log('categoryarticle');
+					    			console.log(categoryarticle);
+					   				Image.create(img).exec(function(err,img) {
+						    			console.log(img);
+
+					   					categoryarticle.images.add(img.id)
+					   					categoryarticle.save();
+						    			return res.json({
+											message: files.length + ' file(s) uploaded successfully!',
+											files: img
+										});
+						    		});
+
+
+
+
+					    		});
+			    			break;
+
+			    		}
+
+			    		console.log(item);
 				    		// console.log(results[0]);
-			    		Image.create(img).exec(function(err,img) {
-
-			    			console.log('gamecreated');
-			    			console.log(img);
-			    			return res.json({
-							message: files.length + ' file(s) uploaded successfully!',
-							files: img
-						});
-			    		});
+			    		
 
 
 						
@@ -146,27 +180,7 @@ module.exports = {
 
 
 
-	   //    	console.log('---------------------');
-	   //    	console.log(stuff[0].folder);
-	   //    		console.log(files[0].filename);
-	   //    		easyimg.crop(
-				//     {
-				//         src:'.tmp/uploads/'+files[0].filename, dst:'.tmp/uploads/'+stuff[0].folder+'/'+files[0].filename,
-				//         cropwidth:128, cropheight:128,
-				//         gravity:'North',
-				//         x:30, y:50
-				//     },
-				//     function(err, stdout, stderr) {
-				//         if (err) {
-				//         	console.log(err);
-				//         	throw err;
-				//         }
-				//         console.log('Cropped');
-				//     }
-				// );
-
-
-
+	   
 
 	      }else
 	      {

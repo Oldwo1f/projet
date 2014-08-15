@@ -1,5 +1,5 @@
-app.controller('appCtrl',['$scope','configService',
-function appCtrl($scope,configService) {
+app.controller('appCtrl',['$scope','configService','$state',
+function appCtrl($scope,configService,$state) {
 
 	$scope.maintabs=configService.maintabs;
 	$scope.articlestabs=configService.articlestabs;
@@ -12,10 +12,10 @@ function appCtrl($scope,configService) {
 	console.log($scope.articleResizeImageSteps);
 
 
-	$scope.$on('$stateChangeStart', 
+	$scope.$on('$stateChangeSuccess', 
 	function(event, toState, toParams, fromState, fromParams){
 		console.log(toState);
-		console.log(toParams);
+		// console.log(toParams);
 		var deep = toState.url.split('/');
 		for (var i = $scope.maintabs.length - 1; i >= 0; i--) {
 			if(typeof toState.data != "undefined"){
@@ -37,10 +37,51 @@ function appCtrl($scope,configService) {
 				}
 			};
 		}
+		if(toState.name === "/.articles.category")
+		{
+			$('.modal-backdrop').remove();
+			// console.log('editstate');
+			// $('.editModal').modal('show');
+			// var $MyModal = $('.editModal');
+			// $('.editModal').on('hide.bs.modal',function(e) {
+			// 		$state.go('/.articles.category');
+			// });
+
+			// $scope.$on('$viewContentLoaded', function(e) {
+				
+			// 	console.log($MyModal.length);
+			// 	if($MyModal.length==0)
+			// 	{
+			// 		$('.editModal').modal('show');
+			// 		$('.editModal').on('hide.bs.modal',function(e) {
+			// 			$state.go('/.articles.category');
+			// 		});
+			// 	}
+				
+			// });
+		}
+		// // console.log(fromState.name);
+		if(fromState.name === "/.articles.category.editimage")
+		{
+			console.log('here');
+			// $('.modal-backdrop').remove();
+			// $('.editModal').on('hide.bs.modal',function(e) {
+				
+			// });
+			// $('.editModal').modal('hide');
+			// $scope.$on('$viewContentLoaded', function(e) {
+			// 	$('.editModal').on('hide.bs.modal',function(e) {
+				
+			// 	});
+			// 	$('.editModal').modal('hide');
+			// });
+		}
+
+		
 	    // if(toState.url)
 	})
-
-
+	
+	
 
 
 
