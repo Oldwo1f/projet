@@ -16,8 +16,6 @@ var routes={
   '/dashboard': 'BackofficeController.dashboard',
   '/contact': 'BackofficeController.contact',
   '/file/image/:size/:name': 'FileController.image',
-  // 'delete /image/:id': 'ImageController.delete'
-  // 'delete /categoryArticle/:id': 'CategoryArticleController.delete'
   
 
 };

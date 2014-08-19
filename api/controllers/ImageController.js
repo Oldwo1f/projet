@@ -9,34 +9,20 @@ var easyimg = require('easyimage');
 var async = require('async');
 var sid = require('shortid');
 module.exports = {
-	delete:function(req,res,next) {
-
-		console.log('COCOCOCOCOCOCOCOCOOOOOOOOOOOOOOOOOL');
-		console.log(req.params.id);
-
-		next();
-
-		
-	},
 	upload:function(req,res) {
 
-		console.log(req.body.itemId);
-		console.log(req.body.itemType);
 		res.setTimeout(0);
 		sid.characters('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$@');
 		sid.seed(10);
-		sails.log('UPLOAD ! ! !')
 		var stuff = JSON.parse(req.body.resizeStuff);
 
 		var reciever = new Writable({objectMode: true});
 		reciever._write = function(file, enc, cb) {
-			console.log('reciever');
 			file.filename=safeFilename(sid.generate()+'-'+file.filename)
 			var output = require('fs').createWriteStream('.tmp/uploads/'+file.filename);
 
 			var transfert = file.pipe(output);
 			transfert.on('finish', function () {
-			console.log('endPipe'); 
 				cb();
 			});
 		};
@@ -61,8 +47,6 @@ module.exports = {
 
       			}
       			catch(e){
-      				sails.log('error mkdir');
-      				console.log(e);
       			}
 
 
@@ -78,12 +62,10 @@ module.exports = {
 				    function success(image) {
 				        
 
-				        console.log('Resized and cropped success');
 	      				cb()
 
 				    },
 				    function error(err){
-				    	console.log('rescropErr');
 				    	console.log(err);
 				    	// if (err) {
 				     //    	console.log('resizeError');
@@ -104,7 +86,6 @@ module.exports = {
 	      			fs.mkdirSync('uploads/adminThumbs');
       			}
       			catch(e){
-      				// console.log(e);
       			}
 
 
@@ -119,7 +100,6 @@ module.exports = {
 				    }).then(
 				    function success(image) {
 				        
-			    		console.log('finishall');
 			    		var img = files[0]
 
 			    		
@@ -129,10 +109,16 @@ module.exports = {
 			    				console.log('totototototot');
 			    				CategoryArticle.findOne(req.body.itemId).populate('images').exec(function(err,categoryarticle) {
 console.log(err);
-					    			console.log('categoryarticle');
-					    			console.log(categoryarticle);
+					    			
+					    			var lastIndex= -1;
+					    			for( var i in categoryarticle.images )
+					    			{
+					    				if(Number(categoryarticle.images[i].index) >lastIndex)
+					    					lastIndex = categoryarticle.images[i].index;
+					    			}
+					    			img.index = Number(lastIndex+1);
 					   				Image.create(img).exec(function(err,img) {
-						    			console.log(img);
+					   					console.log(err);
 
 					   					categoryarticle.images.add(img.id)
 					   					categoryarticle.save();
@@ -147,10 +133,37 @@ console.log(err);
 
 					    		});
 			    			break;
+			    			case 'article':
+			    				console.log('tototototototarticle');
+			    				Article.findOne(req.body.itemId).populate('images').exec(function(err,article) {
+console.log(err);
+					    			
+					    			var lastIndex= -1;
+					    			for( var i in article.images )
+					    			{
+					    				if(Number(article.images[i].index) >lastIndex)
+					    					lastIndex = article.images[i].index;
+					    			}
+					    			img.index = Number(lastIndex+1);
+					   				Image.create(img).exec(function(err,img) {
+					   					console.log(err);
+
+					   					article.images.add(img.id)
+					   					article.save();
+						    			return res.json({
+											message: files.length + ' file(s) uploaded successfully!',
+											files: img
+										});
+						    		});
+
+
+
+
+					    		});
+			    			break;
 
 			    		}
 
-			    		console.log(item);
 				    		// console.log(results[0]);
 			    		
 
@@ -159,13 +172,7 @@ console.log(err);
 
 				    },
 				    function error(err){
-				    	console.log('rescropErr');
 				    	console.log(err);
-				    	// if (err) {
-				     //    	console.log('resizeError');
-				     //    	console.log(err);
-				     //    		throw err;
-				     //    }
 				    }
 				);
 

@@ -4,6 +4,7 @@
     <title>New Sails App</title>
 
     <!-- Viewport mobile tag for sensible mobile support -->
+    <!-- <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
     
@@ -42,10 +43,14 @@
     <link rel="stylesheet" href="/bower_components/ckeditor/skins/moono/editor_ie7.css">
     <link rel="stylesheet" href="/bower_components/ckeditor/skins/moono/editor_ie8.css">
     <link rel="stylesheet" href="/bower_components/ckeditor/skins/moono/editor_iequirks.css">
+    <link rel="stylesheet" href="/bower_components/datetimepicker.css">
     <link rel="stylesheet" href="/styles/backoffice/importer.css">
     <link rel="stylesheet" href="/styles/backoffice/jquery-ui.css">
     <link rel="stylesheet" href="/styles/backoffice/slider.css">
+    <link rel="stylesheet" href="/styles/backoffice/importer.less">
     <!--STYLES END-->
+    <!-- //PEGASUS
+    // <script>function pegasus(a,b){return b=new XMLHttpRequest,b.open("GET",a),a=[],b.onreadystatechange=b.then=function(c,d,e){c.call&&(a=[,c,d]),4==b.readyState&&(e=a[0|b.status/200],e&&e(JSON.parse(b.responseText,b)))},b.send(),b}</script> -->
   </head>
   <body>
     <%- body %>
@@ -104,6 +109,9 @@
     <!--SCRIPTS-->
     <script src="/bower_components/jquery.js"></script>
     <script src="/bower_components/bootstrap.js"></script>
+    <script src="/bower_components/moment.js"></script>
+    <script src="/bower_components/moment-fr.js"></script>
+    <script src="/bower_components/marked.js"></script>
     <script src="/bower_components/angular-file-upload-shim.js"></script>
     <script src="/bower_components/angular.js"></script>
     <script src="/bower_components/angular-animate.js"></script>
@@ -115,21 +123,35 @@
     <script src="/bower_components/angular-file-upload.js"></script>
     <script src="/bower_components/ng-table.js"></script>
     <script src="/bower_components/angular-loading-bar.js"></script>
+    <script src="/bower_components/datetimepicker.js"></script>
+    <script src="/bower_components/markdown_preview.js"></script>
     <script src="/js/backoffice/app.js"></script>
     <script src="/js/backoffice/controllers/appController.js"></script>
     <script src="/js/backoffice/controllers/articlesController.js"></script>
     <script src="/js/backoffice/controllers/articlescategoryController.js"></script>
+    <script src="/js/backoffice/controllers/comentController.js"></script>
     <script src="/js/backoffice/controllers/projectController.js"></script>
     <script src="/js/backoffice/dependencies/bootstrap-slider.js"></script>
     <script src="/js/backoffice/dependencies/jquery-ui.min.js"></script>
     <script src="/js/backoffice/dependencies/lodash.js"></script>
     <script src="/js/backoffice/dependencies/sails.io.js"></script>
+    <script src="/js/backoffice/directives/auditref.js"></script>
+    <script src="/js/backoffice/directives/autoFocus.js"></script>
     <script src="/js/backoffice/directives/ckEditorDirective.js"></script>
     <script src="/js/backoffice/directives/dateFixDirective.js"></script>
+    <script src="/js/backoffice/directives/datetimepicker.js"></script>
+    <script src="/js/backoffice/directives/removeremove.js"></script>
+    <script src="/js/backoffice/directives/textareaCountdown.js"></script>
+    <script src="/js/backoffice/directives/urlprefixer.js"></script>
+    <script src="/js/backoffice/directives/wrap.js"></script>
     <script src="/js/backoffice/modules/clientresize.js"></script>
+    <script src="/js/backoffice/modules/locale-fr.js"></script>
+    <script src="/js/backoffice/modules/md-preview.js"></script>
     <script src="/js/backoffice/modules/sortable.js"></script>
+    <script src="/js/backoffice/moment.js"></script>
     <script src="/js/backoffice/services/articlesService.js"></script>
     <script src="/js/backoffice/services/articlescategoryService.js"></script>
+    <script src="/js/backoffice/services/comentsService.js"></script>
     <script src="/js/backoffice/services/configService.js"></script>
     <!--SCRIPTS END-->
   </body>

@@ -1,0 +1,57 @@
+<div class="modal fade editModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-vertical-centered">
+   <div class="modal-content">
+    	<h2>Editer cet Article</h2>
+    	<hr>
+     	<form class="form" role="form" ng-submit="submitEdit()">
+            <div class="form-group col-xs-12">
+            
+                <input type="text" name="title" class="form-control input-lg" ng-model="editArticle.title" placeholder="Titre">
+          <!-- <input type="date" name="date" class="form-control input-lg  col-xs-2" ng-model="editArticle.date" > -->
+            </div>
+            <div class="form-group col-xs-6">
+                <div name="date" class="form-control input-lg"  ng-click="openDatepicker=true"><span class="placedate" ng-show="editArticle.date">{{editArticle.date | date : 'EEEE d MMMM yyyy - HH:mm' }}</span> <span class="placeholder" ng-hide="editArticle.date">Date</span>
+                    <div class="openDatepicker" ng-show="openDatepicker">
+                            <datetimepicker  data-on-set-time="timeSet" data-ng-model="editArticle.date" data-datetimepicker-config="{ dropdownSelector: '.my-toggle-select' }"></datetimepicker>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col-xs-6">
+                  <span class="placeholderabsolute" ng-hide="editArticle.category" >Choisir une catégorie</span>
+                <select name="category" class="form-control input-lg" ng-model="editArticle.category">
+                  <option value=""></option>
+                  <option ng-repeat="cat in categories" value="{{cat.id}}" ng-selected="editArticle.category == cat.id">{{cat.title}}</option>
+                  
+                </select>
+            </div>
+            <markdownpreview ng-model="editArticle.content" handleerror="'content'" minheight="300" placehold="'Contenu de l\'article en markdown'" />
+            <markdownpreview ng-model="editArticle.shortcontent"handleerror="'shortcontent'" minheight="100" placehold="'Accroche de l\'article en markdown'" />
+            
+            
+            <wrap class="form-group col-xs-12" mytitle="'les options de référencement'">
+                <div class="form-group col-xs-12 nopadding">
+                
+                    <input type="text" inputcount="255" name="keyword" class="form-control input-lg" ng-model="editArticle.keyword" placeholder="Mots clefs, Mots, clefs, clef, Mot clef, Mot">
+              <!-- <input type="date" name="date" class="form-control input-lg  col-xs-2" ng-model="editArticle.date" > -->
+                </div>
+                <div class="form-group col-xs-12 nopadding">
+                
+                    <input inputcount="1000" urlprefixerwidth="230px" urlprefixer="http://momsite.com/blog/article/" model="editArticle.rewriteurl" type="text" name="rewriteurl" class="form-control input-lg" ng-model="editArticle.rewriteurl" placeholder="Réécriture de l'url">
+                </div>
+                <div class="form-group col-xs-12 nopadding">
+                    <input inputcount="160" model="editArticle.description" type="text" name="description" class="form-control input-lg" ng-model="editArticle.description" placeholder="Description pour les moteurs de recherche">
+                </div>
+            	<auditref model="editArticle"></auditref>
+
+            </wrap>
+            
+			 <div class="rowbutton form-group col-xs-12">
+			    	<div class=" input-lg btn btn-danger btn-lg"  ng-click="exitEdit()" data-toggle="modal" data-target=".editModal" value="Annuler">Annuler</div>
+			    	<input type="submit"  class="form-control input-lg btn btn-success btn-lg"   value="Enregistrer">
+			 </div>
+            
+             <div class="clearfix"></div>
+		</form>	
+    </div>
+  </div>
+</div>

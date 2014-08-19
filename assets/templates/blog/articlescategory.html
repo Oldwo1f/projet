@@ -6,7 +6,7 @@
 
 		<button  type="button" class="btn btn-primary btn-xs" ng-show="totalChecked() === 1" ng-click="linkedit();" ><span class="glyphicon glyphicon-edit"></span>Editer</button>
 		<button  type="button" class="btn btn-primary btn-xs"  ng-show="totalChecked() === 1" ng-click="linkeditimages();" ><span class="glyphicon glyphicon-picture"></span>Gerer les images</button>
-		<button type="button" ng-click="removeselected()" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-trash"></span>Supprimer</button>
+		<removeremove action="removeselected" ng-show="totalChecked()"></removeremove>
 		<div  class="nbselected ">
 			<ng-pluralize class="small"  count="totalChecked()"  when="{'0': 'Aucune catégorie séléctionnée','1': '{{totalChecked()}} catégorie séléctionnée','other': '{{totalChecked()}} catégories séléctionnées'}" </ng-pluralize>
 		</div>
@@ -28,13 +28,14 @@
 	    		<td >
 	    			<input type="checkbox" ng-model="category.checked" ng-change="filterMainArray()">
 	    		</td>
-		    	<td >{{category.title}}</td>
-		    	<td >
+		    	<td ng-dblClick="linkedit(category.id)" class='pointer'>{{category.title}}</td>
+		    	<td ng-dblClick="linkeditimages(category.id)" class='pointer'>
 		    		<ul class="listimages">
-		    			<li ng-repeat="image in category.images | limitTo:4 | orderBy:'rank'">
+		    			<li ng-repeat="image in category.images | limitTo:4 | orderBy:'index':false">
 		    				<img ng-src="file/image/adminThumbs/{{image.filename}}" alt="{{image.filename}}" width="30px" height="30px">
 		    			</li>
 		    			<li ng-show="category.images.length-4 > 0" ><small class="badge">+{{ category.images.length - 4}}</small></li>
+		    			<li ng-click="linkeditimages(category.id)" ng-hide="category.images.length" class='pointer'><span class="link">Ajouter des images</span></li>
 		    		</ul>
 		    	</td>
 	    	

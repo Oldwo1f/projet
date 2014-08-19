@@ -113,7 +113,20 @@ app.factory('articlescategoryService', ['$http','$q',function ($http,$q) {
         service.categories.splice(getIndexInBy(service.categories,'id',category.id),1,category)
         return;
     }
-
+    service.updateImgIndex=function(image,category){
+        var deferred = $q.defer();
+        console.log(image);
+        $http.put('/image/'+image.id,image).success(function (image,status) {
+            image.articlecategory = image.articlecategory.id;
+            category.images.splice(getIndexInBy(category.images,'id',image.id),1,image);
+            service.categories.splice(getIndexInBy(service.categories,'id',category.id),1,category)
+            deferred.resolve(image);
+        }).error(function (data,status) {
+            console.log('ERROR');
+            deferred.reject(data);
+        })
+        return deferred.promise;
+    }
 
 
     return service;

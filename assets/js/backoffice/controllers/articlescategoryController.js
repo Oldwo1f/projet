@@ -20,11 +20,21 @@ function articlescategoryCtrl($scope,filterFilter,articlescategoryService,$filte
 			category.checked = allchecked;
 		});
 	}
-	$scope.linkedit=function(){
+	$scope.linkedit=function(id){
 		// console.log(filterFilter($scope.categories,{checked : true}));
+		if(id){
+			clearSelection()
+			$state.go('/.articles.category.edit',{id: id})
+		}
+		else
 			$state.go('/.articles.category.edit',{id: filterFilter($scope.categories,{checked : true})[0].id})
 	}
 	$scope.linkeditimages =function(id){
+		if(id){
+			clearSelection()
+			$state.go('/.articles.category.editimage',{id: id})
+		}
+		else
 			$state.go('/.articles.category.editimage',{id: filterFilter($scope.categories,{checked : true})[0].id})
 	}
 	$scope.linkadd =function(){
@@ -97,12 +107,66 @@ function editimagearticlescategoryCtrl($scope,$stateParams,filterFilter,articles
 
 		articlescategoryService.removeimage(category,imagetoremove)
 	};
-
+console.log($scope.category.images);
 	$scope.sortableOptions = {
 	    update: function(e, ui) {
-	     	console.log(ui); 
+	     	// console.log(ui); 
+	     	startIndex = ui.item.sortable.index;
+	     	dropIndex = ui.item.sortable.dropindex;
+	     	console.log(startIndex +' ----'+dropIndex);
+	     	console.log($scope.category.images);
+	     	if(dropIndex<startIndex)
+	     	{
+	     		for(var i in $scope.category.images)
+	     		{
+	     			
+	     			if($scope.category.images[i].index < startIndex && $scope.category.images[i].index >=dropIndex)
+	     			{
+	     				$scope.category.images[i].index = $scope.category.images[i].index +1;
+	     				articlescategoryService.updateImgIndex($scope.category.images[i],$scope.category);
+	     			}
+	     			else if($scope.category.images[i].index == startIndex )
+	     			{
+	     				$scope.category.images[i].index = dropIndex;
+	     				articlescategoryService.updateImgIndex($scope.category.images[i],$scope.category);
+	     			}
+	     			
+	     		}
+
+	     	}
+	     	if(dropIndex>startIndex)
+	     	{
+	     		for(var i in $scope.category.images)
+	     		{
+	     			
+	     			
+	     			if($scope.category.images[i].index >startIndex && $scope.category.images[i].index <=dropIndex)
+	     			{
+	     				$scope.category.images[i].index = $scope.category.images[i].index -1;
+	     				articlescategoryService.updateImgIndex($scope.category.images[i],$scope.category);
+	     			}
+	     			else if($scope.category.images[i].index == startIndex)
+	     			{
+	     				$scope.category.images[i].index = dropIndex;
+	     				articlescategoryService.updateImgIndex($scope.category.images[i],$scope.category);
+	     			}
+	     			
+	     		}
+
+	     	}
+	     	console.log($scope.category.images);
 	     	
 
+		},
+		sort:function() {
+			// console.log('sort');
+		},
+		out:function() {
+			// console.log('out');
+		},
+		start:function(e,ui) {
+			// console.log('start');
+			// console.log($(e.target).height($(e.target).height()-100));
 		}
   	};
 

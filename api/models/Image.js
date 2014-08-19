@@ -7,21 +7,92 @@
 var fs = require('fs'), Writable = require('stream').Writable;
 var async = require('async');
 module.exports = {
-
-  attributes: {
+	schema: true,
+  	attributes: {
   		filename:{type:'string',required:true},
-  		index:{type:'int'},
+  		size:{type:'int'},
+  		type:{type:'string'},
+  		index:{type:'float'},
   		articlecategory: {
 			model: 'categoryArticle',
+		},
+  		article: {
+			model: 'article',
 		}
-  },
-  beforeDestroy: function (values, cb) {
-console.log(values);
-console.log(values.where.id);
-   Image.findOne(values.where.id).exec(function(err,img) {
-			console.log(img.filename);
+	},
+  	beforeDestroy: function (values, cb) {
+  		console.log(values);
+   		Image.findOne(values.where.id).populate('article').populate('articlecategory').exec(function(err,img) {
+			console.log('-------------------------------------------------------');
+			console.log(img);
+
+
 
 			async.parallel([
+				function(callback){
+			        
+			        if(img.articlecategory)
+			        {
+
+				        CategoryArticle.findOne(img.articlecategory.id).populate('images').exec(function(err,res) {
+				        	async.each(res.images, function( image, cb2) {
+
+				        		if(Number(image.index) > Number(img.index))
+				        		{
+				        			image.index = Number(image.index)-1;
+				        			Image.update(image.id,image,function() {
+				        				cb2(null);
+				        			})
+
+				        		}else{
+							    	cb2(null);
+				        		}
+							  
+							}, function(err){
+							    if( err ) {
+							      console.log('A file failed to process');
+							    } else {
+							      	console.log('All files have been processed successfully');
+				        			callback(null)
+
+							    }
+							});
+				        });
+
+			        }else
+			        if(img.article)
+			        {
+
+				        Article.findOne(img.article.id).populate('images').exec(function(err,res) {
+				        	async.each(res.images, function( image, cb2) {
+
+				        		if(Number(image.index) > Number(img.index))
+				        		{
+				        			image.index = Number(image.index)-1;
+				        			Image.update(image.id,image,function() {
+				        				cb2(null);
+				        			})
+
+				        		}else{
+							    	cb2(null);
+				        		}
+							  
+							}, function(err){
+							    if( err ) {
+							      console.log('A file failed to process');
+							    } else {
+							      	console.log('All files have been processed successfully');
+				        			callback(null)
+
+							    }
+							});
+				        });
+
+			        }
+
+
+
+			    },
 			    function(callback){
 			        try{
 			            fs.unlink('uploads/adminThumbs/'+img.filename)
@@ -66,6 +137,6 @@ console.log(values.where.id);
 			});
 
 		});
-  }
+  	}
 };
 

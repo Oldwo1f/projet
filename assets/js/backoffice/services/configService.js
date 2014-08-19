@@ -42,7 +42,7 @@ app.factory('configService', ['$http','$q',function ($http,$q) {
     service.articlestabs=[
     {'title':'Articles','name' :'articles','active':false},
     {'title' :'Catégories','name' :'category','active':false},
-    {'title':'Commentaires','name' :'comments','active':false}
+    {'title':'Commentaires','name' :'coments','active':false}
     ];
     service.projectstabs=[
     {'title':'Projects','name' :'projects','active':false},

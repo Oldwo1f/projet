@@ -33,6 +33,12 @@ console.log('tototo');
                 'angular-file-upload-shim.js': 'ng-file-upload-shim/angular-file-upload-shim.js',
                 'ng-table.js': 'ng-table/ng-table.min.js',
                 'angular-loading-bar.js': 'angular-loading-bar/build/loading-bar.min.js',
+                'moment.js': 'moment/moment.js',
+                'moment-fr.js': 'moment/locale/fr.js',
+                'datetimepicker.js': 'angular-bootstrap-datetimepicker/src/js/datetimepicker.js',
+                'datetimepicker.css': 'angular-bootstrap-datetimepicker/src/css/datetimepicker.css',
+                'markdown_preview.js': 'angular-markdown-preview/markdown_preview.js',
+                'marked.js': '../node_modules/marked/lib/marked.js',
             },
         }, 
         fonts: {

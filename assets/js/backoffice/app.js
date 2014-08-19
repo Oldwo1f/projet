@@ -1,4 +1,4 @@
-var app = angular.module('app', ['ui.router','clientresize','ui.bootstrap','ngAnimate','ui.sortable','ngTable','angular-loading-bar']);
+var app = angular.module('app', ['markdownpreview','ngLocale','ui.router','clientresize','ui.bootstrap','ngAnimate','ui.bootstrap.datetimepicker','ui.sortable','ngTable','angular-loading-bar']);
 
 
 app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
@@ -16,10 +16,6 @@ function clearSelection() {
 function getIndexInBy(arr,property,value) {
   for(var i in arr)
   {
-      // console.log(i);
-      // console.log(property);
-      // console.log(arr[i][property]);
-      // console.log(value);
       if(arr[i][property] ===value)
         return i;
   }
@@ -105,12 +101,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
             data:{'mainTabs':'articles'},
             views: {
             	'allarticlesView':{
-            		templateUrl: "/templates/blog/allarticles.html"
+            		templateUrl: "/templates/blog/main.html"
             	}
-            },
-            onEnter:function(){
-              console.log('enter Articles');
-
             }
           })
                         .state('/.articles.articles', {
@@ -119,34 +111,46 @@ app.config(function($stateProvider, $urlRouterProvider) {
                           views: {
                             'articlesView':{
                               templateUrl: "/templates/blog/articles.html",
-                              controller:'articlesCtrl'
-
+                              controller:'articlesCtrl',
+                              resolve:{
+                                articles : function(articlesService) {
+                                  return articlesService.fetchArticles();
+                                }
+                              }
                             }
                           },
-                        })
+                        })              
+                                      .state('/.articles.articles.add', {
+                                        url: "/add",
+                                        views: {
+                                          'addarticleView':{
+                                            templateUrl: "/templates/blog/addarticle.html",
+                                            controller:'addarticlesCtrl'
+                                          }
+                                        },
+                                        resolve:{
+                                          categories:  function(articlescategoryService){
+                                            return articlescategoryService.fetchCategories();
+                                          }
+                                        }
+                                      })
+                                        
                                       .state('/.articles.articles.edit', {
                                         url: "/edit/:id",
                                         // data:{'articlesTabs':'articles'},
                                         views: {
-                                          'editarticlesView':{
-                                            templateUrl: "/templates/blog/editarticles.html",
+                                          'editarticleView':{
+                                            templateUrl: "/templates/blog/editarticle.html",
                                             controller:'editarticlesCtrl'
                                           }
                                         },
                                         resolve:{
-                                          art:  function(articlesService,$stateParams){
+                                          article:  function(articlesService,$stateParams){
                                             return articlesService.fetchArticle($stateParams.id);
                                           },
-                                          category:  function(articlescategoryService){
+                                          categories:  function(articlescategoryService){
                                             return articlescategoryService.fetchCategories();
                                           }
-                                        },
-                                        onEnter:function($state) {
-                                          $('tr.ligneModif').show();
-                                        },
-                                        onExit:function($state) {
-                                          $('tr.ligne[rel="'+$state.params.id+'"]').show();
-                                          $('tr.ligneModif').hide();
                                         }
                                       })
                                       .state('/.articles.articles.editimage', {
@@ -154,17 +158,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                         // data:{'articlesTabs':'articles'},
                                         views: {
                                           'editimagesarticlesView':{
-                                            templateUrl: "/templates/blog/editimages.html",
+                                            templateUrl: "/templates/blog/editimagearticle.html",
                                             controller:'editimagearticlesCtrl'
-                                          }
+                                          },
                                         },
-                                        onEnter:function($state) {
-                                          $('tr.ligneModif').show();
-                                        },
-                                        onExit:function($state) {
-                                          $('tr.ligne[rel="'+$state.params.id+'"]').show();
-                                          $('tr.ligneModif').hide();
+                                        resolve:{
+                                            article:  function(articlesService,$stateParams){
+                                              console.log('editimage ->article');
+
+                                              return articlesService.fetchArticle($stateParams.id);
+                                            }
                                         }
+                                        
                                       })
 
 
@@ -225,13 +230,19 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                       })
 
 
-                        .state('/.articles.comments', {
-                          url: "/comments",
-                          data:{'articlesTabs':'comments'},
+                        .state('/.articles.coments', {
+                          url: "/coments",
+                          data:{'articlesTabs':'coments'},
                           views: {
-                            'commentsView':{
-                              templateUrl: "/templates/blog/comments.html"
-
+                            'comentsView':{
+                              templateUrl: "/templates/blog/coments.html",
+                              controller:'comentsCtrl',
+                              resolve:{
+                                coments : function(comentsService) {
+                                  console.log('resolve');
+                                  return comentsService.fetchComents();
+                                }
+                              }
                             }
                           }
                         })

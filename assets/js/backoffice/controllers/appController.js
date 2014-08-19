@@ -5,6 +5,7 @@ function appCtrl($scope,configService,$state) {
 	$scope.articlestabs=configService.articlestabs;
 	$scope.projectstabs=configService.projectstabs;
 	
+	moment.locale('fr');
 
 
 	$scope.articleResizeImageSteps= configService.frontConfig.imageResize.articleCategory;
@@ -40,25 +41,10 @@ function appCtrl($scope,configService,$state) {
 		if(toState.name === "/.articles.category")
 		{
 			$('.modal-backdrop').remove();
-			// console.log('editstate');
-			// $('.editModal').modal('show');
-			// var $MyModal = $('.editModal');
-			// $('.editModal').on('hide.bs.modal',function(e) {
-			// 		$state.go('/.articles.category');
-			// });
-
-			// $scope.$on('$viewContentLoaded', function(e) {
-				
-			// 	console.log($MyModal.length);
-			// 	if($MyModal.length==0)
-			// 	{
-			// 		$('.editModal').modal('show');
-			// 		$('.editModal').on('hide.bs.modal',function(e) {
-			// 			$state.go('/.articles.category');
-			// 		});
-			// 	}
-				
-			// });
+		}
+		if(toState.name === "/.articles.articles")
+		{
+			$('.modal-backdrop').remove();
 		}
 		// // console.log(fromState.name);
 		if(fromState.name === "/.articles.category.editimage")

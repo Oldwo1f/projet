@@ -30,6 +30,9 @@ var jsFilesToInject = [
 
   'bower_components/jquery.js',
   'bower_components/bootstrap.js',
+  'bower_components/moment.js',
+  'bower_components/moment-fr.js',
+  'bower_components/marked.js',
   'bower_components/angular-file-upload-shim.js',
   'bower_components/angular.js',
   'bower_components/angular-animate.js',
@@ -41,6 +44,9 @@ var jsFilesToInject = [
   'bower_components/angular-file-upload.js',
   'bower_components/ng-table.js',
   'bower_components/angular-loading-bar.js',
+  'bower_components/datetimepicker.js',
+  'bower_components/datetimepicker.js',
+  'bower_components/markdown_preview.js',
 
   // 'js/dependencies/**/*.js',
 
