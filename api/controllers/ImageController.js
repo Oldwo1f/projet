@@ -161,6 +161,62 @@ console.log(err);
 
 					    		});
 			    			break;
+			    			case 'categoryproject':
+			    				console.log('totototototot');
+			    				CategoryProject.findOne(req.body.itemId).populate('images').exec(function(err,categoryproject) {
+console.log(err);
+					    			
+					    			var lastIndex= -1;
+					    			for( var i in categoryproject.images )
+					    			{
+					    				if(Number(categoryproject.images[i].index) >lastIndex)
+					    					lastIndex = categoryproject.images[i].index;
+					    			}
+					    			img.index = Number(lastIndex+1);
+					   				Image.create(img).exec(function(err,img) {
+					   					console.log(err);
+
+					   					categoryproject.images.add(img.id)
+					   					categoryproject.save();
+						    			return res.json({
+											message: files.length + ' file(s) uploaded successfully!',
+											files: img
+										});
+						    		});
+
+
+
+
+					    		});
+			    			break;
+			    			case 'project':
+			    				console.log('tototototototproject');
+			    				Project.findOne(req.body.itemId).populate('images').exec(function(err,project) {
+console.log(err);
+					    			
+					    			var lastIndex= -1;
+					    			for( var i in project.images )
+					    			{
+					    				if(Number(project.images[i].index) >lastIndex)
+					    					lastIndex = project.images[i].index;
+					    			}
+					    			img.index = Number(lastIndex+1);
+					   				Image.create(img).exec(function(err,img) {
+					   					console.log(err);
+
+					   					project.images.add(img.id)
+					   					project.save();
+						    			return res.json({
+											message: files.length + ' file(s) uploaded successfully!',
+											files: img
+										});
+						    		});
+
+
+
+
+					    		});
+			    			break;
 
 			    		}
 

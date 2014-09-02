@@ -46,7 +46,7 @@ app.factory('configService', ['$http','$q',function ($http,$q) {
     ];
     service.projectstabs=[
     {'title':'Projects','name' :'projects','active':false},
-    {'title' :'Catégories','name' :'projectscategory','active':false},
+    {'title' :'Catégories','name' :'category','active':false},
     ];
 
 

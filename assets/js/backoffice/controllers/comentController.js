@@ -1,7 +1,6 @@
 app.controller('comentsCtrl',['$scope','filterFilter','comentsService','$filter','$state','coments',
 function comentsCtrl($scope,filterFilter,comentsService,$filter,$state,coments) {
 
-console.log('CTRL');
 	$scope.coments= coments;
 	$scope.order='date';
 	$scope.reverse=true;

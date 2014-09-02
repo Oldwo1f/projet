@@ -5,12 +5,12 @@ app.directive('autoFocus', function($timeout) {
         	console.log('LINK AUTOFUCO');
             $timeout(function(){
             	console.log(element);
-            	element[0].value = 'tt';
-            	console.log('delay 1000');
+            	// element[0].value = '';
+            	// console.log('delay 1000');
                 // _element[0]
                  element[0].focus();
                  scope.$apply();
-            }, 3000);
+            }, 1);
         }
     };
 });

@@ -18,11 +18,17 @@ module.exports = {
 		},
   		article: {
 			model: 'article',
+		},
+  		projectcategory: {
+			model: 'categoryProject',
+		},
+  		project: {
+			model: 'project',
 		}
 	},
   	beforeDestroy: function (values, cb) {
   		console.log(values);
-   		Image.findOne(values.where.id).populate('article').populate('articlecategory').exec(function(err,img) {
+   		Image.findOne(values.where.id).populate('article').populate('articlecategory').populate('project').populate('projectcategory').exec(function(err,img) {
 			console.log('-------------------------------------------------------');
 			console.log(img);
 
@@ -64,6 +70,66 @@ module.exports = {
 			        {
 
 				        Article.findOne(img.article.id).populate('images').exec(function(err,res) {
+				        	async.each(res.images, function( image, cb2) {
+
+				        		if(Number(image.index) > Number(img.index))
+				        		{
+				        			image.index = Number(image.index)-1;
+				        			Image.update(image.id,image,function() {
+				        				cb2(null);
+				        			})
+
+				        		}else{
+							    	cb2(null);
+				        		}
+							  
+							}, function(err){
+							    if( err ) {
+							      console.log('A file failed to process');
+							    } else {
+							      	console.log('All files have been processed successfully');
+				        			callback(null)
+
+							    }
+							}); 
+				        });
+
+			        }
+			        else if(img.projectcategory)
+			        {
+			        	console.log(img.projectcategory);
+				        CategoryProject.findOne(img.projectcategory.id).populate('images').exec(function(err,res) {
+				        	console.log('hereeeee');
+				        	console.log(res);
+				        	async.each(res.images, function( image, cb2) {
+
+				        		if(Number(image.index) > Number(img.index))
+				        		{
+				        			image.index = Number(image.index)-1;
+				        			Image.update(image.id,image,function() {
+				        				cb2(null);
+				        			})
+ 
+				        		}else{
+							    	cb2(null);
+				        		}
+							  
+							}, function(err){
+							    if( err ) {
+							      console.log('A file failed to process');
+							    } else {
+							      	console.log('All files have been processed successfully');
+				        			callback(null)
+
+							    }
+							});
+				        });
+
+			        }else
+			        if(img.project)
+			        {
+
+				        Project.findOne(img.project.id).populate('images').exec(function(err,res) {
 				        	async.each(res.images, function( image, cb2) {
 
 				        		if(Number(image.index) > Number(img.index))

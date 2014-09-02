@@ -55,31 +55,76 @@ app.config(function($stateProvider, $urlRouterProvider) {
             	}
             }
           })
+          /////////////////////////////////////////////////////////////////////////////////////PROJECTS
           .state('/.projects', {
             url: "projects",
             data:{'mainTabs':'projects'},
             views: {
               'projetsView':{
-                templateUrl: "/templates/project/allprojects.html"
+                templateUrl: "/templates/project/main.html"
 
               }
             }
           })
-                       .state('/.projects.projectscategory', {
+                       .state('/.projects.category', {
                           url: "/category",
                           data:{'projectsTabs':'category'},
                           views: {
-                            'projectscategoryView':{
+                            'categoryView':{
                               templateUrl: "/templates/project/projectscategory.html",
-                              // controller:'projetscategoryCtrl',
-                              // resolve:{
-                              //   categories : function(articlescategoryService) {
-                              //     return articlescategoryService.fetchCategories();
-                              //   }
-                              // }
+                              controller:'projectscategoryCtrl',
+                              data:{'projectsTabs':'category'},
+                              resolve:{
+                                categories : function(projectscategoryService) {
+                                  console.log('resolve projectscategoryService');
+                                  return projectscategoryService.fetchCategories();
+                                }
+                              }
                             }
                           }
                         })
+                                          .state('/.projects.category.add', {
+                                        url: "/add",
+                                        views: {
+                                          'addprojectscategoryView':{
+                                            templateUrl: "/templates/project/addprojectscategory.html",
+                                            controller:'addprojectscategoryCtrl'
+                                          }
+                                        }
+                                        
+                                      }).state('/.projects.category.edit', {
+                                        url: "/edit/:id",
+                                        views: {
+                                          'editprojectscategoryView':{
+                                            templateUrl: "/templates/project/editprojectscategory.html",
+                                            controller:'editprojectscategoryCtrl',
+                                            resolve:{
+                                              category : function(projectscategoryService,$stateParams) {
+                                                console.log('resolveEDitCat');
+                                                return projectscategoryService.fetchCategory($stateParams.id);
+                                              }
+                                            }
+                                          }
+                                        }
+                                        
+                                      })
+                                      .state('/.projects.category.editimage', {
+                                        url: "/editimage/:id",
+                                        // data:{'projectsTabs':'projects'},
+                                        views: {
+                                          'editimageprojectscategoryView':{
+                                            templateUrl: "/templates/project/editimageprojectscategory.html",
+                                            controller:'editimageprojectscategoryCtrl',
+                                            resolve:{
+                                              category : function(projectscategoryService,$stateParams) {
+                                                return projectscategoryService.fetchCategory($stateParams.id);
+                                              }
+                                            }
+                                          }
+                                        }
+                                      })
+
+
                        .state('/.projects.projects', {
                           url: "/projects",
                           data:{'projectsTabs':'projects'},
@@ -87,15 +132,70 @@ app.config(function($stateProvider, $urlRouterProvider) {
                             'projectsView':{
                               templateUrl: "/templates/project/projects.html",
                               controller:'projectsCtrl',
-                              // resolve:{
-                              //   categories : function(articlescategoryService) {
-                              //     return articlescategoryService.fetchCategories();
-                              //   }
-                              // }
+                              resolve:{
+                                projects : function(projectsService) {
+                                  return projectsService.fetchProjects();
+                                }
+                              }
                             }
                           }
                         })
+                                      .state('/.projects.projects.add', {
+                                        url: "/add",
+                                        views: {
+                                          'addprojectView':{
+                                            templateUrl: "/templates/project/addproject.html",
+                                            controller:'addprojectsCtrl'
+                                          }
+                                        },
+                                        resolve:{
+                                          categories:  function(projectscategoryService){
+                                            console.log('resolve');
+                                            // return ['test'];
+                                            return projectscategoryService.fetchCategories();
+                                          }
+                                        }
+                                      })
+                                        
+                                      .state('/.projects.projects.edit', {
+                                        url: "/edit/:id",
+                                        // data:{'projectsTabs':'projects'},
+                                        views: {
+                                          'editprojectView':{
+                                            templateUrl: "/templates/project/editproject.html",
+                                            controller:'editprojectsCtrl'
+                                          }
+                                        },
+                                        resolve:{
+                                          categories:  function(projectscategoryService){
+                                            console.log('esolve project editCat');
+                                            return projectscategoryService.fetchCategories();
+                                          },
+                                          project:  function(projectsService,$stateParams){
+                                            console.log('esolve project edit');
+                                            return projectsService.fetchProject($stateParams.id);
+                                          }
+                                        }
+                                      })
+                                      .state('/.projects.projects.editimage', {
+                                        url: "/editimage/:id",
+                                        // data:{'projectsTabs':'projects'},
+                                        views: {
+                                          'editimagesprojectsView':{
+                                            templateUrl: "/templates/project/editimageproject.html",
+                                            controller:'editimageprojectsCtrl'
+                                          },
+                                        },
+                                        resolve:{
+                                            project:  function(projectsService,$stateParams){
+                                              console.log('editimage ->project');
 
+                                              return projectsService.fetchProject($stateParams.id);
+                                            }
+                                        }
+                                        
+                                      })
+          /////////////////////////////////////////////////////////////////////////////////////ARTICLES
           .state('/.articles', {
             url: "articles",
             data:{'mainTabs':'articles'},

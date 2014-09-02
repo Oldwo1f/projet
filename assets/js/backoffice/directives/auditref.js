@@ -18,7 +18,7 @@ app.directive('auditref', function(){
         '<li>'+
         '<span class="label label-lg label-success" ng-show="auditContent()==0"><label for="">Parfait! Tous vos titre comporte des mots clefs</label></span>'+
         '<span class="label label-lg label-success" ng-show="auditContent()==3"><label for="">Il manque des mots clefs dans certain titre({{ keywordInTitle }} / {{nbTitle}})</label></span>'+
-        '<span class="label label-lg label-warning" ng-show="auditContent()==2"><label for="">Aucun mots clef dans vos titre</label></span>'+
+        '<span class="label label-lg label-danger" ng-show="auditContent()==2"><label for="">Aucun mots clef dans vos titre</label></span>'+
         '<span class="label label-lg label-danger" ng-show="auditContent()==1"><label for="">Ne pas utilisé de titre de rang 1</label></span>'+
         '</li>'+
         '<li>'+
@@ -34,7 +34,7 @@ app.directive('auditref', function(){
         '<li>'+
         '<span class="label label-lg label-success" ng-show="auditMetaDescription()==0"><label for="">Parfait! La balise description est renseignée</label></span>'+
         '<span class="label label-lg label-warning" ng-show="auditMetaDescription()==2"><label for="">La balise description est trop courte</label></span>'+
-        '<span class="label label-lg label-warning" ng-show="auditMetaDescription()==1"><label for="">La balise description est vide</label></span>'+
+        '<span class="label label-lg label-danger" ng-show="auditMetaDescription()==1"><label for="">La balise description est vide</label></span>'+
         '</li>'+
         '</ul></div>'+
         '<div class="col col-sm-6 nopadding"><h4>Petit plus</h4><ul class="listAudit">'+

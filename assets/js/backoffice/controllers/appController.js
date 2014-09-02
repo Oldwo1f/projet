@@ -38,6 +38,17 @@ function appCtrl($scope,configService,$state) {
 				}
 			};
 		}
+		if(toState.data.mainTabs === "projects")
+		{
+			for (var i = $scope.projectstabs.length - 1; i >= 0; i--) {
+				if(typeof toState.data != "undefined"){
+					if($scope.projectstabs[i]['name']===toState.data.projectsTabs)
+		    			$scope.projectstabs[i].active = true
+		    		else	
+		    			$scope.projectstabs[i].active = false
+				}
+			};
+		}
 		if(toState.name === "/.articles.category")
 		{
 			$('.modal-backdrop').remove();
@@ -46,25 +57,26 @@ function appCtrl($scope,configService,$state) {
 		{
 			$('.modal-backdrop').remove();
 		}
-		// // console.log(fromState.name);
 		if(fromState.name === "/.articles.category.editimage")
 		{
 			console.log('here');
-			// $('.modal-backdrop').remove();
-			// $('.editModal').on('hide.bs.modal',function(e) {
-				
-			// });
-			// $('.editModal').modal('hide');
-			// $scope.$on('$viewContentLoaded', function(e) {
-			// 	$('.editModal').on('hide.bs.modal',function(e) {
-				
-			// 	});
-			// 	$('.editModal').modal('hide');
-			// });
+			
+		}
+		if(toState.name === "/.projects.category")
+		{
+			$('.modal-backdrop').remove();
+		}
+		if(toState.name === "/.projects.projects")
+		{
+			$('.modal-backdrop').remove();
+		}
+		if(fromState.name === "/.projects.category.editimage")
+		{
+			console.log('here');
+			
 		}
 
 		
-	    // if(toState.url)
 	})
 	
 	

@@ -12,8 +12,8 @@ app.directive('inputcount', function($compile) {
         $input = $(element)
         $input.after($compile('<div class="inlinecountdown">{{remaining}}</div>')(scope));
         $input.on('input propertychange',function(e) {
-          scope.$parent.$digest();
-          scope.$digest();
+          // scope.$parent.$digest();
+          // scope.$digest();
             scope.model = $(this).val()
             scope.remaining = scope.maxChar - scope.model.length;
             if(scope.remaining <= 0)
