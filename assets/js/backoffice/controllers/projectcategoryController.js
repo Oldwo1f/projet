@@ -87,6 +87,7 @@ function editprojectscategoryCtrl($scope,$stateParams,filterFilter,projectscateg
 app.controller('editimageprojectscategoryCtrl',['$scope','$stateParams','filterFilter','projectscategoryService','$state','$filter','category',
 function editimageprojectscategoryCtrl($scope,$stateParams,filterFilter,projectscategoryService ,$state,$filter,category) {
 	
+	$scope.resizeStep = $scope.resizeConfig.projectCategory;
 	$('.editimageModal').modal();
 	$('.editimageModal').on('hidden.bs.modal',function(e) {
 		$state.go('/.projects.category');

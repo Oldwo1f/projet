@@ -22,17 +22,17 @@ function getIndexInBy(arr,property,value) {
 };
 
 app.config(function($stateProvider, $urlRouterProvider) {
-  //
-  // For any unmatched url, redirect to /state1
+
   $urlRouterProvider.when('/articles',"/articles/articles");
   $urlRouterProvider.when('/projects',"/projects/projects");
+  $urlRouterProvider.when('/galery',"/galery/home");
   $urlRouterProvider.otherwise("/dashboard");
-  //
+  
   // Now set up the states
   $stateProvider
     .state('/', {
       url: "/",
-      templateUrl: "/templates/root.html",
+      templateUrl: "/templates/global/root.html",
 
     })
           .state('/.users', {
@@ -49,12 +49,50 @@ app.config(function($stateProvider, $urlRouterProvider) {
             url: "dashboard",
             data:{'mainTabs':'dashboard'},
             views: {
-            	'dashboardView':{
-            		templateUrl: "/templates/dashboard.html"
+              'dashboardView':{
+                templateUrl: "/templates/dashboard.html"
 
-            	}
+              }
             }
           })
+          /////////////////////////////////////////////////////////////////////////////////////goldenbook
+          .state('/.goldenbook', {
+            url: "goldenbook",
+            data:{'mainTabs':'goldenbook'},
+            views: {
+              'goldenbookView':{
+                templateUrl: "/templates/goldenbook/main.html"
+
+              }
+            }
+          })
+          /////////////////////////////////////////////////////////////////////////////////////SLIDER IMAGES
+          .state('/.galery', {
+            url: "galery",
+            data:{'mainTabs':'galery'},
+            views: {
+              'galeryView':{
+                templateUrl: "/templates/galery/main.html"
+
+              }
+            }
+          })
+                            .state('/.galery.home', {
+                              url: "/home",
+                              views: {
+                              	'homeView':{
+                              		templateUrl: "/templates/galery/home.html",
+                                  controller:'galeryCtrl',
+                                  resolve:{
+                                    galery : function(galeryService) {
+                                      console.log('resolve galeryService');
+                                      // return ['tototototototot'];
+                                      return galeryService.fetchGalery('5406c79fa015780c3c2e40de');
+                                    }
+                                  }
+                              	}
+                              }
+                            })
           /////////////////////////////////////////////////////////////////////////////////////PROJECTS
           .state('/.projects', {
             url: "projects",

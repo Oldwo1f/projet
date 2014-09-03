@@ -87,6 +87,8 @@ function editarticlescategoryCtrl($scope,$stateParams,filterFilter,articlescateg
 app.controller('editimagearticlescategoryCtrl',['$scope','$stateParams','filterFilter','articlescategoryService','$state','$filter','category',
 function editimagearticlescategoryCtrl($scope,$stateParams,filterFilter,articlescategoryService ,$state,$filter,category) {
 	
+	$scope.resizeStep = $scope.resizeConfig.articleCategory;
+
 	$('.editimageModal').modal();
 	$('.editimageModal').on('hidden.bs.modal',function(e) {
 		$state.go('/.articles.category');

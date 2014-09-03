@@ -191,6 +191,9 @@ function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$sta
 app.controller('editimagearticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','$state','$filter','article',
 function editimagearticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$state,$filter,article) {
 	
+
+
+	$scope.resizeStep = $scope.resizeConfig.article;
 	$('.editimageModal').modal();
 	$('.editimageModal').on('hidden.bs.modal',function(e) {
 		$state.go('/.articles.articles');

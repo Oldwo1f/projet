@@ -195,6 +195,7 @@ function editprojectsCtrl($scope,$stateParams,filterFilter,projectsService ,$sta
 app.controller('editimageprojectsCtrl',['$scope','$stateParams','filterFilter','projectsService','$state','$filter','project',
 function editimageprojectsCtrl($scope,$stateParams,filterFilter,projectsService ,$state,$filter,project) {
     
+    $scope.resizeStep = $scope.resizeConfig.project;
     $('.editimageModal').modal();
     $('.editimageModal').on('hidden.bs.modal',function(e) {
         $state.go('/.projects.projects');

@@ -24,6 +24,9 @@ module.exports = {
 		},
   		project: {
 			model: 'project',
+		},
+  		galery: {
+			model: 'galery',
 		}
 	},
   	beforeDestroy: function (values, cb) {
@@ -154,6 +157,38 @@ module.exports = {
 							});
 				        });
 
+			        }else
+			        if(img.galery) 
+			        {
+
+			        	console.log('-------------------------------------------------img.galery');
+			        	console.log(img.galery);
+				        Galery.findOne(img.galery).populate('images').exec(function(err,res) {
+				        	console.log(res);
+				        	async.each(res.images, function(image, cb2) {
+
+				        		if(Number(image.index) > Number(img.index))
+				        		{
+				        			image.index = Number(image.index)-1;
+				        			Image.update(image.id,image,function() {
+				        				cb2(null);
+				        			})
+
+				        		}else{
+							    	cb2(null);
+				        		}
+							  
+							}, function(err){
+							    if( err ) {
+							      console.log('A file failed to process');
+							    } else {
+							      	console.log('All files have been processed successfully');
+				        			callback(null)
+
+							    }
+							});
+				        });
+
 			        }
 
 
@@ -186,6 +221,14 @@ module.exports = {
 			    function(callback){
 					try{
 			            fs.unlink('uploads/'+img.filename)
+			        }catch(e){
+
+			        }
+			        callback(null)
+			    },
+			    function(callback){
+					try{
+			            fs.unlink('uploads/homeSlider/'+img.filename)
 			        }catch(e){
 
 			        }

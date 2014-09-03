@@ -106,9 +106,7 @@ module.exports = {
 			    		switch(req.body.itemType){
 
 			    			case 'categoryarticle':
-			    				console.log('totototototot');
 			    				CategoryArticle.findOne(req.body.itemId).populate('images').exec(function(err,categoryarticle) {
-console.log(err);
 					    			
 					    			var lastIndex= -1;
 					    			for( var i in categoryarticle.images )
@@ -134,9 +132,7 @@ console.log(err);
 					    		});
 			    			break;
 			    			case 'article':
-			    				console.log('tototototototarticle');
 			    				Article.findOne(req.body.itemId).populate('images').exec(function(err,article) {
-console.log(err);
 					    			
 					    			var lastIndex= -1;
 					    			for( var i in article.images )
@@ -162,9 +158,7 @@ console.log(err);
 					    		});
 			    			break;
 			    			case 'categoryproject':
-			    				console.log('totototototot');
 			    				CategoryProject.findOne(req.body.itemId).populate('images').exec(function(err,categoryproject) {
-console.log(err);
 					    			
 					    			var lastIndex= -1;
 					    			for( var i in categoryproject.images )
@@ -190,9 +184,7 @@ console.log(err);
 					    		});
 			    			break;
 			    			case 'project':
-			    				console.log('tototototototproject');
 			    				Project.findOne(req.body.itemId).populate('images').exec(function(err,project) {
-console.log(err);
 					    			
 					    			var lastIndex= -1;
 					    			for( var i in project.images )
@@ -206,6 +198,33 @@ console.log(err);
 
 					   					project.images.add(img.id)
 					   					project.save();
+						    			return res.json({
+											message: files.length + ' file(s) uploaded successfully!',
+											files: img
+										});
+						    		});
+
+
+
+
+					    		});
+			    			break;
+			    			case 'galery':
+			    				Galery.findOne(req.body.itemId).populate('images').exec(function(err,galery) {
+console.log(err);
+					    			
+					    			var lastIndex= -1;
+					    			for( var i in galery.images )
+					    			{
+					    				if(Number(galery.images[i].index) >lastIndex)
+					    					lastIndex = galery.images[i].index;
+					    			}
+					    			img.index = Number(lastIndex+1);
+					   				Image.create(img).exec(function(err,img) {
+					   					console.log(err);
+
+					   					galery.images.add(img.id)
+					   					galery.save();
 						    			return res.json({
 											message: files.length + ' file(s) uploaded successfully!',
 											files: img

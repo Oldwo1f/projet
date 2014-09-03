@@ -4,11 +4,12 @@ function appCtrl($scope,configService,$state) {
 	$scope.maintabs=configService.maintabs;
 	$scope.articlestabs=configService.articlestabs;
 	$scope.projectstabs=configService.projectstabs;
-	
+	$scope.galerytabs=configService.galerytabs;
+	$scope.resizeConfig=configService.frontConfig.imageResize;
 	moment.locale('fr');
 
 
-	$scope.articleResizeImageSteps= configService.frontConfig.imageResize.articleCategory;
+	// $scope.articleResizeImageSteps= configService.frontConfig.imageResize.articleCategory;
 
 	console.log($scope.articleResizeImageSteps);
 
