@@ -34,15 +34,15 @@
 	</thead>
 	<tbody >
 		
-	    <tr ng-repeat="coment in coments | filter:comentfilter | filter:getCat | orderBy:sortFunction:reverse " class="animate-repeat ligne" rel="{{coment.id}}"  >
+	    <tr ng-repeat="goldenbook in goldenbooks | filter:goldenbookfilter | filter:getCat | orderBy:sortFunction:reverse " class="animate-repeat ligne" rel="{{goldenbook.id}}"  >
 	    		<td >
-	    			<input type="checkbox" ng-model="coment.checked" >
+	    			<input type="checkbox" ng-model="goldenbook.checked" >
 	    		</td>
-		    	<td ng-dblClick="linkedit(coment.id)" class='pointer'>{{coment.author}}</td>
-		    	<td ng-dblClick="linkedit(coment.id)" class='pointer'>{{coment.content}}</td>
-		    	<td ng-dblClick="linkedit(coment.id)" class='pointer'>{{coment.createdAt | date:'dd MMMM'}}</td>
+		    	<td  class='pointer'>{{goldenbook.author}}</td>
+		    	<td  class='pointer'>{{goldenbook.content}}</td>
+		    	<td  class='pointer'>{{goldenbook.createdAt | date:'dd MMMM'}}</td>
 		    	<td  class='pointer' >
-		    		<span class="label" ng-class="{'label-success': coment.status==='actif','label-warning': coment.status==='inactif','label-info': coment.status==='new'}"><label >{{coment.status}}</label></span>
+		    		<span class="label" ng-class="{'label-success': goldenbook.status==='actif','label-warning': goldenbook.status==='inactif','label-info': goldenbook.status==='new'}"><label >{{goldenbook.status}}</label></span>
 		    	</td>
 	    	
 	    </tr>

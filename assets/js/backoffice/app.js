@@ -61,8 +61,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
             data:{'mainTabs':'goldenbook'},
             views: {
               'goldenbookView':{
-                templateUrl: "/templates/goldenbook/main.html"
-
+                templateUrl: "/templates/goldenbook/main.html",
+                controller:'goldenbookCtrl',
+                resolve:{
+                  goldenbooks : function(goldenbookService) {
+                    console.log('resolve gBook');
+                    return goldenbookService.fetchGoldenbooks();
+                  }
+                }
               }
             }
           })
