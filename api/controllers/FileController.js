@@ -27,8 +27,6 @@ module.exports = {
 	    readStream.pipe(res);
 
 
-		// res.pipe()
-
 	}
 };
 

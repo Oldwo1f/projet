@@ -1,6 +1,6 @@
 <div ng-app="app" ng-controller="appCtrl" id="app">
 	
-<nav class="navbar navbar-default" role="navigation">
+<nav class="navbar navbar-default" role="navigation" ng-hide="navbarOff">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -19,17 +19,19 @@
         
         </ul>
       <ul class="nav navbar-nav navbar-right">
-        <li ><a ui-sref="contact">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+        <li ng-show="me.email" style="cursor:auto"><span >Connecté en tant que </span></li>
+        <li ng-show="me.email" ><a ng-click="logout()" style="padding-left:0px; text-decoration:underline">{{me.email}}</a></li>
+        <!-- <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{me.email}} <span class="caret"></span></a>
           <ul class="dropdown-menu" role="menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
+            <li><a href="#">Mon compte</a></li>
             <li class="divider"></li>
-            <li><a href="#">Separated link</a></li>
+            <li ><a ng-click="logout()">Logout</a></li>
+
           </ul>
-        </li>
+        </li> -->
+        <li ><a ng-click="logout()">Logout</a></li>
+
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

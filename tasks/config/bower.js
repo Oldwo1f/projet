@@ -39,6 +39,7 @@ console.log('tototo');
                 'datetimepicker.css': 'angular-bootstrap-datetimepicker/src/css/datetimepicker.css',
                 'markdown_preview.js': 'angular-markdown-preview/markdown_preview.js',
                 'marked.js': '../node_modules/marked/lib/marked.js',
+                'satellizer.js': 'satellizer/satellizer.js',
             },
         }, 
         fonts: {

@@ -1,5 +1,5 @@
-app.controller('appCtrl',['$scope','configService','$state',
-function appCtrl($scope,configService,$state) {
+app.controller('appCtrl',['$scope','configService','$state','$location','$auth','accountService',
+function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 
 	$scope.maintabs=configService.maintabs;
 	$scope.articlestabs=configService.articlestabs;
@@ -7,16 +7,73 @@ function appCtrl($scope,configService,$state) {
 	$scope.galerytabs=configService.galerytabs;
 	$scope.resizeConfig=configService.frontConfig.imageResize;
 	moment.locale('fr');
+	$scope.navbarOff=false;
 
+	accountService.getProfile().then(function(data) {
+		console.log('THEN');
+		console.log(data);
+		$scope.me = data;
+	});
+	console.log($scope.me);
 
 	// $scope.articleResizeImageSteps= configService.frontConfig.imageResize.articleCategory;
+	$scope.logout=function() {
+		$auth.logout();
+	};
+	// console.log($scope.articleResizeImageSteps);
 
-	console.log($scope.articleResizeImageSteps);
+	$scope.$on("$stateChangeStart", 
+    function (event, toState, toParams, 
+              fromState, fromParams) {
+    	// $location.path("/login"); 
 
+    	$scope.navbarOff=false;
+		if(toState.name === "/login"){
+			$scope.navbarOff=true;
+		}
+		// return false;
+
+    	console.log(toState);
+    	console.log('STATECHANGE START');
+    // $scope.$apply(function() { 
+    // });
+    console.log($auth.isAuthenticated());
+    // $auth.logout()
+	if($auth.isAuthenticated())
+	{
+		if(toState.name === "/")
+				$location.path('/dashboard')
+		return true;
+	}else
+	{
+		$scope.navbarOff=true;
+		// $state.go('/login');
+		$location.path('/login')
+		return false
+	}
+    // if (!Auth.authorize(toState.data.access)) {
+    //     $rootScope.error = "Access denied";
+    //     event.preventDefault();
+    //     console.log('UNOTHORIZE');
+    //     if(fromState.url === '^') {
+    //         if(Auth.isLoggedIn())
+    //             $state.go('user.home');
+    //         else {
+    //             $rootScope.error = null;
+    //             $state.go('anon.login');
+    //         }
+    //     }
+    // }
+});
 
 	$scope.$on('$stateChangeSuccess', 
 	function(event, toState, toParams, fromState, fromParams){
 		console.log(toState);
+		$scope.navbarOff=false;
+		if(toState.name === "/login"){
+			$scope.navbarOff=true;
+			return true;
+		}
 		// console.log(toParams);
 		var deep = toState.url.split('/');
 		for (var i = $scope.maintabs.length - 1; i >= 0; i--) {
@@ -27,6 +84,8 @@ function appCtrl($scope,configService,$state) {
 	    			$scope.maintabs[i].active = false
 			}
 		};
+		if(typeof(toState.data)==='undefined')
+			return true
 		if(toState.data.mainTabs === "articles")
 		{
 				console.log('-----------------------------------------');
@@ -73,7 +132,7 @@ function appCtrl($scope,configService,$state) {
 		}
 		if(fromState.name === "/.projects.category.editimage")
 		{
-			console.log('here');
+			// console.log('here');
 			
 		}
 

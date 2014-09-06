@@ -19,6 +19,10 @@ module.exports = {
 
 		return res.view('homepage');
 	},
+	login:function(req,res) {
+		res.locals.layout = 'layout';
+		return res.view('login');
+	},
 	vid:function(req,res) {
 		res.locals.layout = '';
 

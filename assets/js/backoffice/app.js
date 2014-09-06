@@ -1,4 +1,4 @@
-var app = angular.module('app', ['markdownpreview','ngLocale','ui.router','clientresize','ui.bootstrap','ngAnimate','ui.bootstrap.datetimepicker','ui.sortable','ngTable','angular-loading-bar']);
+var app = angular.module('app', ['satellizer','markdownpreview','ngLocale','ui.router','clientresize','ui.bootstrap','ngAnimate','ui.bootstrap.datetimepicker','ui.sortable','ngTable','angular-loading-bar']);
 
 
 app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
@@ -21,19 +21,66 @@ function getIndexInBy(arr,property,value) {
   }
 };
 
+app.config(function($authProvider) {
+
+    // $authProvider.facebook({
+    //   clientId: '624059410963642',
+    // });
+
+    // $authProvider.google({
+    //   clientId: '631036554609-v5hm2amv4pvico3asfi97f54sc51ji4o.apps.googleusercontent.com'
+    // });
+
+    // $authProvider.github({
+    //   clientId: '0ba2600b1dbdb756688b'
+    // });
+
+    // $authProvider.linkedin({
+    //   clientId: '77cw786yignpzj'
+    // });
+
+    // $authProvider.twitter({
+    //   url: '/auth/twitter'
+    // });
+
+    // $authProvider.oauth2({
+    //   name: 'foursquare',
+    //   url: '/auth/foursquare',
+    //   redirectUri: window.location.origin,
+    //   clientId: 'MTCEJ3NGW2PNNB31WOSBFDSAD4MTHYVAZ1UKIULXZ2CVFC2K',
+    //   authorizationEndpoint: 'https://foursquare.com/oauth2/authenticate',
+    // });
+
+  });
+
+
 app.config(function($stateProvider, $urlRouterProvider) {
 
   $urlRouterProvider.when('/articles',"/articles/articles");
   $urlRouterProvider.when('/projects',"/projects/projects");
   $urlRouterProvider.when('/galery',"/galery/home");
-  $urlRouterProvider.otherwise("/dashboard");
+  // $urlRouterProvider.when('/',"/dashboard");
+  // $urlRouterProvider.when('/login',"../");
+  $urlRouterProvider.otherwise("/");
   
   // Now set up the states
   $stateProvider
+    .state('/login', {
+      url: "/login",
+      templateUrl: "/templates/global/login.html",
+      controller:'loginCtrl'
+    })
     .state('/', {
       url: "/",
       templateUrl: "/templates/global/root.html",
-
+      resolve: {
+          // authenticated: ['$location', '$auth', function($location, $auth) {
+            // if (!$auth.isAuthenticated()) {
+            //   console.log('NOT LOGGED');
+            //   return $location.path('/login');
+            // }
+          // }]
+        }
     })
           .state('/.users', {
             url: "users",
@@ -43,7 +90,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
             		templateUrl: "/templates/users.html"
 
             	}
-            }
+            },
+            // resolve: {
+            //   authenticated: ['$location', '$auth', function($location, $auth) {
+            //     if (!$auth.isAuthenticated()) {
+            //       return $location.path('/toototo');
+            //     }
+            //   }]
+            // }
           })
           .state('/.dashboard', {
             url: "dashboard",
