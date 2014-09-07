@@ -14,13 +14,14 @@ var routes={
   '/login': 'BackofficeController.login',
   '/home': 'BackofficeController.home',
   '/vid': 'BackofficeController.vid',
-  '/dashboard': 'BackofficeController.dashboard',
-  '/contact': 'BackofficeController.contact',
+  // '/dashboard': 'BackofficeController.dashboard',
+  // '/contact': 'BackofficeController.contact',
   '/file/image/:size/:name': 'FileController.image',
   
   '/auth/login': 'UserController.login',
   '/api/me': 'UserController.getMe',
   'put /api/me': 'UserController.getMe',
+  'post /user' : 'UserController.add',
 
 };
 routes = extend(routes, frontroutes); 

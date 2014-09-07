@@ -1,20 +1,18 @@
-app.controller('loginCtrl', function($scope, $auth) {
+app.controller('loginCtrl',['$scope', '$auth','accountService', function($scope, $auth,accountService) {
   $scope.errormessage='';
     $scope.login = function() {
       console.log('LOGINCTRL LOGIN');
       $auth.login({ email: $scope.email, password: $scope.password })
         .then(function() {
           console.log('successLogin');
-          // $alert({
-          //   content: 'You have successfully logged in',
-          //   animation: 'fadeZoomFadeDown',
-          //   type: 'material',
-          //   duration: 3
-          // });
+          accountService.getProfile().then(function(data) {
+            // $scope.$parent.me = data;
+          });
         })
         .catch(function(response) {
           $scope.errormessage=response.data.message;
 
+          console.log(response);
           console.log($scope.errormessage);
         });
     };
@@ -40,4 +38,4 @@ app.controller('loginCtrl', function($scope, $auth) {
           // });
         });
     };
-  });
+  }]);

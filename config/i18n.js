@@ -13,6 +13,8 @@
 module.exports.i18n = {
 
   // Which locales are supported?
-  locales: ['fr','en']
+  locales: ['fr','en'],
+  defaultLocale: 'fr',
+  updateFiles:true
 
 };

@@ -1,4 +1,4 @@
-var app = angular.module('app', ['satellizer','markdownpreview','ngLocale','ui.router','clientresize','ui.bootstrap','ngAnimate','ui.bootstrap.datetimepicker','ui.sortable','ngTable','angular-loading-bar']);
+var app = angular.module('app', ['satellizer','markdownpreview','ngLocale','ui.router','clientresize','ui.bootstrap','ngAnimate','ui.bootstrap.datetimepicker','ui.sortable','angular-loading-bar']);
 
 
 app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
@@ -59,6 +59,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.when('/articles',"/articles/articles");
   $urlRouterProvider.when('/projects',"/projects/projects");
   $urlRouterProvider.when('/galery',"/galery/home");
+  $urlRouterProvider.when('/users',"/users/user");
   // $urlRouterProvider.when('/',"/dashboard");
   // $urlRouterProvider.when('/login',"../");
   $urlRouterProvider.otherwise("/");
@@ -87,7 +88,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             data:{'mainTabs':'users'},
             views: {
             	'usersView':{
-            		templateUrl: "/templates/users.html"
+            		templateUrl: "/templates/user/main.html"
 
             	}
             },
@@ -97,8 +98,66 @@ app.config(function($stateProvider, $urlRouterProvider) {
             //       return $location.path('/toototo');
             //     }
             //   }]
-            // }
-          })
+            })
+                       .state('/.users.user', {
+                          url: "/user",
+                          data:{'usersTabs':'user'},
+                          views: {
+                            'userView':{
+                              templateUrl: "/templates/user/user.html",
+                              controller:'usersCtrl',
+                              data:{'usersTabs':'user'},
+                              resolve:{
+                                users : function(userService) {
+                                  console.log('resolve users');
+                                  return userService.fetchUsers();
+                                }
+                              }
+                            }
+                          }
+                        })
+                                      .state('/.users.user.add', {
+                                        url: "/add",
+                                        views: {
+                                          'adduserView':{
+                                            templateUrl: "/templates/user/adduser.html",
+                                            controller:'adduserCtrl'
+                                          }
+                                        }
+                                      })
+                                      .state('/.users.user.edit', {
+                                        url: "/edit/:id",
+                                        views: {
+                                          'edituserView':{
+                                            templateUrl: "/templates/user/edituser.html",
+                                            controller:'edituserCtrl',
+                                            resolve:{
+                                              user : function(userService,$stateParams) {
+                                                console.log('resolveEDitCat');
+                                                return userService.fetchUser($stateParams.id);
+                                              }
+                                            }
+                                          }
+                                        }
+                                      })
+                                      // .state('/.projects.category.editimage', {
+                                      //   url: "/editimage/:id",
+                                      //   // data:{'projectsTabs':'projects'},
+                                      //   views: {
+                                      //     'editimageprojectscategoryView':{
+                                      //       templateUrl: "/templates/project/editimageprojectscategory.html",
+                                      //       controller:'editimageprojectscategoryCtrl',
+                                      //       resolve:{
+                                      //         category : function(projectscategoryService,$stateParams) {
+                                      //           return projectscategoryService.fetchCategory($stateParams.id);
+                                      //         }
+                                      //       }
+                                      //     }
+                                      //   }
+                                      // })
+
+
+                                      // })
           .state('/.dashboard', {
             url: "dashboard",
             data:{'mainTabs':'dashboard'},

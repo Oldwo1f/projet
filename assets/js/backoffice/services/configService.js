@@ -87,6 +87,10 @@ app.factory('configService', ['$http','$q',function ($http,$q) {
     service.galerytabs=[
     {'title':'Page d\'accueil','name' :'home','active':false},
     ];
+    service.userstabs=[
+    {'title':'Utilisateurs internes','name' :'user','active':false},
+    {'title':'Clients','name' :'client','active':false},
+    ];
 
 
     return service;

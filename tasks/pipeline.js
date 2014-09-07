@@ -42,7 +42,6 @@ var jsFilesToInject = [
   'bower_components/angular-ui-router.js',
   'bower_components/angular-route.js',
   'bower_components/angular-file-upload.js',
-  'bower_components/ng-table.js',
   'bower_components/angular-loading-bar.js',
   'bower_components/datetimepicker.js',
   'bower_components/datetimepicker.js',
@@ -67,7 +66,8 @@ var jsFilesToInject = [
 // templates get spit out to the same file.  Be sure and check out `tasks/README.md`
 // for information on customizing and installing new tasks.
 var templateFilesToInject = [
-  'templates/**/*.html'
+  'templates/**/*.html',
+  'templates/**/*.ejs'
 ];
 
 

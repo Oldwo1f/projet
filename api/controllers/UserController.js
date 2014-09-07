@@ -6,6 +6,9 @@
  */
 var jwt = require('jwt-simple');
 var moment = require('moment');
+// var bcrypt = require('bcryptjs');
+var passgen = require('password-generator');
+var nodemailer = require('nodemailer');
 
 module.exports = {
 
@@ -21,20 +24,20 @@ module.exports = {
 		  return jwt.encode(payload, sails.config.TOKEN_SECRET);
 		}
 		sails.log('<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>00000000000000000000000000000')
-
-		var toto = req.__('Erreur d\'email ou de mots de passe')
-		sails.log(toto)
+		// console.log(req);
+		var errormes = res.__('Erreur d\'email ou de mots de passe');
+		console.log(errormes);
  		User.findOne({ email: req.body.email }).exec(function(err, user) {
  			console.log(user);
  			console.log(err);
 		    if (!user) {
-		      return res.status(401).send({ message: req.__('Erreur d\'email ou de mots de passe')});
+		      return res.status(401).send({ message: errormes});
 		    }
 
 		    user.comparePassword(req.body.password, function(err, isMatch) {
 		    	console.log('hereereererere');
 		      if (!isMatch) {
-		        return res.status(401).send({ message: req.__('Erreur d\'email ou de mots de passe')});
+		        return res.status(401).send({ message: errormes});
 		      }
 		      res.send({ token: createToken(req, user) });
 		      // res.send('COOL');
@@ -51,12 +54,66 @@ module.exports = {
 	    if (!user) {
 	      return res.status(400).send({ message: 'User not found' });
 	    }
-	    user.displayName = req.body.displayName || user.displayName;
+	    user.name = req.body.name || user.name;
 	    user.email = req.body.email || user.email;
 	    user.save(function(err) {
 	      res.status(200).end();
 	    });
 	  });
+	},
+	add:function(req,res) {
+		var user={};
+		user.name = req.body.name ;
+	    user.email = req.body.email;
+	    console.log('CREATING USER');
+	    var salt = passgen();
+	    sails.log(salt)
+	    user.password = salt;
+	    user.password = 'toto';
+	    user.role = 'user';
+
+	    User.create(user).exec(function (err,created){
+		  if(err)
+		  {
+		  	console.log(err);
+		  	res.status(400).send({error:err})
+		  }else{
+
+		  	//ENVOI DU MDP PAR EMAIL
+		  	var transporter = nodemailer.createTransport({
+			    service: 'Gmail',
+			    auth: {
+			        user: 'alexismomcilovic@gmail.com',
+			        pass: 'Alexis09'
+			    }
+			});
+
+			// NB! No need to recreate the transporter object. You can use
+			// the same transporter object for all e-mails
+
+			// setup e-mail data with unicode symbols
+			var mailOptions = {
+			    from: 'NUTRIMARKETING <foo@blurdybloop.com>', // sender address
+			    to: 'alexismomcilovic@gmail.com', // list of receivers
+			    subject: 'Votre mot de passe est arrivé', // Subject line
+			    html: '<p>Voici le mot de passe qui vous servira pour vots premières connexions.</p><p>Pensez à le changer rapidement</p><p><b>mot de passe: '+ salt+'</b></p><p>Cordialement, votre nouvel outil web</p>'// html body
+			};
+
+			// send mail with defined transport object
+			transporter.sendMail(mailOptions, function(error, info){
+			    if(error){
+			        console.log(error);
+			        res.status(200).send(created);
+			    }else{
+			    	res.status(200).send(created);
+			        console.log('Message sent: ' + info.response);
+			    }
+			});
+
+		  	
+		  }
+		});
+
 	}
 	
 };

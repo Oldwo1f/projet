@@ -27,6 +27,8 @@
     "marked": "^0.3.2",
     "moment": "^2.8.3",
     "node.extend": "^1.0.10",
+    "nodemailer": "^1.2.2",
+    "password-generator": "^0.2.2",
     "rc": "~0.3.3",
     "sails": "~0.10.0-rc7",
     "sails-disk": "~0.10.0",

@@ -8,23 +8,25 @@ var bcrypt = require('bcryptjs');
 module.exports = {
 
   	attributes: {
-
+  		email : {type:'string',required:true,email:true},
+        password : {type:'string',required:true},
+        name : {type:'string',defaultTo:null},
+        role : {type:'string',required:true},
 
 	  	comparePassword:function(password, done) {
-	  		console.log('comparing');
-
-	  		if(password === this.password){
-	  			console.log('ok');
-	  			done('', true);
-	  		}else
-	  		{
-	  			done('erreur de password', false);
-	  		}
-
-		  // bcrypt.compare(password, this.password, function(err, isMatch) {
-		  //   done(err, isMatch);
-		  // });
+		  bcrypt.compare(password, this.password, function(err, isMatch) {
+		    done(err, isMatch);
+		  });
 		}
-  	}
+  	},
+	beforeCreate:function(values,cb) {
+
+		var salt = bcrypt.genSaltSync(10);
+		var hash = bcrypt.hashSync(values.password, salt);
+		console.log(values);
+		values.password = hash;
+		cb();
+
+	}
 };
 

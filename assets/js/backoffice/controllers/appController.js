@@ -5,15 +5,20 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 	$scope.articlestabs=configService.articlestabs;
 	$scope.projectstabs=configService.projectstabs;
 	$scope.galerytabs=configService.galerytabs;
+	$scope.userstabs=configService.userstabs;
 	$scope.resizeConfig=configService.frontConfig.imageResize;
 	moment.locale('fr');
 	$scope.navbarOff=false;
 
-	accountService.getProfile().then(function(data) {
-		console.log('THEN');
-		console.log(data);
-		$scope.me = data;
-	});
+	if($auth.isAuthenticated())
+	{
+		accountService.getProfile().then(function(data) {
+			console.log('THEN');
+			console.log(data);
+			$scope.me = data;
+		});
+	}
+	
 	console.log($scope.me);
 
 	// $scope.articleResizeImageSteps= configService.frontConfig.imageResize.articleCategory;
@@ -37,7 +42,7 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
     	console.log('STATECHANGE START');
     // $scope.$apply(function() { 
     // });
-    console.log($auth.isAuthenticated());
+    // console.log($auth.isAuthenticated());
     // $auth.logout()
 	if($auth.isAuthenticated())
 	{
@@ -68,6 +73,7 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 
 	$scope.$on('$stateChangeSuccess', 
 	function(event, toState, toParams, fromState, fromParams){
+		console.log('STAGECHANGE SUCCESS');
 		console.log(toState);
 		$scope.navbarOff=false;
 		if(toState.name === "/login"){
@@ -127,6 +133,10 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 			$('.modal-backdrop').remove();
 		}
 		if(toState.name === "/.projects.projects")
+		{
+			$('.modal-backdrop').remove();
+		}
+		if(toState.name === "/.users.user")
 		{
 			$('.modal-backdrop').remove();
 		}
