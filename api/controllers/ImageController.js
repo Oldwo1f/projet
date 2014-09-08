@@ -66,7 +66,7 @@ module.exports = {
 
 				    },
 				    function error(err){
-				    	console.log(err);
+				    	// console.log(err);
 				    	// if (err) {
 				     //    	console.log('resizeError');
 				     //    	console.log(err);
@@ -88,7 +88,7 @@ module.exports = {
       			catch(e){
       			}
 
-
+      			console.log('BEFORE THIUMNAIL');
 	      		easyimg.thumbnail(
 				    {
 				        src:'.tmp/uploads/'+files[0].filename,
@@ -99,10 +99,15 @@ module.exports = {
 				        // gravity: 'NorthWest',fill:true
 				    }).then(
 				    function success(image) {
-				        
+				        	
+
+				        	console.log('THEN THIUMNAIL');
 			    		var img = files[0]
 
 			    		
+			    			console.log(req.body);
+
+
 			    		switch(req.body.itemType){
 
 			    			case 'categoryarticle':
@@ -116,7 +121,7 @@ module.exports = {
 					    			}
 					    			img.index = Number(lastIndex+1);
 					   				Image.create(img).exec(function(err,img) {
-					   					console.log(err);
+					   					// console.log(err);
 
 					   					categoryarticle.images.add(img.id)
 					   					categoryarticle.save();
@@ -142,8 +147,9 @@ module.exports = {
 					    			}
 					    			img.index = Number(lastIndex+1);
 					   				Image.create(img).exec(function(err,img) {
-					   					console.log(err);
+					   					// console.log(err);
 
+					   					console.log(img);
 					   					article.images.add(img.id)
 					   					article.save();
 						    			return res.json({
@@ -210,6 +216,7 @@ module.exports = {
 					    		});
 			    			break;
 			    			case 'galery':
+			    			console.log('GALERY GALERY GALERYGALERY GALERY GALERY');
 			    				Galery.findOne(req.body.itemId).populate('images').exec(function(err,galery) {
 console.log(err);
 					    			
@@ -222,9 +229,42 @@ console.log(err);
 					    			img.index = Number(lastIndex+1);
 					   				Image.create(img).exec(function(err,img) {
 					   					console.log(err);
-
-					   					galery.images.add(img.id)
+					   					console.log(img);
+					   					console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+					   					console.log(galery);
+					   					galery.images.add(img)
 					   					galery.save();
+						    // 			return res.json({
+										// 	message: files.length + ' file(s) uploaded successfully!',
+										// 	files: img
+										// });
+						    		});
+
+
+
+
+					    		});
+			    			break;
+			    			case 'user':
+			    			console.log(req.body);
+			    			console.log('---------------------------------------------');
+			    				User.findOne(req.body.itemId).populate('images').exec(function(err,user) {
+console.log(err);
+					    			console.log(user);
+					    			var lastIndex= -1;
+					    			for( var i in user.images )
+					    			{
+					    				if(Number(user.images[i].index) >lastIndex)
+					    					lastIndex = user.images[i].index;
+					    			}
+					    			img.index = Number(lastIndex+1);
+					   				Image.create(img).exec(function(err,img) {
+					   					console.log(img);
+					   					console.log(err);
+					   					console.log(img.id);
+					   					user.images.add(img.id)
+
+					   					user.save();
 						    			return res.json({
 											message: files.length + ' file(s) uploaded successfully!',
 											files: img
@@ -247,6 +287,7 @@ console.log(err);
 
 				    },
 				    function error(err){
+				    	console.log('err');
 				    	console.log(err);
 				    }
 				);

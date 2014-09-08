@@ -17,14 +17,32 @@ app.factory('accountService',['$http','$q', function($http,$q) {
         return deferred.promise;
       };
       service.updateProfile= function(profileData) {
+        console.log(profileData);
         var deferred = $q.defer();
-        $http.put('/article/'+profileData.id,profileData).success(function (data2,status) {
-            $http.get('/article/'+profileData.id).success(function (data,status) {
+        $http.put('/edit/me',profileData).success(function (data,status) {
+            // $http.get('/api/me').success(function (data,status) {
                 console.log(data[0]);
                 service.me = data[0]
                 deferred.resolve(data[0]);
-            })
+            // })
         }).error(function (data,status) {
+            deferred.reject(data);
+        })
+        return deferred.promise;
+      }
+      service.editpasswordMe= function(profileData) {
+        console.log(profileData);
+        var deferred = $q.defer();
+        $http.put('/editpassword/me',profileData).success(function (data,status) {
+            // $http.get('/api/me').success(function (data,status) {
+              console.log(data);
+                console.log(data[0]);
+                service.me = data[0]
+                deferred.resolve(data[0]);
+            // })
+        }).error(function (data,status) {
+            console.log(data);
+            
             deferred.reject(data);
         })
         return deferred.promise;

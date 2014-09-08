@@ -7,18 +7,35 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 	$scope.galerytabs=configService.galerytabs;
 	$scope.userstabs=configService.userstabs;
 	$scope.resizeConfig=configService.frontConfig.imageResize;
+	$scope.me="";
 	moment.locale('fr');
 	$scope.navbarOff=false;
 
+	console.log($scope.me);
 	if($auth.isAuthenticated())
 	{
+		// setTimeout(function() {
 		accountService.getProfile().then(function(data) {
-			console.log('THEN');
 			console.log(data);
-			$scope.me = data;
+			$scope.me = data
 		});
+		// },3000)
+			console.log('IS AUTHENTICATED');
+		
 	}
-	
+	console.log($scope.me);
+	// $scope.me = accountService.me
+	// $scope.$apply()
+	// console.log($scope.me);
+	// console.log();
+	// $scope.backState=function() {
+	// 	$location.path('/profile')
+	// };
+
+	$scope.profile=function() {
+		$location.path('/profile')
+	};
+
 	console.log($scope.me);
 
 	// $scope.articleResizeImageSteps= configService.frontConfig.imageResize.articleCategory;
@@ -26,6 +43,13 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 		$auth.logout();
 	};
 	// console.log($scope.articleResizeImageSteps);
+
+
+
+
+
+
+
 
 	$scope.$on("$stateChangeStart", 
     function (event, toState, toParams, 
@@ -73,6 +97,7 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 
 	$scope.$on('$stateChangeSuccess', 
 	function(event, toState, toParams, fromState, fromParams){
+		$scope.$previousState = fromState;
 		console.log('STAGECHANGE SUCCESS');
 		console.log(toState);
 		$scope.navbarOff=false;

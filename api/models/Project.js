@@ -13,15 +13,14 @@ module.exports = {
         shortcontent : {type:'text',defaultTo:null},
         description : {type:'text',defaultTo:null},
         rewriteurl : {type:'string',defaultTo:null},
-      keyword : {type:'string',defaultTo:null},
-      date : {type:'datetime',required:true},
-      rank : {type:'int'},
-      // category : {type:'string'},
-      status : {type:'string',required:true},
-      category: {
-      model: 'categoryProject',
+        keyword : {type:'string',defaultTo:null},
+        date : {type:'datetime',required:true},
+        rank : {type:'int'},
+        status : {type:'string',required:true},
+        category: {
+        model: 'categoryProject',
             required:true
-    },
+        },
         images: {
             collection: 'image',
             via: 'project'

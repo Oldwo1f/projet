@@ -65,6 +65,19 @@ app.factory('configService', ['$http','$q',function ($http,$q) {
                     'height':500
                 }
             ],
+            profilepicture:[
+                {  
+                    'title':'Image principale',
+                    'folder':'profilepicture',
+                    'width': 500,
+                    'height':500
+                },{  
+                    'title':'Miniature',
+                    'folder':'thumbs',
+                    'width': 50,
+                    'height':50
+                }
+            ],
         }
     }
     service.maintabs=[

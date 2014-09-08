@@ -73,15 +73,22 @@ app.config(function($stateProvider, $urlRouterProvider) {
     })
     .state('/', {
       url: "/",
-      templateUrl: "/templates/global/root.html",
-      resolve: {
-          // authenticated: ['$location', '$auth', function($location, $auth) {
-            // if (!$auth.isAuthenticated()) {
-            //   console.log('NOT LOGGED');
-            //   return $location.path('/login');
-            // }
-          // }]
-        }
+      // templateUrl: "/templates/global/root.html",
+      
+      views: {
+              'navbarView':{
+                templateUrl: "/templates/global/navbar.html",
+                controller:'navbarCtrl',
+                resolve: {
+                    me: function(accountService, $auth) {
+                      return accountService.getProfile();
+                    }
+                }
+              },
+              'rootView':{
+                templateUrl:"/templates/global/root.html"
+              }
+            }
     })
           .state('/.users', {
             url: "users",
@@ -140,24 +147,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                           }
                                         }
                                       })
-                                      // .state('/.projects.category.editimage', {
-                                      //   url: "/editimage/:id",
-                                      //   // data:{'projectsTabs':'projects'},
-                                      //   views: {
-                                      //     'editimageprojectscategoryView':{
-                                      //       templateUrl: "/templates/project/editimageprojectscategory.html",
-                                      //       controller:'editimageprojectscategoryCtrl',
-                                      //       resolve:{
-                                      //         category : function(projectscategoryService,$stateParams) {
-                                      //           return projectscategoryService.fetchCategory($stateParams.id);
-                                      //         }
-                                      //       }
-                                      //     }
-                                      //   }
-                                      // })
-
-
-                                      // })
           .state('/.dashboard', {
             url: "dashboard",
             data:{'mainTabs':'dashboard'},
@@ -504,9 +493,30 @@ app.config(function($stateProvider, $urlRouterProvider) {
                           }
                         })
 
-    .state('contact', {
-      url: "/contact",
-      templateUrl: "/templates/contact.html"
+    .state('profile', {
+      url: "/profile",
+      views: {
+              'navbarView':{
+                templateUrl: "/templates/global/navbar.html",
+                controller:'navbarCtrl',
+                resolve: {
+                    me: function(accountService, $auth) {
+                      return accountService.getProfile();
+                    }
+                }
+              },
+              'rootView':{
+                templateUrl: "/templates/profile.html",
+                controller:'profileCtrl',
+                resolve:{
+                  myself : function(accountService) {
+                    console.log('resolve');
+                    return accountService.getProfile();
+                  }
+                }
+              }
+            },
+      
     });
   
    

@@ -24,6 +24,8 @@ module.exports = {
 		  return jwt.encode(payload, sails.config.TOKEN_SECRET);
 		}
 		sails.log('<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>00000000000000000000000000000')
+		console.log(req.body.password);
+		console.log(req.body.email);
 		// console.log(req);
 		var errormes = res.__('Erreur d\'email ou de mots de passe');
 		console.log(errormes);
@@ -33,9 +35,10 @@ module.exports = {
 		    if (!user) {
 		      return res.status(401).send({ message: errormes});
 		    }
-
+		    console.log(req.body.password);
 		    user.comparePassword(req.body.password, function(err, isMatch) {
 		    	console.log('hereereererere');
+		    	console.log(isMatch);
 		      if (!isMatch) {
 		        return res.status(401).send({ message: errormes});
 		      }
@@ -45,21 +48,67 @@ module.exports = {
 	  	});
 	},
 	getMe:function(req,res) {
+		// console.log('getme');
+		// console.log(req.user);
+		// console.log('--------');
 		User.findById(req.user, function (err, user) {
+			// console.log(user);
 		    res.send(user);
 		});
 	},
 	editMe:function(req, res) {
-	  User.findById(req.user, function(err, user) {
+		console.log('editMe');
+		// console.log(req.user.id);
+		// console.log(req.user);
+		// console.log(req.body);
+	  User.findOneById(req.user, function(err, user) {
 	    if (!user) {
 	      return res.status(400).send({ message: 'User not found' });
 	    }
+	    console.log(req.body);
 	    user.name = req.body.name || user.name;
 	    user.email = req.body.email || user.email;
-	    user.save(function(err) {
+	    user.phone = req.body.phone || user.phone;
+	    user.fb = req.body.fb || user.fb;
+	    user.twitter = req.body.twitter || user.twitter;
+	    user.gplus = req.body.gplus || user.gplus;
+	  	user.save(function(err,user) {
+	    	console.log('tototototo');
+	    	console.log(err);
+	    	if(err)
+	     		return res.status(301).send(err);
+	    	console.log(user);
 	      res.status(200).end();
 	    });
 	  });
+	},
+	editpasswordMe:function(req, res) {
+		console.log('editMe');
+		User.findOneById(req.user, function(err, user) {
+		    if (!user) {
+		      return res.status(400).send({ message: 'User not found' });
+		    }
+		    console.log(req.body);
+		    user.comparePassword(req.body.oldpassword, function(err, isMatch) {
+		    	console.log('hereereererere');
+		      if (!isMatch || req.body.password !== req.body.comfirmpassword) {
+		        return res.status(400).send({ message: 'Bad credential'});
+		      }
+		      user.password = req.body.password ;
+		      user.comfirmpassword = req.body.password;
+			  	user.save(function(err,user) {
+			    	console.log('tototototo');
+			    	console.log(err);
+			    	if(err)
+			     		return res.status(400).send(err);
+			    	console.log(user);
+			      res.status(200).end();
+			    });
+		      
+		      // res.send('COOL');
+		    });
+		    
+		});
 	},
 	add:function(req,res) {
 		var user={};

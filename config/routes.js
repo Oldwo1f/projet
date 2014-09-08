@@ -20,7 +20,8 @@ var routes={
   
   '/auth/login': 'UserController.login',
   '/api/me': 'UserController.getMe',
-  'put /api/me': 'UserController.getMe',
+  'put /edit/me': 'UserController.editMe',
+  'put /editpassword/me': 'UserController.editpasswordMe',
   'post /user' : 'UserController.add',
 
 };

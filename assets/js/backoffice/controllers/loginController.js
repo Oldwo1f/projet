@@ -1,13 +1,11 @@
-app.controller('loginCtrl',['$scope', '$auth','accountService', function($scope, $auth,accountService) {
+app.controller('loginCtrl',['$scope', '$auth','accountService','$state', function($scope, $auth,accountService,$state) {
   $scope.errormessage='';
     $scope.login = function() {
       console.log('LOGINCTRL LOGIN');
       $auth.login({ email: $scope.email, password: $scope.password })
         .then(function() {
           console.log('successLogin');
-          accountService.getProfile().then(function(data) {
-            // $scope.$parent.me = data;
-          });
+          // $state.go('/.dashboard')
         })
         .catch(function(response) {
           $scope.errormessage=response.data.message;
