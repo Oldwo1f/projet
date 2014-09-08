@@ -52,14 +52,14 @@ function profileCtrl($scope,$location,$stateParams,$state,filterFilter,accountSe
     };
 
     $scope.recupImage = function(data) {
-       // $scope.myself.images.unshift(data.files)
-       //  accountService.me.images.unshift(data.files)
+       $scope.myself.images.unshift(data.files)
+        // accountService.me.images.unshift(data.files)
        console.log(data);
     };
 
     $scope.removeimage = function(imagetoremove) {
 
-        projectscategoryService.removeimage(category,imagetoremove)
+        accountService.removeimage($scope.myself,imagetoremove)
     };
 
 }]);

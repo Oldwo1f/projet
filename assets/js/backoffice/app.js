@@ -147,6 +147,47 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                           }
                                         }
                                       })
+                       .state('/.users.client', {
+                          url: "/client",
+                          data:{'usersTabs':'client'},
+                          views: {
+                            'clientView':{
+                              templateUrl: "/templates/user/client.html",
+                              controller:'clientCtrl',
+                              data:{'usersTabs':'client'},
+                              resolve:{
+                                users : function(userService) {
+                                  console.log('resolve users');
+                                  return userService.fetchClients();
+                                }
+                              }
+                            }
+                          }
+                        })
+                                      .state('/.users.client.add', {
+                                        url: "/add",
+                                        views: {
+                                          'addclientView':{
+                                            templateUrl: "/templates/user/addclient.html",
+                                            controller:'addclientCtrl'
+                                          }
+                                        }
+                                      })
+                                      .state('/.users.client.edit', {
+                                        url: "/edit/:id",
+                                        views: {
+                                          'editclientView':{
+                                            templateUrl: "/templates/user/editclient.html",
+                                            controller:'editclientCtrl',
+                                            resolve:{
+                                              user : function(userService,$stateParams) {
+                                                console.log('resolveEDitCat');
+                                                return userService.fetchUser($stateParams.id);
+                                              }
+                                            }
+                                          }
+                                        }
+                                      })
           .state('/.dashboard', {
             url: "dashboard",
             data:{'mainTabs':'dashboard'},
@@ -187,6 +228,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
           })
                             .state('/.galery.home', {
                               url: "/home",
+                              data:{'galeryTabs':'home'},
                               views: {
                               	'homeView':{
                               		templateUrl: "/templates/galery/home.html",

@@ -7,7 +7,22 @@ console.log('USERSERVICE');
         var deferred = $q.defer();
         console.log('USERSERVICE---->fetchUsers');
 
-        $http.get('/user').success(function (data,status) {
+        $http.get('/intern').success(function (data,status) {
+            service.users =data;
+            console.log(data);
+            deferred.resolve(data);
+        }).error(function (data,status) {
+            deferred.reject('error perso');
+            console.log('ERROR');
+        })
+
+        return deferred.promise;
+    };
+    service.fetchClients= function() {
+        var deferred = $q.defer();
+        console.log('USERSERVICE---->fetchUsers');
+
+        $http.get('/client').success(function (data,status) {
             service.users =data;
             console.log(data);
             deferred.resolve(data);
@@ -41,6 +56,21 @@ console.log('USERSERVICE');
     service.addNew=function(user){
         var deferred = $q.defer();
 
+        $http.post('/user',user).success(function (data2,status2) {
+            $http.get('/user/'+data2.id).success(function (data,status) {
+                // console.log(status);
+                service.users.unshift(data);
+                deferred.resolve(data);
+            })
+        }).error(function (data,status) {
+             deferred.reject(data);
+        })
+        
+        return deferred.promise;      
+    }
+    service.addClient=function(user){
+        var deferred = $q.defer();
+        user.role = 'client';
         $http.post('/user',user).success(function (data2,status2) {
             $http.get('/user/'+data2.id).success(function (data,status) {
                 // console.log(status);

@@ -140,6 +140,29 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 				}
 			};
 		}
+		if(toState.data.mainTabs === "users")
+		{
+			for (var i = $scope.userstabs.length - 1; i >= 0; i--) {
+				if(typeof toState.data != "undefined"){
+					if($scope.userstabs[i]['name']===toState.data.usersTabs)
+		    			$scope.userstabs[i].active = true
+		    		else	
+		    			$scope.userstabs[i].active = false
+				}
+			};
+		}
+		if(toState.data.mainTabs === "galery")
+		{
+			for (var i = $scope.galerytabs.length - 1; i >= 0; i--) {
+				if(typeof toState.data != "undefined"){
+					console.log(toState.data.galeryTabs);
+					if($scope.galerytabs[i]['name']===toState.data.galeryTabs)
+		    			$scope.galerytabs[i].active = true
+		    		else	
+		    			$scope.galerytabs[i].active = false
+				}
+			};
+		}
 		if(toState.name === "/.articles.category")
 		{
 			$('.modal-backdrop').remove();
@@ -162,6 +185,10 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 			$('.modal-backdrop').remove();
 		}
 		if(toState.name === "/.users.user")
+		{
+			$('.modal-backdrop').remove();
+		}
+		if(toState.name === "/.users.client")
 		{
 			$('.modal-backdrop').remove();
 		}

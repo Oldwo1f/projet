@@ -23,6 +23,8 @@ var routes={
   'put /edit/me': 'UserController.editMe',
   'put /editpassword/me': 'UserController.editpasswordMe',
   'post /user' : 'UserController.add',
+  'get /intern' : 'UserController.intern',
+  'get /client' : 'UserController.client',
 
 };
 routes = extend(routes, frontroutes); 

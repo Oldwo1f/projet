@@ -51,16 +51,25 @@ module.exports = {
 		// console.log('getme');
 		// console.log(req.user);
 		// console.log('--------');
-		User.findById(req.user, function (err, user) {
+		User.findOne(req.user).populate('images').exec(function (err, user) {
 			// console.log(user);
 		    res.send(user);
 		});
 	},
+	client:function(req,res) {
+		
+		User.find({role:'client'}).populate('images').exec(function (err, users) {
+		    res.send(users);
+		});
+	},
+	intern:function(req,res) {
+		
+		User.find({ role: ['user','admin']} ).populate('images').exec(function (err, users) {
+		    res.send(users);
+		});
+	},
 	editMe:function(req, res) {
-		console.log('editMe');
-		// console.log(req.user.id);
-		// console.log(req.user);
-		// console.log(req.body);
+		
 	  User.findOneById(req.user, function(err, user) {
 	    if (!user) {
 	      return res.status(400).send({ message: 'User not found' });
@@ -119,12 +128,11 @@ module.exports = {
 	    sails.log(salt)
 	    user.password = salt;
 	    user.password = 'toto';
-	    user.role = 'user';
+	    user.role = req.body.email.role || 'user';
 
 	    User.create(user).exec(function (err,created){
 		  if(err)
 		  {
-		  	console.log(err);
 		  	res.status(400).send({error:err})
 		  }else{
 
@@ -151,7 +159,6 @@ module.exports = {
 			// send mail with defined transport object
 			transporter.sendMail(mailOptions, function(error, info){
 			    if(error){
-			        console.log(error);
 			        res.status(200).send(created);
 			    }else{
 			    	res.status(200).send(created);

@@ -37,11 +37,11 @@
 </div>
 <div class="col col-sm-6">
 	 	<form class="form" role="form" ng-submit="submitNew()">
- 		<h3 class="col-xs-12">Mon image de profile {{myself.id}}</h3>
+ 		<h3 class="col-xs-12">Mon image de profile</h3>
         <div class="form-group col-xs-12" style="">
-            <ul class="listbigimages" ui-sortable="sortableOptions" ng-model="myself.images">
+            <ul class="listbigimages" ui-sortable="sortableOptions" ng-show="myself.images">
 				<li ng-repeat="image in myself.images  | orderBy:'index':false">
-					<img ng-src="file/image/adminThumbs/{{image.filename}}" alt="{{image.filename}}" width="200" height="200" >
+					<img ng-src="file/image/adminThumbs/{{image.filename}}" alt="{{image.filename}}" width="190" height="190" >
 					<!-- <button type="button" ng-click="removeimage(image)" class="btn btn-danger btn-xs btnremoveimg"><span class="glyphicon glyphicon-trash"></span>Supprimer </button> -->
 		      <removeremove class="btnremoveimg " action="removeimage" image="image"></removeremove>
 				</li>

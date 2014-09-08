@@ -16,10 +16,10 @@ module.exports = {
         twitter : {type:'string',defaultTo:null},
         gplus : {type:'string',defaultTo:null},
         role : {type:'string',required:true},
-        // images: {
-        //     collection: 'image',
-        //     via: 'user'
-        // },
+        images: {
+            collection: 'image',
+            via: 'user'
+        },
 	  	comparePassword:function(password, done) {
 		  bcrypt.compare(password, this.password, function(err, isMatch) {
 		    done(err, isMatch);

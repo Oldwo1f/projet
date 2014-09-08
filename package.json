@@ -30,8 +30,9 @@
     "nodemailer": "^1.2.2",
     "password-generator": "^0.2.2",
     "rc": "~0.3.3",
-    "sails": "~0.10.0-rc7",
+    "sails": "~0.10.0-rc11",
     "sails-disk": "~0.10.0",
+    "sails-mongo": "^0.10.4",
     "shortid": "^2.0.1"
   },
   "devDependencies": {

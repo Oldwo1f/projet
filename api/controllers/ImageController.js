@@ -9,6 +9,48 @@ var easyimg = require('easyimage');
 var async = require('async');
 var sid = require('shortid');
 module.exports = {
+	test:function(req,res) {
+
+			console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+			console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$    TEST    $$$$$$$$$$$$$$$$$$$$$$$$');
+			console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$');
+			Galery.findOne('5406c79fa015780c3c2e40de').populate('images').exec(function(err,galery) {
+						console.log(err);
+						console.log(galery);
+					    			
+					    			// var lastIndex= -1;
+					    			// for( var i in galery.images )
+					    			// {
+					    			// 	if(Number(galery.images[i].index) >lastIndex)
+					    			// 		lastIndex = galery.images[i].index;
+					    			// }
+					    			// img.index = Number(lastIndex+1);
+					   				// Image.create(img).exec(function(err,img) {
+					   					// console.log(err);
+					   					// console.log(img);
+					   					// console.log(img.id);
+					   					// console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
+					   					// console.log(galery);
+					   					console.log(galery.images.add);
+					   					console.log(galery.images.add());
+					   					galery.images.add('540dc7f7dbab7d093a065328');
+					   					// console.log(galery);
+					   					galery.save().then(function(err,data) {
+					   						console.log('save');
+					   						console.log(err);
+					   						console.log(data);
+					   					});
+						    // 			return res.json({
+										// 	message: files.length + ' file(s) uploaded successfully!',
+										// 	files: img
+										// });
+						    		// });
+
+
+
+
+					    		});
+	},
 	upload:function(req,res) {
 
 		res.setTimeout(0);
@@ -228,16 +270,13 @@ console.log(err);
 					    			}
 					    			img.index = Number(lastIndex+1);
 					   				Image.create(img).exec(function(err,img) {
-					   					console.log(err);
-					   					console.log(img);
-					   					console.log('rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr');
-					   					console.log(galery);
-					   					galery.images.add(img)
+					   					
+					   					galery.images.add(img.id);
 					   					galery.save();
-						    // 			return res.json({
-										// 	message: files.length + ' file(s) uploaded successfully!',
-										// 	files: img
-										// });
+						    			return res.json({
+											message: files.length + ' file(s) uploaded successfully!',
+											files: img
+										});
 						    		});
 
 
@@ -246,11 +285,9 @@ console.log(err);
 					    		});
 			    			break;
 			    			case 'user':
-			    			console.log(req.body);
 			    			console.log('---------------------------------------------');
 			    				User.findOne(req.body.itemId).populate('images').exec(function(err,user) {
-console.log(err);
-					    			console.log(user);
+
 					    			var lastIndex= -1;
 					    			for( var i in user.images )
 					    			{
@@ -259,9 +296,7 @@ console.log(err);
 					    			}
 					    			img.index = Number(lastIndex+1);
 					   				Image.create(img).exec(function(err,img) {
-					   					console.log(img);
-					   					console.log(err);
-					   					console.log(img.id);
+					   					
 					   					user.images.add(img.id)
 
 					   					user.save();
