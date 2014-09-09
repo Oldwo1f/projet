@@ -1,4 +1,4 @@
-var app = angular.module('app', ['satellizer','markdownpreview','ngLocale','ui.router','clientresize','ui.bootstrap','ngAnimate','ui.bootstrap.datetimepicker','ui.sortable','angular-loading-bar']);
+var app = angular.module('app', ['gapi','satellizer','markdownpreview','ngLocale','ui.router','clientresize','ui.bootstrap','ngAnimate','ui.bootstrap.datetimepicker','ui.sortable','angular-loading-bar']);
 
 
 app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
@@ -52,7 +52,6 @@ app.config(function($authProvider) {
     // });
 
   });
-
 
 app.config(function($stateProvider, $urlRouterProvider) {
 
@@ -193,8 +192,16 @@ app.config(function($stateProvider, $urlRouterProvider) {
             data:{'mainTabs':'dashboard'},
             views: {
               'dashboardView':{
-                templateUrl: "/templates/dashboard.html"
-
+                templateUrl: "/templates/dashboard.html",
+                controller:'dashboardCtrl',
+                // resolve:{
+                //    init: function(gapiService) {
+                //     // console.log(analitycsreporter);
+                //     console.log('thisthisthisthisthisthisthisthisthisthisthisthisthisthisthisthis');
+                //     // console.log(analitycsreporterCtrl.toto());
+                //       return gapiService.yo()
+                //    }
+                // }
               }
             }
           })

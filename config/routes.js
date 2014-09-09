@@ -25,6 +25,7 @@ var routes={
   'post /user' : 'UserController.add',
   'get /intern' : 'UserController.intern',
   'get /client' : 'UserController.client',
+  'get /anatytics/login' : 'AnalyticsController.login',
 
 };
 routes = extend(routes, frontroutes); 

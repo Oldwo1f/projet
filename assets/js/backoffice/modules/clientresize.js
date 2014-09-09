@@ -1,5 +1,16 @@
 var clientResize = angular.module('clientresize',['angularFileUpload']);
+clientResize.factory('clientResizeService',['$scope', function($scope) {
+    var service = {};
 
+    console.log('ANALYTICS Service');
+    service.toto=function() { return 'youpi'};
+
+
+
+
+
+    return service;
+}]);
 clientResize.directive('clientresize', function() {
     return {
       restrict: 'E',

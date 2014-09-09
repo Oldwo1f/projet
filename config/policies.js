@@ -46,11 +46,11 @@ module.exports.policies = {
 		'getMe': 'ensureAuth',
 		'login': true,
 	},
-	// imageController: {
-	// 	'*': true,
+	AnalyticsController: {
+		'*': true,
 		
-	// 	// 'users':true
-	// },
+		// 'users':true
+	},
 	// projectController: {
 	// 	'*': true,
 		
