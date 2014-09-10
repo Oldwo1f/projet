@@ -13,6 +13,22 @@ module.exports = {
 
 		return res.view('admin');
 	},
+	home:function(req,res) {
+		res.locals.layout = 'layout';
+
+
+		return res.view('homepage');
+	},
+	login:function(req,res) {
+		res.locals.layout = 'layout';
+		return res.view('login');
+	},
+	vid:function(req,res) {
+		res.locals.layout = '';
+
+
+		return res.view('testplugin');
+	},
 	contact:function(req,res) {
 
 		return res.view('contact');

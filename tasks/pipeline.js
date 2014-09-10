@@ -16,7 +16,8 @@
 //  to change `assets/styles/importer.less` instead.)
 var cssFilesToInject = [
   'bower_components/**/*.css',
-  'styles/**/*.css'
+  'styles/backoffice/**/*.css',
+  'styles/backoffice/**/importer.less'
 ];
 
 
@@ -29,6 +30,9 @@ var jsFilesToInject = [
 
   'bower_components/jquery.js',
   'bower_components/bootstrap.js',
+  'bower_components/moment.js',
+  'bower_components/moment-fr.js',
+  'bower_components/marked.js',
   'bower_components/angular-file-upload-shim.js',
   'bower_components/angular.js',
   'bower_components/angular-animate.js',
@@ -38,12 +42,17 @@ var jsFilesToInject = [
   'bower_components/angular-ui-router.js',
   'bower_components/angular-route.js',
   'bower_components/angular-file-upload.js',
+  'bower_components/angular-loading-bar.js',
+  'bower_components/datetimepicker.js',
+  'bower_components/datetimepicker.js',
+  'bower_components/markdown_preview.js',
+  'bower_components/satellizer.js',
 
-  'js/dependencies/**/*.js',
+  // 'js/dependencies/**/*.js',
 
   // All of the rest of your client-side js files
   // will be injected here in no particular order.
-  'js/**/*.js'
+  'js/backoffice/**/*.js'
 ];
 
 
@@ -57,7 +66,8 @@ var jsFilesToInject = [
 // templates get spit out to the same file.  Be sure and check out `tasks/README.md`
 // for information on customizing and installing new tasks.
 var templateFilesToInject = [
-  'templates/**/*.html'
+  'templates/**/*.html',
+  'templates/**/*.ejs'
 ];
 
 

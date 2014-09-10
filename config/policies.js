@@ -18,10 +18,44 @@ module.exports.policies = {
 
   // Default policy for all controllers and actions
   // (`true` allows public access)
+  // '*': true,
+  // '*': 'ensureAuth',
   '*': true,
-
+// 
 	// Here's an example of mapping some policies to run before
   // a controller and its actions
+	'front/FrontController': {
+		
+		'*': true,
+		tendance:'ensureAuth',
+	},
+	FileController: {
+		
+		'*': true,
+	},
+	BackofficeController: {
+		
+		'*': 'ensureAuth',
+		index:true,
+		login:true,
+	},
+	UserController: {
+		// '*': true,
+		'*': 'ensureAuth',
+		'editMe': 'ensureAuth',
+		'getMe': 'ensureAuth',
+		'login': true,
+	},
+	AnalyticsController: {
+		'*': true,
+		
+		// 'users':true
+	},
+	// projectController: {
+	// 	'*': true,
+		
+	// 	// 'users':true
+	// }
 	// RabbitController: {
 
 		// Apply the `false` policy as the default for all of RabbitController's actions

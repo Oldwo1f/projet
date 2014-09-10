@@ -70,7 +70,14 @@ bower_components
 
 api/controllers/front
 assets/fonts
-upload
+uploads
+config/front/routesclients.js
+views/front
+assets/styles/front
+assets/js/front
+assets/images/front
+api/models/front
+api/policies/front
 
 
 
@@ -117,3 +124,4 @@ npm-debug.log
 nbproject
 .idea
 .node_history
+

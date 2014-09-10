@@ -30,7 +30,7 @@ setTimeout(function() {
           //app:"google-chrome",
            app:"chromium-browser",
           url: "http://localhost:1337/"
-      }));
+      })); 
       },1000)
 
 
@@ -39,7 +39,7 @@ setTimeout(function() {
            gulp.start('config');
        });
 
-       gulp.watch(["./api/**/*"], function (evt) {
+       gulp.watch(["./api/**/*","!./api/controllers/front/**.js"], function (evt) {
            gutil.log(gutil.colors.cyan(evt.path), 'changed');
            gulp.start('api');
        });
