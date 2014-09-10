@@ -39,7 +39,7 @@
 	    		<td >
 	    			<input type="checkbox" ng-model="project.checked" >
 	    		</td>
-		    	<td ng-dblClick="linkedit(project.id)" class='pointer'>{{project.title}}</td>
+		    	<td ng-dblClick="linkedit(project.id)" class='pointer'>{{project.translations[0].title}}</td>
 		    	<td ng-dblClick="linkeditimages(project.id)" class='pointer'>
 		    		<ul class="listimages">
 		    			<li ng-repeat="image in project.images | limitTo:4 | orderBy:'index':false">
@@ -49,7 +49,7 @@
 		    			<li ng-click="linkeditimages(project.id)" ng-hide="project.images.length" class='pointer'><span class="link">Ajouter des images</span></li>
 		    		</ul>
 		    	</td>
-		    	<td ng-dblClick="linkedit(project.id)" class='pointer'><span class="label label-default"><label >{{project.category.title}}</label></span></td>
+		    	<td ng-dblClick="linkedit(project.id)" class='pointer'><span class="label label-default"><label >{{categories[getCatName(project.category)].translations[0].title}}</label></span></td>
 		    	<td ng-dblClick="linkedit(project.id)" class='pointer'>{{project.date | date:'dd MMMM'}}</td>
 		    	<td  class='pointer' >
 		    		<span class="label" ng-class="{'label-success': project.status==='actif','label-warning': project.status==='inactif','label-info': project.status==='new'}"><label >{{project.status}}</label></span>

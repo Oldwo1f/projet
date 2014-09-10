@@ -105,6 +105,8 @@ app.factory('configService', ['$http','$q',function ($http,$q) {
     {'title':'Clients','name' :'client','active':false},
     ];
 
+    service.languages=['fr','en'];
+
 
     return service;
 }]);

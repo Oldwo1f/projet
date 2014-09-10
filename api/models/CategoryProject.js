@@ -6,22 +6,25 @@
 */
 var async = require('async');
 module.exports = {
-
+  schema: true,
   attributes: {
-  		title : {type:'STRING',required:true},
+  		// title : {type:'STRING'},
   		images: {
 			collection: 'image',
-			via: 'projectcategory'
-		}
+			via: 'project'
+		},
+        translations: {
+            collection: 'categoryProjectTranslation',
+            via: 'categoryProject'
+        },
   } ,
   beforeDestroy: function (values, cb) {
 	
-  	sails.log('BEFOREDESTROY USER')
-	CategoryProject.findOne(values.where.id).populate('images').exec(function(err,cat) {
-		console.log(cat);
-		console.log(cat.images);
-			sails.log(cat.images.length)
-		async.each(cat.images, function(item,callback) {
+  	sails.log('BEFOREDESTROY Category')
+	CategoryProject.findOne(values.where.id).populate('images').populate('translations').exec(function(err,item) {
+		
+			sails.log(item.images.length)
+		async.each(item.images, function(item,callback) {
 
 			console.log('item');
 			console.log(item);
@@ -30,9 +33,19 @@ module.exports = {
 			})
 		}, function(err, results){
 			sails.log('FINISH DESTROY ALL IMG')
-			console.log(err);
-    		// results is now an array of stats for each file
-    		cb();
+			 async.each(item.translations, function(item,callback) {
+                    console.log('item');
+                    console.log(item);
+                    CategoryProjectTranslation.destroy(item.id).exec(function(err, result) {
+                        callback(err,result)
+                })
+                }, function(err, results){
+                    sails.log('FINISH DESTROY translation')
+                    console.log(err);
+                    // results is now an array of stats for each file
+                    cb();
+
+                });
 		});
 			
 

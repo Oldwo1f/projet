@@ -27,6 +27,14 @@ var routes={
   'get /client' : 'UserController.client',
   'get /anatytics/login' : 'AnalyticsController.login',
 
+  //PROJECT
+  'get /project' : 'ProjectController.getAll',
+  'post /project' : 'ProjectController.add',
+  'put /project/:id' : 'ProjectController.edit',
+  //PROJECTCategory
+  'post /categoryProject' : 'CategoryProjectController.add',
+  'put /categoryProject/:id' : 'CategoryProjectController.edit',
+
 };
 routes = extend(routes, frontroutes); 
 module.exports.routes = routes;

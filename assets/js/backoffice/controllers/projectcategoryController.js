@@ -68,14 +68,40 @@ function addprojectscategoryCtrl($scope,$stateParams,filterFilter,projectscatego
 		
 	};
 }]);
-app.controller('editprojectscategoryCtrl',['$scope','$stateParams','filterFilter','projectscategoryService','$state','$filter','category',
-function editprojectscategoryCtrl($scope,$stateParams,filterFilter,projectscategoryService ,$state,$filter,category) {
+app.controller('editprojectscategoryCtrl',['$scope','$stateParams','configService','filterFilter','projectscategoryService','$state','$filter','category',
+function editprojectscategoryCtrl($scope,$stateParams,configService,filterFilter,projectscategoryService ,$state,$filter,category) {
 
 	$('.editModal').modal();
 	$('.editModal').on('hidden.bs.modal',function(e) {
 		$state.go('/.projects.category');
 	});
 	$scope.category = category;
+
+    $scope.lang='fr';
+    $scope.languages= configService.languages;
+
+    $scope.currenttranslation = getIndexInBy($scope.category.translations,'lang',$scope.lang)
+
+
+    $scope.changeLanguage = function() {
+
+        var index = getIndexInBy($scope.category.translations,'lang',$scope.lang)
+        console.log('INDEX = '+index);
+        // console.log($scope.currenttranslation);
+        if(typeof(index)=='undefined')
+        {
+            console.log($scope.category.translations);
+           $scope.category.translations.push(
+           {
+                'lang':$scope.lang,
+                'title':'',
+           });
+        }
+        console.log($scope.category);
+        $scope.currenttranslation = getIndexInBy($scope.category.translations,'lang',$scope.lang)
+    };
+
+
 	$scope.submitEdit = function() {
 		projectscategoryService.edit(category).then(function() {
 			$('.editModal').modal('hide');

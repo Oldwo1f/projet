@@ -1,12 +1,24 @@
-app.controller('projectsCtrl',['$scope','filterFilter','projectsService','$filter','$state','projects',
-function projectsCtrl($scope,filterFilter,projectsService,$filter,$state,projects) {
+app.controller('projectsCtrl',['$scope','filterFilter','projectsService','categories','$filter','$state','projects',
+function projectsCtrl($scope,filterFilter,projectsService,categories,$filter,$state,projects) {
 
     $scope.projects= projects;
+    $scope.categories= categories;
+    console.log($scope.projects);
+    console.log($scope.categories);
     $scope.order='date';
     $scope.reverse=true;
     $scope.filterActif = true;
     $scope.filterInactif = true;
     $scope.filterNew = true;
+
+    $scope.getCatName =function(cat) {
+
+        console.log(cat.id);
+        console.log(getIndexInBy($scope.categories,'id',cat.id));
+        // console.log($scope.categories[].translation[0].title);
+        // return $scope.categories[i].translation[0].title
+        return getIndexInBy($scope.categories,'id',cat.id)
+    }
     $scope.totalChecked = function()
     {
         if(filterFilter($scope.projects,{checked : true}).length == $scope.projects.length)
@@ -118,14 +130,16 @@ function addprojectsCtrl($scope,$stateParams,filterFilter,projectsService ,$stat
     console.log('ADD PROJECT');
     $scope.categories= categories;
     $scope.newProject={};
-    $scope.newProject.description='';
-    $scope.newProject.content='';
-    $scope.newProject.shortcontent='';
-    $scope.newProject.title='';
-    $scope.newProject.keyword='';
-    $scope.newProject.accroche='';
-    $scope.newProject.rewriteurl='';
+    $scope.translation={};
+    $scope.translation.description='';
+    $scope.translation.content='';
+    $scope.translation.shortcontent='';
+    $scope.translation.title='';
+    $scope.translation.keyword='';
+    $scope.translation.rewriteurl='';
     $scope.newProject.date=new Date();
+
+    
     $('.newModal').modal();
     $('.newModal').on('hidden.bs.modal',function(e) {
         $state.go('/.projects.projects');
@@ -138,6 +152,7 @@ function addprojectsCtrl($scope,$stateParams,filterFilter,projectsService ,$stat
 
     $scope.submitNew=function() {
         $scope.newProject.status='new';
+        $scope.newProject.translationFR = $scope.translation;
         projectsService.addNew($scope.newProject).then(function() {
             $scope.newProject.title='';
             $state.go('/.projects.projects');
@@ -158,20 +173,66 @@ function addprojectsCtrl($scope,$stateParams,filterFilter,projectsService ,$stat
         
     };
 }]);
-app.controller('editprojectsCtrl',['$scope','$stateParams','filterFilter','projectsService','$state','$filter','project','categories',
-function editprojectsCtrl($scope,$stateParams,filterFilter,projectsService ,$state,$filter,project,categories) {
+app.controller('editprojectsCtrl',['$scope','$stateParams','filterFilter','configService','projectsService','$state','$filter','project','categories',
+function editprojectsCtrl($scope,$stateParams,filterFilter,configService ,projectsService ,$state,$filter,project,categories) {
     $scope.categories= categories;
+    console.log($scope.categories);
     console.log('modalalalalalallalal');
     $('.editModal').modal();
     $('.editModal').on('hidden.bs.modal',function(e) {
         $state.go('/.projects.projects');
     });
     $scope.editProject = project;
+    $scope.lang='fr';
+    $scope.languages= configService.languages;
+
+// console.log($scope.editProject.translations[getIndexInBy($scope.editProject.translations,'lang',$scope.lang)].title);
+    // console.log(getIndexInBy(project.translations,'lang','fr'));
+    // INIT 
+    $scope.currenttranslation = getIndexInBy($scope.editProject.translations,'lang',$scope.lang)
+
+    // $scope.editProject.title = $scope.editProject.translations[getIndexInBy($scope.editProject.translations,'lang',$scope.lang)].title;
+    // $scope.editProject.content = $scope.editProject.translations[getIndexInBy($scope.editProject.translations,'lang',$scope.lang)].content;
+    // $scope.editProject.shortcontent = $scope.editProject.translations[getIndexInBy($scope.editProject.translations,'lang',$scope.lang)].shortcontent;
+    // $scope.editProject.keyword = $scope.editProject.translations[getIndexInBy($scope.editProject.translations,'lang',$scope.lang)].keyword;
+    // $scope.editProject.description = $scope.editProject.translations[getIndexInBy($scope.editProject.translations,'lang',$scope.lang)].description;
+    // $scope.editProject.rewriteurl = $scope.editProject.translations[getIndexInBy($scope.editProject.translations,'lang',$scope.lang)].rewriteurl;
+    // FIN INIT 
+
+    $scope.changeLanguage = function() {
+
+        var index = getIndexInBy($scope.editProject.translations,'lang',$scope.lang)
+        console.log('INDEX = '+index);
+        // console.log($scope.currenttranslation);
+        if(typeof(index)=='undefined')
+        {
+            console.log($scope.editProject.translations);
+           $scope.editProject.translations.push(
+           {
+                'lang':$scope.lang,
+                'title':'',
+                'content':'',
+                'shortcontent':'',
+                'keyword':'',
+                'description':'',
+                'rewriteurl':'',
+           });
+        }
+        console.log($scope.editProject);
+        $scope.currenttranslation = getIndexInBy($scope.editProject.translations,'lang',$scope.lang)
+    };
+
     console.log($scope.editProject);
-    $scope.editProject.category = $scope.editProject.category.id;
+    // $scope.editProject.category = $scope.editProject.category.id;
     // $scope.$apply();
 
     $scope.submitEdit = function() {
+
+        console.log('EDITEDITEDITEDITEDITEDITEDITEDITEDITEDITEDITEDIT');
+        console.log($scope.editProject.category);
+        console.log($scope.editProject.category.id);
+        // $scope.editProject.category =$scope.editProject.category.id;
+        console.log($scope.editProject);
         projectsService.edit($scope.editProject).then(function() {
             $('.editModal').modal('hide');
         },function(err) {

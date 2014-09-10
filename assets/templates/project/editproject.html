@@ -2,11 +2,15 @@
   <div class="modal-dialog modal-lg modal-vertical-centered">
    <div class="modal-content">
     	<h2>Editer ce Projet</h2>
+      
+      <select name="lang" class="form-control" ng-model="lang" ng-change="changeLanguage()" required>
+                  <option ng-repeat="langage in languages" value="{{langage}}" ng-selected="langage == 'fr'">{{langage}}</option>
+      </select>
     	<hr>
      	<form class="form" role="form" ng-submit="submitEdit()">
             <div class="form-group col-xs-12">
             
-                <input type="text" name="title" class="form-control input-lg" ng-model="editProject.title" placeholder="Titre">
+                <input type="text" name="title" class="form-control input-lg" ng-model="editProject.translations[currenttranslation].title" placeholder="Titre">
           <!-- <input type="date" name="date" class="form-control input-lg  col-xs-2" ng-model="editProject.date" > -->
             </div>
             <div class="form-group col-xs-6">
@@ -19,29 +23,29 @@
             <div class="form-group col-xs-6">
                   <span class="placeholderabsolute" ng-hide="editProject.category" >Choisir une catégorie</span>
                 <select name="category" class="form-control input-lg" ng-model="editProject.category">
-                  <option value=""></option>
-                  <option ng-repeat="cat in categories" value="{{cat.id}}" ng-selected="editProject.category == cat.id">{{cat.title}}</option>
+                  <!-- <option value=""></option> -->
+                  <option ng-repeat="cat in categories" value="{{cat.id}}" ng-selected="editProject.category.id == cat.id">{{cat.translations[0].title}}</option>
                   
                 </select>
             </div>
-            <markdownpreview ng-model="editProject.content" handleerror="'content'" minheight="300" placehold="'Contenu en markdown'" />
-            <markdownpreview ng-model="editProject.shortcontent"handleerror="'shortcontent'" minheight="100" placehold="'Accroche en markdown'" />
+            <markdownpreview ng-model="editProject.translations[currenttranslation].content" handleerror="'content'" minheight="300" placehold="'Contenu en markdown'" />
+            <markdownpreview ng-model="editProject.translations[currenttranslation].shortcontent" handleerror="'shortcontent'" minheight="100" placehold="'Accroche en markdown'" />
             
             
             <wrap class="form-group col-xs-12" mytitle="'les options de référencement'">
                 <div class="form-group col-xs-12 nopadding">
                 
-                    <input type="text" inputcount="255" name="keyword" class="form-control input-lg" ng-model="editProject.keyword" placeholder="Mots clefs, Mots, clefs, clef, Mot clef, Mot">
+                    <input type="text" inputcount="255" name="keyword" class="form-control input-lg" ng-model="editProject.translations[currenttranslation].keyword" placeholder="Mots clefs, Mots, clefs, clef, Mot clef, Mot">
               <!-- <input type="date" name="date" class="form-control input-lg  col-xs-2" ng-model="editProject.date" > -->
                 </div>
                 <div class="form-group col-xs-12 nopadding">
                 
-                    <input inputcount="1000" urlprefixerwidth="230px" urlprefixer="http://momsite.com/blog/project/" model="editProject.rewriteurl" type="text" name="rewriteurl" class="form-control input-lg" ng-model="editProject.rewriteurl" placeholder="Réécriture de l'url">
+                    <input inputcount="1000" urlprefixerwidth="230px" urlprefixer="http://momsite.com/blog/project/" model="editProject.translations[currenttranslation].rewriteurl" type="text" name="rewriteurl" class="form-control input-lg"  placeholder="Réécriture de l'url">
                 </div>
                 <div class="form-group col-xs-12 nopadding">
-                    <input inputcount="160" model="editProject.description" type="text" name="description" class="form-control input-lg" ng-model="editProject.description" placeholder="Description pour les moteurs de recherche">
+                    <input inputcount="160"  type="text" name="description" class="form-control input-lg" ng-model="editProject.translations[currenttranslation].description" placeholder="Description pour les moteurs de recherche">
                 </div>
-            	<auditref model="editProject"></auditref>
+            	<auditref model="editProject.translations[currenttranslation]"></auditref>
 
             </wrap>
             

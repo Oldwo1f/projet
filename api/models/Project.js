@@ -8,18 +8,16 @@
 module.exports = {
     schema: true,
     attributes: {
-      title : {type:'string',required:true},
-        content : {type:'text',required:true,defaultTo:null},
-        shortcontent : {type:'text',defaultTo:null},
-        description : {type:'text',defaultTo:null},
-        rewriteurl : {type:'string',defaultTo:null},
-        keyword : {type:'string',defaultTo:null},
+        
         date : {type:'datetime',required:true},
         rank : {type:'int'},
         status : {type:'string',required:true},
         category: {
-        model: 'categoryProject',
-            required:true
+            model: 'categoryProject',
+        },
+        translations: {
+            collection: 'projectTranslation',
+            via: 'project'
         },
         images: {
             collection: 'image',
@@ -28,11 +26,11 @@ module.exports = {
     },
     beforeDestroy: function (values, cb) {
         sails.log('BEFOREDESTROY USER')
-        Project.findOne(values.where.id).populate('images').exec(function(err,cat) {
-            console.log(cat);
-            console.log(cat.images);
-                sails.log(cat.images.length)
-            async.each(cat.images, function(item,callback) {
+        Project.findOne(values.where.id).populate('images').populate('translations').exec(function(err,item) {
+            console.log(item);
+            console.log(item.images);
+                sails.log(item.images.length)
+            async.each(item.images, function(item,callback) {
 
                 console.log('item');
                 console.log(item);
@@ -41,9 +39,21 @@ module.exports = {
                 })
             }, function(err, results){
                 sails.log('FINISH DESTROY ALL IMG')
-                console.log(err);
-                // results is now an array of stats for each file
-                cb();
+                async.each(item.translations, function(item,callback) {
+                    console.log('item');
+                    console.log(item);
+                    ProjectTranslation.destroy(item.id).exec(function(err, result) {
+                        callback(err,result)
+                })
+                }, function(err, results){
+                    sails.log('FINISH DESTROY ALL IMG')
+                    console.log(err);
+                    // results is now an array of stats for each file
+                    cb();
+
+                });
+
+
             });
         });
     }

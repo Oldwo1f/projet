@@ -330,6 +330,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
                               resolve:{
                                 projects : function(projectsService) {
                                   return projectsService.fetchProjects();
+                                },
+                                categories:  function(projectscategoryService){
+                                  console.log('resolve');
+                                  // return ['test'];
+                                  return projectscategoryService.fetchCategories();
                                 }
                               }
                             }
