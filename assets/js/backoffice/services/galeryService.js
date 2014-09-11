@@ -17,6 +17,21 @@ app.factory('galeryService', ['$http','$q',function ($http,$q) {
 
         return deferred.promise;
     };
+
+    service.fetchHomeGalery= function() {
+        var deferred = $q.defer();
+
+        $http.get('/galery?where={"title":"home"}').success(function (data,status) {
+            service.galery =data[0];
+            console.log(data[0]);
+            deferred.resolve(data[0]);
+        }).error(function (data,status) {
+            deferred.reject('error perso');
+            console.log('ERROR');
+        })
+
+        return deferred.promise;
+    };
     
 
 

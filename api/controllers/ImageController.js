@@ -259,9 +259,12 @@ module.exports = {
 			    			break;
 			    			case 'galery':
 			    			console.log('GALERY GALERY GALERYGALERY GALERY GALERY');
+			    			console.log(req.body.itemId);
 			    				Galery.findOne(req.body.itemId).populate('images').exec(function(err,galery) {
 console.log(err);
-					    			
+					    			console.log(galery);
+					    			console.log('--------------------------------------------()');
+					    			console.log(err);
 					    			var lastIndex= -1;
 					    			for( var i in galery.images )
 					    			{

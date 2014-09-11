@@ -1,7 +1,7 @@
 var jwt = require('jwt-simple');
 
 module.exports = function(req, res, next) {
-  // sails.log('ensure AUTH')
+  sails.log('ensure AUTH')
   if (!req.headers.authorization) {
     return res.status(401).send({ message: 'Please make sure your request has an Authorization header' });
   }

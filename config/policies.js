@@ -25,16 +25,14 @@ var policies = {
 
   // Default policy for all controllers and actions
   // (`true` allows public access)
+  '*': 'ensureAuth', 
   // '*': true,
-  // '*': 'ensureAuth',
-  '*': true,
-// 
 	// Here's an example of mapping some policies to run before
   // a controller and its actions
 	'front/FrontController': {
 		
 		'*': true,
-		// tendance:'ensureAuth',
+		tendance:'ensureAuth',
 	},
 	FileController: {
 		
@@ -69,4 +67,5 @@ var policies = {
 policies = extend(policies, policiesclient); 
 
 console.log(policies);
-module.exports= policies;
+console.log('-------------------<<<<< policies');
+module.exports.policies= policies;

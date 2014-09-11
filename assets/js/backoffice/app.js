@@ -244,7 +244,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                     galery : function(galeryService) {
                                       console.log('resolve galeryService');
                                       // return ['tototototototot'];
-                                      return galeryService.fetchGalery('5406c79fa015780c3c2e40de');
+                                      return galeryService.fetchHomeGalery();
                                     }
                                   }
                               	}
