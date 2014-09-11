@@ -1,7 +1,6 @@
 var extend = require('node.extend');
 try {
    var frontroutes = require("./front/routesclients.js");
-   console.log(frontroutes);
 }
 catch (e) {
 	console.log(e);
@@ -37,4 +36,6 @@ var routes={
 
 };
 routes = extend(routes, frontroutes); 
+
+console.log(routes);
 module.exports.routes = routes;

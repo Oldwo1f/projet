@@ -12,9 +12,16 @@
  * For more information on configuring policies, check out:
  * http://sailsjs.org/#!documentation/
  */
+var extend = require('node.extend');
+try {
+   var policiesclient = require("./front/policiesclient.js");
+}
+catch (e) {
+	console.log(e);
+   policiesclient={};
+}
 
-
-module.exports.policies = {
+var policies = {
 
   // Default policy for all controllers and actions
   // (`true` allows public access)
@@ -27,7 +34,7 @@ module.exports.policies = {
 	'front/FrontController': {
 		
 		'*': true,
-		tendance:'ensureAuth',
+		// tendance:'ensureAuth',
 	},
 	FileController: {
 		
@@ -56,18 +63,10 @@ module.exports.policies = {
 		
 	// 	// 'users':true
 	// }
-	// RabbitController: {
 
-		// Apply the `false` policy as the default for all of RabbitController's actions
-		// (`false` prevents all access, which ensures that nothing bad happens to our rabbits)
-		// '*': false,
-
-		// For the action `nurture`, apply the 'isRabbitMother' policy
-		// (this overrides `false` above)
-		// nurture	: 'isRabbitMother',
-
-		// Apply the `isNiceToAnimals` AND `hasRabbitFood` policies
-		// before letting any users feed our rabbits
-		// feed : ['isNiceToAnimals', 'hasRabbitFood']
-	// }
 };
+
+policies = extend(policies, policiesclient); 
+
+console.log(policies);
+module.exports= policies;

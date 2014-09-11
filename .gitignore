@@ -68,14 +68,21 @@ config/local.js
 node_modules
 bower_components
 
-api/controllers/front
-assets/fonts
 uploads
-config/front/routesclients.js
+config/session.js
+config/i18n.js
+config/connections.js
+config/config.js
+config/front
+
 views/front
 assets/styles/front
 assets/js/front
 assets/images/front
+assets/fonts/front
+assets/template/front
+
+api/controllers/front
 api/models/front
 api/policies/front
 
