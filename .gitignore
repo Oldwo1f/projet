@@ -82,7 +82,8 @@ assets/images/front
 assets/fonts/front
 assets/template/front
 
-api/controllers/front
+
+api/controllers/front/**
 api/models/front
 api/policies/front
 
