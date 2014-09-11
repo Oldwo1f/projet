@@ -81,7 +81,7 @@ assets/js/front
 assets/images/front
 assets/fonts/front
 assets/template/front
-
+assets/js/backoffice/services/configService.js
 
 api/controllers/front
 api/models/front

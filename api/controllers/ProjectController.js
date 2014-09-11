@@ -6,36 +6,67 @@
  */
 
 module.exports = {
-	getAll:function(req,res,next) {
-		// console.log('GETALL');
-		// Project.find().populateAll().exec(function(err,allitems) {
-		// 	console.log(err);
+	get:function(req,res,next) {
+		console.log('GET');
+		Project.find(req.params.id).populateAll().exec(function(err,allitems) {
+			console.log(err);
 
-		// 	async.each(allitems,function(item,cb) {
-		// 		console.log(item);
-		// 		if(typeof(item.category))
-		// 		{
-		// 			CategoryProject.find(item.category.id).populateAll().exec(function(err,object) {
-		// 				console.log('objectobjectobject');
-		// 				var  deep = _.cloneDeep(item.category)
-		// 				delete item.category
-		// 				item.category = _.merge(deep,object[0])
-		// 				cb(null,object);
-		// 			})	
-		// 		}else
-		// 		{
-		// 			cb(null,'noCategory');
-		// 		}
-		// 	},function(err) {
-		// 		if(err)
-		// 			return res.status(400).send(err)
-		// 		return res.send(allitems)
+			async.each(allitems,function(item,cb) {
+				console.log(item);
+				if(typeof(item.category))
+				{
+					CategoryProject.find(item.category.id).populateAll().exec(function(err,object) {
+						console.log('objectobjectobject');
+						var  deep = _.cloneDeep(item.category)
+						delete item.category
+						item.category = _.merge(deep,object[0])
+						cb(null,object);
+					})	
+				}else
+				{
+					cb(null,'noCategory');
+				}
+			},function(err) {
+				if(err)
+					return res.status(400).send(err)
+				return res.send(allitems)
 
-		// 	})
+			})
 
 
-		// })
-	next();
+		})
+		// next();
+
+	},getAll:function(req,res,next) {
+		console.log('GETALL');
+		Project.find().populateAll().exec(function(err,allitems) {
+			console.log(err);
+
+			async.each(allitems,function(item,cb) {
+				console.log(item);
+				if(typeof(item.category))
+				{
+					CategoryProject.find(item.category.id).populateAll().exec(function(err,object) {
+						console.log('objectobjectobject');
+						var  deep = _.cloneDeep(item.category)
+						delete item.category
+						item.category = _.merge(deep,object[0])
+						cb(null,object);
+					})	
+				}else
+				{
+					cb(null,'noCategory');
+				}
+			},function(err) {
+				if(err)
+					return res.status(400).send(err)
+				return res.send(allitems)
+
+			})
+
+
+		})
+		// next();
 
 	},
 	add:function(req,res) {

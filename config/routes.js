@@ -28,6 +28,7 @@ var routes={
 
   //PROJECT
   'get /project' : 'ProjectController.getAll',
+  'get /project/:id' : 'ProjectController.get',
   'post /project' : 'ProjectController.add',
   'put /project/:id' : 'ProjectController.edit',
   //PROJECTCategory

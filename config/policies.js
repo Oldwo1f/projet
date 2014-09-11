@@ -32,7 +32,7 @@ var policies = {
 	'front/FrontController': {
 		
 		'*': true,
-		tendance:'ensureAuth',
+		// tendance:'ensureAuth',
 	},
 	FileController: {
 		
@@ -56,11 +56,11 @@ var policies = {
 		
 		// 'users':true
 	},
-	// projectController: {
-	// 	'*': true,
-		
-	// 	// 'users':true
-	// }
+	projectController: {
+		'*': 'ensureAuth',
+		'getAll': true,
+		'get': true
+	}
 
 };
 
