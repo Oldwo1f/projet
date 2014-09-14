@@ -8,30 +8,27 @@
 module.exports = {
 	get:function(req,res,next) {
 		console.log('GET');
-		Project.find(req.params.id).populateAll().exec(function(err,allitems) {
+		Project.findOne(req.params.id).populateAll().exec(function(err,item) {
 			console.log(err);
 
-			async.each(allitems,function(item,cb) {
-				console.log(item);
-				if(typeof(item.category))
+			// async.each(allitems,function(item,cb) {
+			// 	console.log(item);
+				if(typeof(item.category)!='undefined')
 				{
+					console.log('TYPEOF item.category'+ item.category);
 					CategoryProject.find(item.category.id).populateAll().exec(function(err,object) {
 						console.log('objectobjectobject');
 						var  deep = _.cloneDeep(item.category)
 						delete item.category
 						item.category = _.merge(deep,object[0])
-						cb(null,object);
+						if(err)
+							return res.status(400).send(err)
+						return res.send(item);
 					})	
-				}else
-				{
-					cb(null,'noCategory');
+				}else{
+					return res.send(item);
 				}
-			},function(err) {
-				if(err)
-					return res.status(400).send(err)
-				return res.send(allitems)
-
-			})
+			
 
 
 		})
@@ -44,7 +41,7 @@ module.exports = {
 
 			async.each(allitems,function(item,cb) {
 				console.log(item);
-				if(typeof(item.category))
+				if(typeof(item.category)!='undefined')
 				{
 					CategoryProject.find(item.category.id).populateAll().exec(function(err,object) {
 						console.log('objectobjectobject');

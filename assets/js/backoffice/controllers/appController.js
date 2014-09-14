@@ -1,6 +1,7 @@
 app.controller('appCtrl',['$scope','configService','$state','$location','$auth','accountService',
 function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 
+	$scope.h1=configService.h1;
 	$scope.maintabs=configService.maintabs;
 	$scope.articlestabs=configService.articlestabs;
 	$scope.projectstabs=configService.projectstabs;

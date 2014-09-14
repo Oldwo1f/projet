@@ -308,6 +308,9 @@ angular.module('ui.bootstrap.datetimepicker', [])
             if (angular.isFunction(scope.onSetTime)) {
               scope.onSetTime(newDate, scope.ngModel);
             }
+
+              scope.$parent.openDatepicker =false;
+
             scope.ngModel = newDate;
             return dataFactory[scope.data.currentView](unixDate);
           }
@@ -327,6 +330,7 @@ angular.module('ui.bootstrap.datetimepicker', [])
           if (viewName && (unixDate > -Infinity) && dataFactory[viewName]) {
             scope.data = dataFactory[viewName](unixDate);
           }
+
         };
 
         scope.changeView(configuration.startView, getUTCTime());

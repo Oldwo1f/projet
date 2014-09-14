@@ -2,7 +2,7 @@ app.factory('configService', ['$http','$q',function ($http,$q) {
     var service = {};
     service.frontConfig={};
     console.log('configService');
-
+    service.h1 = 'Administration NUTRIMARKETING';
     service.frontConfig={
         imageResize:{
             article:[
