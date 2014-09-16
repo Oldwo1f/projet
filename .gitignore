@@ -69,6 +69,9 @@ node_modules
 bower_components
 
 uploads
+tasks/config/less.js
+config/locales
+config/local.js
 config/session.js
 config/i18n.js
 config/connections.js
