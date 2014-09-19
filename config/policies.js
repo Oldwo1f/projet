@@ -56,11 +56,11 @@ var policies = {
 		
 		// 'users':true
 	},
-	projectController: {
-		'*': 'ensureAuth',
-		'getAll': true,
-		'get': true
-	}
+	// projectController: {
+	// 	'*': 'ensureAuth',
+	// 	'getAll': true,
+	// 	'get': true
+	// }
 
 };
 

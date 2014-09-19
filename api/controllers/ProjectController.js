@@ -130,6 +130,7 @@ module.exports = {
 
 			proj.category = req.body.category;
 			proj.date = req.body.date;
+			proj.status = req.body.status;
 			console.log(proj);
 			proj.save(function(err,proj) {
 				async.map(req.body.translations, function(translation, cb) {

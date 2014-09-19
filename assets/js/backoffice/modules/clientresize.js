@@ -51,7 +51,6 @@ clientResize.directive('clientresize', function() {
 			*********************************************************************************************
 			********************************************************************************************/
       		$scope.onFileSelect = function($files) {
-		    	console.log('onFileSelect --> START');
 		    	console.log($files);
 		    	var startindex = $scope.uploadArray.length;
 		    	$scope.countImg= $files.length;
@@ -156,7 +155,7 @@ clientResize.directive('clientresize', function() {
 
 		    	$scope.imageResizing = imgId;
 		    	console.log($scope.uploadArray[imgId]['file']);
-
+		    	console.log('FILEREADER DEFINED' + typeof(FileReader) !== "undefined");
 		    	if (window.FileReader && $scope.uploadArray[imgId]['file'].type.indexOf('image') > -1) {
 		    		console.log('here');
 	        		var fileReader = new FileReader();
@@ -170,10 +169,17 @@ clientResize.directive('clientresize', function() {
 	                        // });
 
 	                		console.log('onload');
+	                		console.log(e.target);
 	                    	$scope.uploadArray[imgId]['statusResize'] ='resizing';
 	                    	$scope.uploadArray[imgId]['img'] = new Image;
 				            $scope.uploadArray[imgId]['img']['src'] = e.target.result;
-				            console.log();
+				            $scope.uploadArray[imgId]['img']['onload'] = function() {
+				            	console.log('LOADEDLOADED');
+				            	$scope.originalWidth = $scope.uploadArray[imgId]['img'].width
+				            	$scope.originalHeight = $scope.uploadArray[imgId]['img'].height
+				            	console.log($scope);
+				            };
+				            // console.log();
 				            
 				            $scope.step(0);
 	                	}
@@ -202,16 +208,20 @@ clientResize.directive('clientresize', function() {
 		    	if(step == 0)
 		    	{
 		    		$scope.currentSrc = $scope.uploadArray[$scope.imageResizing]['img'].src;
-		    		$scope.originalWidth = $scope.uploadArray[$scope.imageResizing]['img'].width;
-		    		$scope.originalHeight = $scope.uploadArray[$scope.imageResizing]['img'].height;
-        			$scope.$safeApply();
+		    	
+        				$scope.$apply(function() {
+
+        				});
+        		
 		    	}
+		    	
+
     	        $('.cl-imgContainer img').css({
 		          top: 0 + 'px',
 		          left:  0 + 'px'
 		        }).width($scope.originalWidth);
 
-		    	console.log($scope.currentSrc);
+		    	// console.log($scope.currentSrc);
 		    }      		
 		    /********************************************************************************************
 		    *********************************************************************************************
@@ -223,8 +233,8 @@ clientResize.directive('clientresize', function() {
 		    	// $scope.imageResizing;
 		    	
 		    	console.log('ZOOMING');
-		    	console.log($scope.currentSrc);
-		    }      		
+		    	console.log($scope.originalWidth);
+		    }
 		    /** *****************************************************************************************
 		    *********************************************************************************************
 		    																				VALIDATE STEP
@@ -243,6 +253,10 @@ clientResize.directive('clientresize', function() {
 		    	$scope.uploadArray[$scope.imageResizing].resizeStuff[step].zoom=$scope.currentzoom;
 		    	$scope.uploadArray[$scope.imageResizing].resizeStuff[step].x= -$scope.currentX +(container.width()/2)-($scope.steps[step].width/2);
 		    	$scope.uploadArray[$scope.imageResizing].resizeStuff[step].y= -$scope.currentY+(container.height()/2)-($scope.steps[step].height/2);
+
+		    	console.log($scope.uploadArray[$scope.imageResizing].resizeStuff[step].x);
+		    	console.log($scope.uploadArray[$scope.imageResizing].resizeStuff[step].y);
+
 		    	$scope.uploadArray[$scope.imageResizing].resizeStuff[step].cropWidth=$scope.steps[step].width;
 		    	$scope.uploadArray[$scope.imageResizing].resizeStuff[step].cropHeight=$scope.steps[step].height;
 		    	$scope.uploadArray[$scope.imageResizing].resizeStuff[step].folder=$scope.steps[step].folder;
@@ -286,8 +300,7 @@ clientResize.directive('clientresize', function() {
       		$('#myModal').modal({show:false});
       		$('#slider').slider({min:0.2,max:1.5,value:1, step:0.05,tooltip:'hide'}).on('slide', function(ev){
     			scope.currentzoom=ev.value;
-    			var originalWidth = $(this).parent().parent().parent().find('.cl-imgContainer img').attr('originalWidth');
-    			// var originalHeight = $(this).parent().parent().parent().find('.cl-imgContainer img').attr('originalHeight');
+    			var originalWidth = scope.originalWidth
     			$(this).parent().parent().parent().find('.cl-imgContainer img').width(ev.value*originalWidth)
   			});
       }	
