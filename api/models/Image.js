@@ -165,9 +165,10 @@ module.exports = {
 			        {
 
 			        	console.log('-------------------------------------------------img.galery');
-			        	// console.log(img.galery);
-				        Galery.findOne(img.galery).populate('images').exec(function(err,res) {
-				        	// console.log(res);
+			        	console.log(img.galery);
+				        Galery.findOne(img.galery.id).populate('images').exec(function(err,res) {
+				        	console.log(res);
+				        	console.log(err);
 				        	async.each(res.images, function(image, cb2) {
 
 				        		if(Number(image.index) > Number(img.index))

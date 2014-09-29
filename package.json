@@ -29,6 +29,8 @@
     "moment": "^2.8.3",
     "node.extend": "^1.0.10",
     "nodemailer": "^1.2.2",
+    "nodemailer-markdown": "^1.0.0",
+    "nodemailer-smtp-pool": "^0.1.7",
     "password-generator": "^0.2.2",
     "rc": "~0.3.3",
     "sails": "~0.10.0-rc11",

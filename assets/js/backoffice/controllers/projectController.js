@@ -52,10 +52,7 @@ function projectsCtrl($scope,filterFilter,projectsService,categories,$filter,$st
             $state.go('/.projects.projects.editimage',{id: filterFilter($scope.projects,{checked : true})[0].id})
     }
     $scope.linkadd =function(){
-        console.log('tototo');
             $state.go('/.projects.projects.add');
-            console.log($state);
-            console.log('totot2');
     }
 
 

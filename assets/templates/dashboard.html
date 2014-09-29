@@ -1,4 +1,72 @@
-<h2>dashboard template</h2>
+<ul class="dashboard">
+	<li class="dashitem">
+		<h2>Utilisateurs</h2>
+		<p class="bigNumber">{{count.users}}</p>
+		<span class="logo icon-user"></span>
+		<a href="admin#/users/user">Ajouter un utilisateur </a>
+	</li>
+	<li class="dashitem" ng-show="showClient">
+		<h2>Clients</h2>
+		<p class="bigNumber">{{count.clients}}</p>
+		<span class="logo icon-graduation-cap"></span>
+		<a href="admin#/users/client">Voir les clients</a>
+	</li>
+	<li class="dashitem">
+		<h2>Articles</h2>
+		<p class="bigNumber">{{count.articles}}</p>
+		<span class="logo icon-edit"></span>
+		<a href="admin#/articles/articles">Ajouter un article</a>
+	</li>
+	<li class="dashitem">
+		<h2>Commentaires</h2>
+		<p class="bigNumber">{{count.comments}}</p>
+		<span class="logo icon-comment"></span>
+		<a href="admin#/articles/coments">Voir les commentaires</a>
+	</li>
+	<li class="dashitem" ng-show="showProject">
+		<h2>Projets</h2>
+		<p class="bigNumber">{{count.projects}}</p>
+		<span class="logo icon-th-large"></span>
+		<a href="admin#/projects/projects">Ajouter un projet</a>
+	</li>
+	<li class="dashitem" ng-show="showAvis">
+		<h2>Avis clients</h2>
+		<p class="bigNumber">{{count.goldenbook}}</p>
+		<span class="logo icon-share-squared"></span>
+		<a href="admin#/goldenbook">Voir les Avis</a>
+	</li>
+	<li class="dashitem">
+		<h2>Newsletter</h2>
+		<p class="bigNumber">{{count.mailinglist}}</p>
+		<span class="logo icon-mail"></span>
+		<a href="admin#/newsletters/envoi">Envoyer des email</a>
+	</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <script src="https://apis.google.com/js/client.js?onload=loadLib"</script>

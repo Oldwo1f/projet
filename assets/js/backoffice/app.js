@@ -1,4 +1,4 @@
-var app = angular.module('app', ['gapi','satellizer','markdownpreview','ngLocale','ui.router','clientresize','ui.bootstrap','ngAnimate','ui.bootstrap.datetimepicker','ui.sortable','angular-loading-bar']);
+var app = angular.module('app', ['gapi','satellizer','markdownpreview','Csv','ngLocale','ui.router','clientresize','ui.bootstrap','ngAnimate','ui.bootstrap.datetimepicker','ui.sortable','angular-loading-bar']);
 
 
 app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
@@ -59,7 +59,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
   $urlRouterProvider.when('/projects',"/projects/projects");
   $urlRouterProvider.when('/galery',"/galery/home");
   $urlRouterProvider.when('/users',"/users/user");
-  // $urlRouterProvider.when('/',"/dashboard");
+  $urlRouterProvider.when('/newsletters',"/newsletters/list/");
+  $urlRouterProvider.when('/',"/dashboard");
   // $urlRouterProvider.when('/login',"../");
   $urlRouterProvider.otherwise("/");
   
@@ -194,14 +195,14 @@ app.config(function($stateProvider, $urlRouterProvider) {
               'dashboardView':{
                 templateUrl: "/templates/dashboard.html",
                 controller:'dashboardCtrl',
-                // resolve:{
-                //    init: function(gapiService) {
-                //     // console.log(analitycsreporter);
-                //     console.log('thisthisthisthisthisthisthisthisthisthisthisthisthisthisthisthis');
-                //     // console.log(analitycsreporterCtrl.toto());
-                //       return gapiService.yo()
-                //    }
-                // }
+                resolve:{
+                   count: function(dashboardService) {
+                    // console.log(analitycsreporter);
+                    console.log('thisthisthisthisthisthisthisthisthisthisthisthisthisthisthisthis');
+                    // console.log(analitycsreporterCtrl.toto());
+                      return dashboardService.fetchStats()
+                   }
+                }
               }
             }
           })
@@ -250,6 +251,109 @@ app.config(function($stateProvider, $urlRouterProvider) {
                               	}
                               }
                             })
+          /////////////////////////////////////////////////////////////////////////////////////EMAIL
+          .state('/.newsletters', {
+            url: "newsletters",
+            data:{'mainTabs':'newsletters'},
+            views: {
+              'newslettersView':{
+                templateUrl: "/templates/newsletters/main.html"
+
+              }
+            }
+          })          
+                        .state('/.newsletters.list', {
+                          url: "/list/:id",
+                          data:{'newslettersTabs':'list'},
+                          views: {
+                            'listView':{
+                              templateUrl: "/templates/newsletters/list.html",
+                              controller:'newslettersCtrl',
+                              data:{'newslettersTabs':'list'},
+                              resolve:{
+                                mailingLists : function(mailingListsService) {
+                                  console.log('resolve mailingLists');
+                                  return mailingListsService.fetchmailingLists();
+                                },
+                                abonnes : function(mailingListsService,$stateParams) {
+                                  console.log('resolve mailingLists');
+                                  console.log($stateParams);
+                                  if($stateParams.id)
+                                  return mailingListsService.fetchmailingList($stateParams.id);
+                                  else
+                                    return null;
+                                }
+                              }
+                            }
+                          }
+                        })
+                                  .state('/.newsletters.list.add', {
+                                    url: "/addList",
+                                    views: {
+                                      'addmailinglistView':{
+                                        templateUrl: "/templates/newsletters/add.html",
+                                        controller:'addmailinglistCtrl'
+                                      }
+                                    }
+                                  })
+                                  .state('/.newsletters.list.addabonne', {
+                                    url: "/addabonne",
+                                    views: {
+                                      'addaddabonneView':{
+                                        templateUrl: "/templates/newsletters/addabonne.html",
+                                        controller:'addabonneCtrl'
+                                      }
+                                    }
+                                  })          
+                        .state('/.newsletters.envoi', {
+                          url: "/envoi",
+                          data:{'newslettersTabs':'envoi'},
+                          views: {
+                            'envoiView':{
+                              templateUrl: "/templates/newsletters/envoi.html",
+                              controller:'envoiCtrl',
+                              data:{'newslettersTabs':'envoi'},
+                              resolve:{
+                                envois : function(envoiService) {
+                                  console.log('resolve mailingLists');
+                                  return envoiService.fetchenvois();
+                                },
+                                // abonnes : function(mailingListsService,$stateParams) {
+                                //   console.log('resolve mailingLists');
+                                //   console.log($stateParams);
+                                //   if($stateParams.id)
+                                //   return mailingListsService.fetchmailingList($stateParams.id);
+                                //   else
+                                //     return null;
+                                // }
+                              }
+                            }
+                          }
+                        })
+                                  .state('/.newsletters.envoi.envoiserie', {
+                                    url: "/envoiserie",
+                                    views: {
+                                      'envoiserieView':{
+                                        templateUrl: "/templates/newsletters/envoiserie.html",
+                                        controller:'envoiserieCtrl',
+                                        resolve:{
+                                          mailingLists : function(mailingListsService) {
+                                            console.log('resolve mailingLists');
+                                            return mailingListsService.fetchmailingLists();
+                                          }
+                                        }
+                                      }
+                                    }
+                                  })
+                                  // .state('/.newsletters.list.addabonne', {
+                                  //   url: "/addabonne",
+                                  //   views: {
+                                  //     'addaddabonneView':{
+                                  //       templateUrl: "/templates/newsletters/addabonne.html",
+                                  //       controller:'addabonneCtrl'
+                                  //     }
+                                  //   }
+                                  // })
           /////////////////////////////////////////////////////////////////////////////////////PROJECTS
           .state('/.projects', {
             url: "projects",
@@ -287,7 +391,8 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                           }
                                         }
                                         
-                                      }).state('/.projects.category.edit', {
+                                      })
+                                      .state('/.projects.category.edit', {
                                         url: "/edit/:id",
                                         views: {
                                           'editprojectscategoryView':{

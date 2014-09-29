@@ -47,6 +47,7 @@ var jsFilesToInject = [
   'bower_components/datetimepicker.js',
   'bower_components/markdown_preview.js',
   'bower_components/satellizer.js',
+  'bower_components/angular-csv-import.js',
 
   // 'js/dependencies/**/*.js',
 

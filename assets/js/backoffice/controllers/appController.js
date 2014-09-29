@@ -5,6 +5,8 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 	$scope.maintabs=configService.maintabs;
 	$scope.articlestabs=configService.articlestabs;
 	$scope.projectstabs=configService.projectstabs;
+	$scope.newsletterstabs=configService.newsletterstabs;
+	console.log($scope.newsletterstabs);
 	$scope.galerytabs=configService.galerytabs;
 	$scope.userstabs=configService.userstabs;
 	$scope.resizeConfig=configService.frontConfig.imageResize;
@@ -163,6 +165,25 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 		    			$scope.galerytabs[i].active = false
 				}
 			};
+		}
+		if(toState.data.mainTabs === "newsletters")
+		{
+			for (var i = $scope.newsletterstabs.length - 1; i >= 0; i--) {
+				if(typeof toState.data != "undefined"){
+					if($scope.newsletterstabs[i]['name']===toState.data.newslettersTabs)
+		    			$scope.newsletterstabs[i].active = true
+		    		else	
+		    			$scope.newsletterstabs[i].active = false
+				}
+			};
+		}
+		if(toState.name === "/.newsletters.list")
+		{
+			$('.modal-backdrop').remove();
+		}
+		if(toState.name === "/.newsletters.envoi")
+		{
+			$('.modal-backdrop').remove();
 		}
 		if(toState.name === "/.articles.category")
 		{

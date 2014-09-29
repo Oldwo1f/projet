@@ -10,13 +10,13 @@ var fs =require('fs');
 module.exports = {
 	image:function(req,res) {
 
-		sails.log(req.params)
+		// sails.log(req.params)
 
 		var filePath = 'uploads/'+req.params.size+'/'+req.params.name;
-		sails.log(filePath);
+		// sails.log(filePath);
 	    var stat = fs.statSync(filePath);
 
-	    console.log(stat);
+	    // console.log(stat);
 	    res.writeHead(200, {
 	        // 'Content-Type': 'image/',
 	        'Content-Length': stat.size

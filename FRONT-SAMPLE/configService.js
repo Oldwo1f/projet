@@ -87,6 +87,7 @@ app.factory('configService', ['$http','$q',function ($http,$q) {
     {'title':'Projets','name' :'projects','active':false,'viewName':'projetsView'},
     {'title':'Galerie d\'images','name' :'galery','active':false,'viewName':'galeryView'},
     {'title':'Livre d\'or','name' :'goldenbook','active':false,'viewName':'goldenbookView'},
+    {'title':'Newsletters','name' :'newsletters','active':false,'viewName':'newslettersView'},
     ];
     service.articlestabs=[
     {'title':'Articles','name' :'articles','active':false},
@@ -103,6 +104,10 @@ app.factory('configService', ['$http','$q',function ($http,$q) {
     service.userstabs=[
     {'title':'Utilisateurs internes','name' :'user','active':false},
     {'title':'Clients','name' :'client','active':false},
+    ];
+    service.newsletterstabs=[
+    {'title':'Mes listes','name' :'list','active':false},
+    {'title':'Envoie de mail','name' :'emailing','active':false},
     ];
 
     service.languages=['fr','en'];

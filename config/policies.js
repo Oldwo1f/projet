@@ -25,8 +25,8 @@ var policies = {
 
   // Default policy for all controllers and actions
   // (`true` allows public access)
-  '*': 'ensureAuth', 
-  // '*': true,
+  // '*': 'ensureAuth', 
+  '*': true,
 	// Here's an example of mapping some policies to run before
   // a controller and its actions
 	'front/FrontController': {
@@ -40,13 +40,14 @@ var policies = {
 	},
 	BackofficeController: {
 		
-		'*': 'ensureAuth',
+		// '*': 'ensureAuth',
+		'*': true,
 		index:true,
 		login:true,
 	},
 	UserController: {
-		// '*': true,
-		'*': 'ensureAuth',
+		'*': true,
+		// '*': 'ensureAuth',
 		'editMe': 'ensureAuth',
 		'getMe': 'ensureAuth',
 		'login': true,

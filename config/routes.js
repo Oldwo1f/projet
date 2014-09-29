@@ -11,8 +11,8 @@ var routes={
 
   '/admin': 'BackofficeController.index',
   '/login': 'BackofficeController.login',
-  '/home': 'BackofficeController.home',
-  '/vid': 'BackofficeController.vid',
+  '/dashboardcount': 'BackofficeController.count',
+  '/init/:what': 'BackofficeController.init',
   // '/dashboard': 'BackofficeController.dashboard',
   // '/contact': 'BackofficeController.contact',
   '/file/image/:size/:name': 'FileController.image',
@@ -34,6 +34,13 @@ var routes={
   //PROJECTCategory
   'post /categoryProject' : 'CategoryProjectController.add',
   'put /categoryProject/:id' : 'CategoryProjectController.edit',
+
+  //Abonne
+  'post /abonne/:id' : 'abonneController.add',
+  'post /mailinglist/:id/addList' : 'abonneController.addlist',
+  'post /envoiserie' : 'envoiController.envoiserie',
+  // /mailinglist/'+listId+'/addList
+  // 'put /categoryProject/:id' : 'CategoryProjectController.edit',
 
 };
 routes = extend(routes, frontroutes); 
