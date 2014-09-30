@@ -85,6 +85,7 @@ assets/images/front
 assets/fonts/front
 assets/template/front
 assets/js/backoffice/services/configService.js
+assets/favion.ico
 
 api/controllers/front
 api/models/front

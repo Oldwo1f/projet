@@ -118,6 +118,7 @@ function addarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$stat
 	$scope.newArticle.content='';
 	$scope.newArticle.shortcontent='';
 	$scope.newArticle.title='';
+	$scope.newArticle.place='';
 	$scope.newArticle.keyword='';
 	$scope.newArticle.accroche='';
 	$scope.newArticle.rewriteurl='';

@@ -27,6 +27,9 @@
             <markdownpreview ng-model="newArticle.content" handleerror="'content'" minheight="300" placehold="'Contenu de l\'article en markdown'" />
             <markdownpreview ng-model="newArticle.shortcontent" handleerror="'shortcontent'"  minheight="100" placehold="'Accroche de l\'article en markdown'" />
             
+            <div class="form-group col-xs-12">
+                <input type="text" name="place" class="form-control input-lg" ng-model="newArticle.place" placeholder="Lieux">
+            </div>
             
             <wrap class="form-group col-xs-12" mytitle="'les options de référencement'">
                 <div class="form-group col-xs-12 nopadding">

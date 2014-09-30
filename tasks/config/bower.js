@@ -40,7 +40,6 @@ console.log('tototo');
                 'markdown_preview.js': 'angular-markdown-preview/markdown_preview.js',
                 'marked.js': '../node_modules/marked/lib/marked.js',
                 'satellizer.js': 'satellizer/satellizer.js',
-                'angular-csv-import.js': 'angular-csv-import/dist/angular-csv-import.js',
             },
         }, 
         fonts: {

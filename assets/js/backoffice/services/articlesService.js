@@ -69,7 +69,7 @@ app.factory('articlesService', ['$http','$q',function ($http,$q) {
         for(var i in array)
         {
             array[i].status =status;
-            $http.put('/article/'+array[i].id,array[i]).success(function (article,status) {
+            $http.put('/article/'+array[i].id,{'status':array[i].status}).success(function (article,status) {
                 console.log(article);
                 service.articles.splice(getIndexInBy(service.articles,'id',article.id),1,article)
             }).error(function (data,status) {
