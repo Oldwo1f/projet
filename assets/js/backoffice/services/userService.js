@@ -1,34 +1,29 @@
-app.factory('userService', ['$http','$q',function ($http,$q) {
+app.factory('userService', ['$http','$q','messageCenterService',function ($http,$q,messageCenterService) {
     var service = {};
     service.users=[];
 
-console.log('USERSERVICE');
     service.fetchUsers= function() {
         var deferred = $q.defer();
-        console.log('USERSERVICE---->fetchUsers');
 
         $http.get('/intern').success(function (data,status) {
             service.users =data;
-            console.log(data);
             deferred.resolve(data);
         }).error(function (data,status) {
+            messageCenterService.add('danger', 'Erreur dans la récupération des utilisateurs', { status: messageCenterService.status.unseen, timeout: 4000 });
             deferred.reject('error perso');
-            console.log('ERROR');
         })
 
         return deferred.promise;
     };
     service.fetchClients= function() {
         var deferred = $q.defer();
-        console.log('USERSERVICE---->fetchUsers');
 
         $http.get('/client').success(function (data,status) {
             service.users =data;
-            console.log(data);
             deferred.resolve(data);
         }).error(function (data,status) {
+            messageCenterService.add('danger', 'Erreur dans la récupération des clients', { status: messageCenterService.status.unseen, timeout: 4000 });
             deferred.reject('error perso');
-            console.log('ERROR');
         })
 
         return deferred.promise;
@@ -40,11 +35,10 @@ console.log('USERSERVICE');
         var deferred = $q.defer();
 
         $http.get('/user/'+id).success(function (data,status) {
-           console.log(data);
             deferred.resolve(data);
         }).error(function (data,status) {
+            messageCenterService.add('danger', 'Erreur dans la récupération de l\'utilisateur', { status: messageCenterService.status.unseen, timeout: 4000 });
             deferred.reject('error perso');
-            console.log('ERROR');
         })
 
         return deferred.promise;
@@ -57,13 +51,14 @@ console.log('USERSERVICE');
         var deferred = $q.defer();
 
         $http.post('/user',user).success(function (data2,status2) {
+            console.log('SUCCESS');
             $http.get('/user/'+data2.id).success(function (data,status) {
-                // console.log(status);
                 service.users.unshift(data);
+                messageCenterService.add('success', 'Utilisateur ajouté', { status: messageCenterService.status.unseen, timeout: 4000 });
                 deferred.resolve(data);
             })
         }).error(function (data,status) {
-             deferred.reject(data);
+            deferred.reject(data);
         })
         
         return deferred.promise;      
@@ -73,11 +68,13 @@ console.log('USERSERVICE');
         user.role = 'client';
         $http.post('/user',user).success(function (data2,status2) {
             $http.get('/user/'+data2.id).success(function (data,status) {
-                // console.log(status);
                 service.users.unshift(data);
+                messageCenterService.add('success', 'Utilisateur ajouté', { status: messageCenterService.status.unseen, timeout: 4000 });
+
                 deferred.resolve(data);
             })
         }).error(function (data,status) {
+            // messageCenterService.add('danger', data, { status: messageCenterService.status.unseen, timeout: 4000 });
              deferred.reject(data);
         })
         
@@ -88,73 +85,34 @@ console.log('USERSERVICE');
         var deferred = $q.defer();
         $http.put('/user/'+user.id,user).success(function (data2,status) {
             $http.get('/user/'+user.id).success(function (data,status) {
-                console.log(data);
                 service.users.splice(getIndexInBy(service.users,'id',user.id),1,data)
+                messageCenterService.add('success', 'Utilisateur enregirsté', { status: messageCenterService.status.unseen, timeout: 4000 });
                 deferred.resolve(data);
             })
         }).error(function (data,status) {
+            messageCenterService.add('danger', data, { status: messageCenterService.status.unseen, timeout: 4000 });
+
             deferred.reject(data);
+
         })
         return deferred.promise;
     }
-    // service.changeStatusUser=function(array,status){
-    //     var deferred = $q.defer();
-    //     for(var i in array)
-    //     {
-    //         array[i].status =status;
-    //         $http.put('/user/'+array[i].id,array[i]).success(function (user,status) {
-    //             console.log(user);
-    //             service.users.splice(getIndexInBy(service.users,'id',user.id),1,user)
-    //         }).error(function (data,status) {
-    //             console.log('ERROR');
-    //             deferred.reject(data);
-    //         })
-    //     }
-    // }
+
     service.remove=function(catArray){
 
         for(var i in catArray)
         {
             $http.delete('/user/'+catArray[i].id).success(function (user,status) {
-                console.log(user);
-                 service.users.splice(getIndexInBy(service.users,'id',user.id),1)
+                service.users.splice(getIndexInBy(service.users,'id',user.id),1)
+                messageCenterService.add('success', 'Suppréssion réussie', { status: messageCenterService.status.unseen, timeout: 4000 });
+
             }).error(function (data,status) {
-                console.log('ERROR');
+                messageCenterService.add('danger', data, { status: messageCenterService.status.unseen, timeout: 4000 });
+
             })
         }
          
     }
-    // service.removeimage=function(user,image){
-    //     $http.delete('/image/'+image.id).success(function (data,status) {
-
-    //         user.images.splice(getIndexInBy(user.images,'id',image.id),1);
-    //         service.users.splice(getIndexInBy(service.users,'id',user.id),1,user)
-
-
-    //     }).error(function (data,status) {
-    //         console.log('ERROR');
-    //     })
-    // }
-
-    // service.replace=function(user){
-        
-    //     service.users.splice(getIndexInBy(service.users,'id',user.id),1,user)
-    //     return;
-    // }
-    // service.updateImgIndex=function(image,user){
-    //     var deferred = $q.defer();
-    //     console.log(image);
-    //     $http.put('/image/'+image.id,image).success(function (image,status) {
-    //         image.useruser = image.useruser.id;
-    //         user.images.splice(getIndexInBy(user.images,'id',image.id),1,image);
-    //         service.users.splice(getIndexInBy(service.users,'id',user.id),1,user)
-    //         deferred.resolve(image);
-    //     }).error(function (data,status) {
-    //         console.log('ERROR');
-    //         deferred.reject(data);
-    //     })
-    //     return deferred.promise;
-    // }
 
 
     return service;

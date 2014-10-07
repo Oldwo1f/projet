@@ -36,15 +36,12 @@ csvImport.directive('csv', function() {
 			});
 
 			scope.clickAddImg = function($event) {
-		    	console.log($($event.target).find('input'))
-		    	// console.log($($event.target))
 		    	setTimeout(function() {
 		    		$($event.target).find('input').click();
 		    	},0);
 		    }   
 
 			element.on('change', function(onChangeEvent) {
-				console.log('CHANGE');
 				var reader = new FileReader();
 				reader.onload = function(onLoadEvent) {
 					scope.$apply(function() {
@@ -56,12 +53,10 @@ csvImport.directive('csv', function() {
 
 						scope.content = content.csv;
 						scope.result = csvToJSON(content);
-						console.log('COOL');
 						scope.$parent.finishImport(scope.result)
 					});
 				};
 				if ( (onChangeEvent.target.type === "file") && (onChangeEvent.target.files != null || onChangeEvent.srcElement.files != null) )  {
-					console.log('HERE');
 					reader.readAsText((onChangeEvent.srcElement || onChangeEvent.target).files[0]);
 				} else {
 					if ( scope.content != null ) {

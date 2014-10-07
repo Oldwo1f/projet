@@ -1,8 +1,6 @@
 app.controller('goldenbookCtrl',['$scope','filterFilter','goldenbookService','$filter','$state','goldenbooks',
 function goldenbookCtrl($scope,filterFilter,goldenbookService,$filter,$state,goldenbooks) {
 
-console.log('goldenbookCTRL');
-console.log(goldenbooks);
 	$scope.goldenbooks= goldenbooks;
 	$scope.order='date';
 	$scope.reverse=true;
@@ -24,28 +22,7 @@ console.log(goldenbooks);
 			goldenbook.checked = allchecked;
 		});
 	}
-	// $scope.linkedit=function(id){
-	// 	// console.log(filterFilter($scope.goldenbook,{checked : true}));
-	// 	if(id){
-	// 		clearSelection()
-	// 		$state.go('/.goldenbook.goldenbook.edit',{id: id})
-	// 	}
-	// 	else
-	// 		$state.go('/.goldenbook.goldenbook.edit',{id: filterFilter($scope.goldenbook,{checked : true})[0].id})
-	// }
-	// $scope.linkeditimages =function(id){
-	// 	if(id){
-	// 		clearSelection()
-	// 		$state.go('/.goldenbook.goldenbook.editimage',{id: id})
-	// 	}
-	// 	else
-	// 		$state.go('/.goldenbook.goldenbook.editimage',{id: filterFilter($scope.goldenbook,{checked : true})[0].id})
-	// }
-	// $scope.linkadd =function(){
-	// 		$state.go('/.goldenbook.goldenbook.add')
-	// }
-
-
+	
 	$scope.removeselected =function(){
 			goldenbookService.remove(filterFilter($scope.goldenbooks,{checked : true}))
 	}
@@ -58,7 +35,6 @@ console.log(goldenbooks);
 
 		if($scope.order === 'article')
 		{
-			console.log(val[$scope.order]);
 			return val[$scope.order].title;
 		}else
 		{

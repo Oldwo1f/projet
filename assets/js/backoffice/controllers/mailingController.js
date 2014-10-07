@@ -1,5 +1,5 @@
-app.controller('newslettersCtrl',['$scope','filterFilter','$filter','$state','mailingLists','mailingListsService','abonnes','$stateParams',
-function newslettersCtrl($scope,filterFilter,$filter,$state,mailingLists,mailingListsService,abonnes,$stateParams) {
+app.controller('newslettersCtrl',['$scope','filterFilter','$filter','$state','mailingLists','mailingListsService','abonnes','$stateParams','messageCenterService',
+function newslettersCtrl($scope,filterFilter,$filter,$state,mailingLists,mailingListsService,abonnes,$stateParams,messageCenterService) {
 	 $scope.csv = {
     	content: null,
     	header: true,
@@ -8,23 +8,16 @@ function newslettersCtrl($scope,filterFilter,$filter,$state,mailingLists,mailing
     };
     $scope.order='createdAt';
     $scope.reverse=false;
-	console.log(abonnes);
 	$scope.mailingLists = mailingLists;
-	console.log($scope.mailingLists);
 	$scope.currentList=$stateParams.id;
-	// console.log(getIndexInBy($scope.mailingLists,'id',$scope.currentList));
-	console.log(typeof(abonnes));
-	console.log(abonnes);
 	$scope.abonnes=[];
 	if(abonnes)
 		$scope.abonnes=abonnes.abonnes
-console.log($scope.abonnes);
-// console.log($stateParams);
+
 	$scope.linkaddList =function(){
         $state.go('/.newsletters.list.add');
     }
     $scope.linkadd =function(){
-		console.log('YOYOYOYOYOYO');
         $state.go('/.newsletters.list.addabonne');
     }
 
@@ -51,6 +44,7 @@ console.log($scope.abonnes);
     };
     $scope.removeselected =function(){
         mailingListsService.remove(filterFilter($scope.abonnes,{checked : true}),$scope.currentList,function(abonnes) {
+            $scope.abonnes=[];
         	$scope.abonnes=abonnes;
         })
 
@@ -62,12 +56,9 @@ console.log($scope.abonnes);
     }
 
     $scope.finishImport =function(t){
-            // console.log(t);
-            // console.log($scope.csv.results);
             var emailTab=[];
             for(i in t){
             	row = t[i][0].split(',');
-            	console.log(row);
             	for(j in row)
             	{
             		var pattern = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -78,8 +69,6 @@ console.log($scope.abonnes);
             	}
             }
 
-            console.log(emailTab.length);
-            console.log(emailTab);
             if(emailTab.length>0)
             {
             	mailingListsService.addSeriesMails($scope.currentList,emailTab).then(function(datas) {
@@ -112,7 +101,6 @@ console.log($scope.abonnes);
 app.controller('addmailinglistCtrl',['$scope','filterFilter','$filter','$state','mailingListsService',
 function addmailinglistCtrl($scope,filterFilter,$filter,$state,mailingListsService) {
 	$scope.newList={};
-	console.log('mailingListsCTRL');
 	$('.newModal').modal();
     $('.newModal').on('hidden.bs.modal',function(e) {
         $state.go('/.newsletters.list');
@@ -127,15 +115,12 @@ function addmailinglistCtrl($scope,filterFilter,$filter,$state,mailingListsServi
 	            $scope.newList.title='';
 	            $state.go('/.newsletters.list');
 	        },function(err) {
-	            console.log(err);
-	            console.log(err.error.invalidAttributes);
 	            if(err.error.invalidAttributes)
 	            {
+                    messageCenterService.add('danger', 'Veuillez revoir votre saisie', { status: messageCenterService.status.unseen, timeout: 4000 });
 	                invalAttrs = err.error.invalidAttributes;
-	                console.log(invalAttrs);
 	                for(var i in invalAttrs)
 	                {
-	                    console.log(i);
 	                    $('[name="'+i+'"]').parent().addClass('has-error');
 	                }
 	            }
@@ -148,32 +133,26 @@ function addmailinglistCtrl($scope,filterFilter,$filter,$state,mailingListsServi
 app.controller('addabonneCtrl',['$scope','filterFilter','$filter','$state','mailingListsService',
 function addabonneCtrl($scope,filterFilter,$filter,$state,mailingListsService) {
 	$scope.newAbonne={};
-	console.log('addabonneCtrl');
 	$('.newModal').modal();
     $('.newModal').on('hidden.bs.modal',function(e) {
         $state.go('/.newsletters.list');
     });
 
     $scope.submitNew=function() {
-        console.log('heheheheheh');
         if($scope.newAbonne.email && $scope.currentList != null)
         {
 
-console.log('heheheheheh');
 	        mailingListsService.addNewabonne($scope.newAbonne,$scope.currentList).then(function(data) {
 	            $scope.newAbonne.email='';
-	            $scope.abonnes.unshift(data)
+	            $scope.$parent.abonnes= data.abonnes;
 	            $state.go('/.newsletters.list');
 	        },function(err) {
-	            console.log(err);
-	            console.log(err.error.invalidAttributes);
 	            if(err.error.invalidAttributes)
 	            {
+                    messageCenterService.add('danger', 'Veuillez revoir votre saisie', { status: messageCenterService.status.unseen, timeout: 4000 });
 	                invalAttrs = err.error.invalidAttributes;
-	                console.log(invalAttrs);
 	                for(var i in invalAttrs)
 	                {
-	                    console.log(i);
 	                    $('[name="'+i+'"]').parent().addClass('has-error');
 	                }
 	            }

@@ -13,6 +13,7 @@ var routes={
   '/login': 'BackofficeController.login',
   '/dashboardcount': 'BackofficeController.count',
   '/init/:what': 'BackofficeController.init',
+  '/init/:what/:emailClient': 'BackofficeController.init',
   // '/dashboard': 'BackofficeController.dashboard',
   // '/contact': 'BackofficeController.contact',
   '/file/image/:size/:name': 'FileController.image',
@@ -35,10 +36,23 @@ var routes={
   'post /categoryProject' : 'CategoryProjectController.add',
   'put /categoryProject/:id' : 'CategoryProjectController.edit',
 
+  //Article
+  'get /article' : 'ArticleController.getAll',
+  'get /article/:id' : 'ArticleController.get',
+  'post /article' : 'ArticleController.add',
+  'put /article/:id' : 'ArticleController.edit',
+  //ArticleCategory
+  'post /categoryArticle' : 'CategoryArticleController.add',
+  'put /categoryArticle/:id' : 'CategoryArticleController.edit',
+
   //Abonne
   'post /abonne/:id' : 'abonneController.add',
   'post /mailinglist/:id/addList' : 'abonneController.addlist',
   'post /envoiserie' : 'envoiController.envoiserie',
+  'get /getenvoi' : 'envoiController.fetchEnvois',
+  'delete /campagne/:id' : 'envoiController.deletecampagne',
+  'post /desincription' : 'envoiController.desincription',
+  'post /bounce' : 'envoiController.bounce',
   // /mailinglist/'+listId+'/addList
   // 'put /categoryProject/:id' : 'CategoryProjectController.edit',
 

@@ -28,7 +28,7 @@
 	    		<td >
 	    			<input type="checkbox" ng-model="category.checked" ng-change="filterMainArray()">
 	    		</td>
-		    	<td ng-dblClick="linkedit(category.id)" class='pointer'>{{category.title}}</td>
+		    	<td ng-dblClick="linkedit(category.id)" class='pointer'>{{category.translations[0].title}}</td>
 		    	<td ng-dblClick="linkeditimages(category.id)" class='pointer'>
 		    		<ul class="listimages">
 		    			<li ng-repeat="image in category.images | limitTo:4 | orderBy:'index':false">

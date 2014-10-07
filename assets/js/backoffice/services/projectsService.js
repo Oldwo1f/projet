@@ -1,4 +1,4 @@
-app.factory('projectsService', ['$http','$q',function ($http,$q) {
+app.factory('projectsService', ['$http','$q','messageCenterService',function ($http,$q,messageCenterService) {
     var service = {};
     service.projects=[];
 
@@ -8,11 +8,11 @@ app.factory('projectsService', ['$http','$q',function ($http,$q) {
 
         $http.get('/project').success(function (data,status) {
             service.projects =data;
-            console.log(data);
             deferred.resolve(data);
         }).error(function (data,status) {
             deferred.reject('error perso');
-            console.log('ERROR');
+            messageCenterService.add('danger', 'Erreur de récupération des projets', { status: messageCenterService.status.unseen, timeout: 4000 });
+
         })
 
         return deferred.promise;
@@ -24,11 +24,10 @@ app.factory('projectsService', ['$http','$q',function ($http,$q) {
         var deferred = $q.defer();
 
         $http.get('/project/'+id).success(function (data,status) {
-           console.log(data);
             deferred.resolve(data);
         }).error(function (data,status) {
+            messageCenterService.add('danger', 'Impossible de récupérer le projet', { status: messageCenterService.status.unseen, timeout: 4000 });
             deferred.reject('error perso');
-            console.log('ERROR');
         })
 
         return deferred.promise;
@@ -43,6 +42,7 @@ app.factory('projectsService', ['$http','$q',function ($http,$q) {
         $http.post('/project',project).success(function (data2,status2) {
             $http.get('/project/'+data2.id).success(function (data,status) {
                 service.projects.unshift(data);
+            messageCenterService.add('success', 'Projet ajouté', { status: messageCenterService.status.unseen, timeout: 4000 });
                 deferred.resolve(data);
             })
         }).error(function (data,status) {
@@ -56,8 +56,8 @@ app.factory('projectsService', ['$http','$q',function ($http,$q) {
         var deferred = $q.defer();
         $http.put('/project/'+project.id,project).success(function (data2,status) {
             $http.get('/project/'+project.id).success(function (data,status) {
-                console.log(data);
                 service.projects.splice(getIndexInBy(service.projects,'id',project.id),1,data)
+                messageCenterService.add('success', 'Projet enregistré', { status: messageCenterService.status.unseen, timeout: 4000 });
                 deferred.resolve(data);
             })
         }).error(function (data,status) {
@@ -71,23 +71,24 @@ app.factory('projectsService', ['$http','$q',function ($http,$q) {
         {
             array[i].status =status;
             $http.put('/project/'+array[i].id,array[i]).success(function (project,status) {
-                console.log(project);
                 service.projects.splice(getIndexInBy(service.projects,'id',project.id),1,project)
             }).error(function (data,status) {
-                console.log('ERROR');
+                messageCenterService.add('danger', 'Erreur dans le changement de status', { status: messageCenterService.status.unseen, timeout: 4000 });
                 deferred.reject(data);
             })
         }
+        messageCenterService.add('success', 'Status enregistré', { status: messageCenterService.status.unseen, timeout: 4000 });
     }
     service.remove=function(catArray){
 
         for(var i in catArray)
         {
             $http.delete('/project/'+catArray[i].id).success(function (project,status) {
-                console.log(project);
                  service.projects.splice(getIndexInBy(service.projects,'id',project.id),1)
+                 messageCenterService.add('success', 'Projet supprimé', { status: messageCenterService.status.unseen, timeout: 4000 });
             }).error(function (data,status) {
-                console.log('ERROR');
+                messageCenterService.add('danger', 'Erreur dans la suppression', { status: messageCenterService.status.unseen, timeout: 4000 });
+
             })
         }
          
@@ -97,10 +98,10 @@ app.factory('projectsService', ['$http','$q',function ($http,$q) {
 
             project.images.splice(getIndexInBy(project.images,'id',image.id),1);
             service.projects.splice(getIndexInBy(service.projects,'id',project.id),1,project)
-
+            messageCenterService.add('success', 'Image supprimée', { status: messageCenterService.status.unseen, timeout: 4000 });
 
         }).error(function (data,status) {
-            console.log('ERROR');
+                messageCenterService.add('danger', 'Erreur dans la suppression', { status: messageCenterService.status.unseen, timeout: 4000 });
         })
     }
 
@@ -111,14 +112,12 @@ app.factory('projectsService', ['$http','$q',function ($http,$q) {
     }
     service.updateImgIndex=function(image,project){
         var deferred = $q.defer();
-        console.log(image);
         $http.put('/image/'+image.id,image).success(function (image,status) {
-            image.projectproject = image.projectproject.id;
+            image.project = image.project.id;
             project.images.splice(getIndexInBy(project.images,'id',image.id),1,image);
             service.projects.splice(getIndexInBy(service.projects,'id',project.id),1,project)
             deferred.resolve(image);
         }).error(function (data,status) {
-            console.log('ERROR');
             deferred.reject(data);
         })
         return deferred.promise;

@@ -1,6 +1,5 @@
-
-app.controller('articlesCtrl',['$scope','filterFilter','articlesService','$filter','$state','articles',
-function articlesCtrl($scope,filterFilter,articlesService,$filter,$state,articles) {
+app.controller('articlesCtrl',['$scope','filterFilter','articlesService','$filter','$state','articles','messageCenterService',
+function articlesCtrl($scope,filterFilter,articlesService,$filter,$state,articles,messageCenterService) {
 
 	$scope.articles= articles;
 	$scope.order='date';
@@ -24,7 +23,6 @@ function articlesCtrl($scope,filterFilter,articlesService,$filter,$state,article
 		});
 	}
 	$scope.linkedit=function(id){
-		// console.log(filterFilter($scope.articles,{checked : true}));
 		if(id){
 			clearSelection()
 			$state.go('/.articles.articles.edit',{id: id})
@@ -57,7 +55,6 @@ function articlesCtrl($scope,filterFilter,articlesService,$filter,$state,article
 
 		if($scope.order === 'category')
 		{
-			console.log(val[$scope.order]);
 			return val[$scope.order].title;
 		}else
 		{
@@ -110,18 +107,19 @@ function articlesCtrl($scope,filterFilter,articlesService,$filter,$state,article
 
 }]);
 
-app.controller('addarticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','$state','categories',
-function addarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$state,categories) {
+app.controller('addarticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','$state','categories','messageCenterService',
+function addarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$state,categories,messageCenterService) {
 	$scope.categories= categories;
 	$scope.newArticle={};
-	$scope.newArticle.description='';
-	$scope.newArticle.content='';
-	$scope.newArticle.shortcontent='';
-	$scope.newArticle.title='';
-	$scope.newArticle.place='';
-	$scope.newArticle.keyword='';
-	$scope.newArticle.accroche='';
-	$scope.newArticle.rewriteurl='';
+	$scope.translation={};
+	$scope.translation.description='';
+	$scope.translation.content='';
+	$scope.translation.shortcontent='';
+	$scope.translation.title='';
+	$scope.translation.place='';
+	$scope.translation.keyword='';
+	$scope.translation.accroche='';
+	$scope.translation.rewriteurl='';
 	$scope.newArticle.date=new Date();
 	$('.newModal').modal();
 	$('.newModal').on('hidden.bs.modal',function(e) {
@@ -135,52 +133,70 @@ function addarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$stat
 
 	$scope.submitNew=function() {
 		$scope.newArticle.status='new';
+        $scope.newArticle.translationFR = $scope.translation;
 		articlesService.addNew($scope.newArticle).then(function() {
 			$scope.newArticle.title='';
 			$state.go('/.articles.articles');
 		},function(err) {
-			console.log(err);
-			console.log(err.error.invalidAttributes);
 			if(err.error.invalidAttributes)
-			{
-				invalAttrs = err.error.invalidAttributes;
-				console.log(invalAttrs);
-				for(var i in invalAttrs)
-				{
-					console.log(i);
-					$('[name="'+i+'"]').parent().addClass('has-error');
-				}
-			}
+            {
+                messageCenterService.add('danger', 'Veuillez revoir votre saisie', { status: messageCenterService.status.unseen, timeout: 4000 });
+                invalAttrs = err.error.invalidAttributes;
+                for(var i in invalAttrs)
+                {
+                    $('[name="'+i+'"]').parent().addClass('has-error');
+                }
+            }
 		})
 		
 	};
 }]);
-app.controller('editarticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','$state','$filter','article','categories',
-function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$state,$filter,article,categories) {
+app.controller('editarticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','$state','$filter','article','categories','messageCenterService','configService',
+function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$state,$filter,article,categories,messageCenterService,configService) {
 	$scope.categories= categories;
-	console.log('modalalalalalallalal');
 	$('.editModal').modal();
 	$('.editModal').on('hidden.bs.modal',function(e) {
 		$state.go('/.articles.articles');
 	});
-	$scope.editArticle = article;
-	console.log($scope.editArticle);
-	$scope.editArticle.category = $scope.editArticle.category.id;
-	// $scope.$apply();
 
+ 	$scope.editArticle = article;
+    $scope.lang='fr';
+    $scope.languages= configService.languages;
+    $scope.currenttranslation = getIndexInBy($scope.editArticle.translations,'lang',$scope.lang)
+
+    $scope.changeLanguage = function() {
+
+        var index = getIndexInBy($scope.editArticle.translations,'lang',$scope.lang)
+        if(typeof(index)=='undefined')
+        {
+           $scope.editArticle.translations.push(
+           {
+                'lang':$scope.lang,
+                'title':'',
+                'content':'',
+                'shortcontent':'',
+                'keyword':'',
+                'description':'',
+                'rewriteurl':'',
+                'place':'',
+           });
+        }
+        $scope.currenttranslation = getIndexInBy($scope.editArticle.translations,'lang',$scope.lang)
+    };
+
+
+	if(typeof($scope.editArticle.category)!="undefined")
+	$scope.editArticle.category = $scope.editArticle.category.id;
 	$scope.submitEdit = function() {
 		articlesService.edit($scope.editArticle).then(function() {
 			$('.editModal').modal('hide');
 		},function(err) {
-			console.log(err);
-			console.log(err.error.invalidAttributes);
 			if(err.error.invalidAttributes)
 			{
+                messageCenterService.add('danger', 'Veuillez revoir votre saisie', { status: messageCenterService.status.unseen, timeout: 4000 });
 				invalAttrs = err.error.invalidAttributes;
-				console.log(invalAttrs);
 				for(var i in invalAttrs)
 				{
-					console.log(i);
 					$('[name="'+i+'"]').parent().addClass('has-error');
 				}
 			}
@@ -189,8 +205,8 @@ function editarticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$sta
 
 
 }]);
-app.controller('editimagearticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','$state','$filter','article',
-function editimagearticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$state,$filter,article) {
+app.controller('editimagearticlesCtrl',['$scope','$stateParams','filterFilter','articlesService','$state','$filter','article','messageCenterService',
+function editimagearticlesCtrl($scope,$stateParams,filterFilter,articlesService ,$state,$filter,article,messageCenterService) {
 	
 
 
@@ -217,11 +233,8 @@ function editimagearticlesCtrl($scope,$stateParams,filterFilter,articlesService 
 	};
 	$scope.sortableOptions = {
 	    update: function(e, ui) {
-	     	// console.log(ui); 
 	     	startIndex = ui.item.sortable.index;
 	     	dropIndex = ui.item.sortable.dropindex;
-	     	console.log(startIndex +' ----'+dropIndex);
-	     	console.log($scope.article.images);
 	     	if(dropIndex<startIndex)
 	     	{
 	     		for(var i in $scope.article.images)
@@ -261,19 +274,14 @@ function editimagearticlesCtrl($scope,$stateParams,filterFilter,articlesService 
 	     		}
 
 	     	}
-	     	console.log($scope.article.images);
 	     	
 
 		},
 		sort:function() {
-			// console.log('sort');
 		},
 		out:function() {
-			// console.log('out');
 		},
 		start:function(e,ui) {
-			// console.log('start');
-			// console.log($(e.target).height($(e.target).height()-100));
 		}
   	};
 

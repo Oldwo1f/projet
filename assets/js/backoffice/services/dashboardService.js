@@ -8,11 +8,9 @@ app.factory('dashboardService', ['$http','$q',function ($http,$q) {
 
         $http.get('/dashboardcount').success(function (data,status) {
             service.projects =data;
-            console.log(data);
             deferred.resolve(data);
         }).error(function (data,status) {
             deferred.reject('error perso');
-            console.log('ERROR');
         })
 
         return deferred.promise;

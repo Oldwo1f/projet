@@ -23,7 +23,6 @@ function comentsCtrl($scope,filterFilter,comentsService,$filter,$state,coments) 
 		});
 	}
 	$scope.linkedit=function(id){
-		// console.log(filterFilter($scope.coments,{checked : true}));
 		if(id){
 			clearSelection()
 			$state.go('/.coments.coments.edit',{id: id})
@@ -56,7 +55,6 @@ function comentsCtrl($scope,filterFilter,comentsService,$filter,$state,coments) 
 
 		if($scope.order === 'article')
 		{
-			console.log(val[$scope.order]);
 			return val[$scope.order].title;
 		}else
 		{

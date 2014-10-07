@@ -17,7 +17,6 @@ app.directive('removeremove', function(){
 	        		{
 	        			t.addClass('expand')
 	        			scope.clickedOnce = true;
-	        			console.log(t);
 	        			t.html('<span class="glyphicon glyphicon-trash"></span>Supprimer définitivement')
 	        			var timeout = setTimeout(function() {
 	        				t.removeClass('expand')

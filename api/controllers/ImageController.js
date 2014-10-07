@@ -130,7 +130,15 @@ module.exports = {
       			catch(e){
       			}
 
+			    try{
+	      			fs.mkdirSync('uploads/originalsize');
+      			}
+      			catch(e){
+      			}
+
       			console.log('BEFORE THIUMNAIL');
+      			fs.writeFileSync('uploads/originalsize/'+files[0].filename,fs.readFileSync('.tmp/uploads/'+files[0].filename));
+
 	      		easyimg.thumbnail(
 				    {
 				        src:'.tmp/uploads/'+files[0].filename,
@@ -320,7 +328,7 @@ console.log(err);
 				    		// console.log(results[0]);
 			    		
 
-
+				    fs.unlinkSync('.tmp/uploads/'+files[0].filename)
 						
 
 				    },

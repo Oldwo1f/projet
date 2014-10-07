@@ -1,10 +1,8 @@
-app.controller('projectsCtrl',['$scope','filterFilter','projectsService','categories','$filter','$state','projects',
-function projectsCtrl($scope,filterFilter,projectsService,categories,$filter,$state,projects) {
+app.controller('projectsCtrl',['$scope','filterFilter','projectsService','categories','$filter','$state','projects','messageCenterService',
+function projectsCtrl($scope,filterFilter,projectsService,categories,$filter,$state,projects,messageCenterService) {
 
     $scope.projects= projects;
     $scope.categories= categories;
-    console.log($scope.projects);
-    console.log($scope.categories);
     $scope.order='date';
     $scope.reverse=true;
     $scope.filterActif = true;
@@ -12,11 +10,6 @@ function projectsCtrl($scope,filterFilter,projectsService,categories,$filter,$st
     $scope.filterNew = true;
 
     $scope.getCatName =function(cat) {
-
-        console.log(cat.id);
-        console.log(getIndexInBy($scope.categories,'id',cat.id));
-        // console.log($scope.categories[].translation[0].title);
-        // return $scope.categories[i].translation[0].title
         return getIndexInBy($scope.categories,'id',cat.id)
     }
     $scope.totalChecked = function()
@@ -35,7 +28,6 @@ function projectsCtrl($scope,filterFilter,projectsService,categories,$filter,$st
         });
     }
     $scope.linkedit=function(id){
-        // console.log(filterFilter($scope.projects,{checked : true}));
         if(id){
             clearSelection()
             $state.go('/.projects.projects.edit',{id: id})
@@ -68,8 +60,8 @@ function projectsCtrl($scope,filterFilter,projectsService,categories,$filter,$st
 
         if($scope.order === 'category')
         {
-            console.log(val[$scope.order]);
-            return val[$scope.order].title;
+            if( typeof(val['category']) !='undefined')
+                return val['category'].translations[0].title;
         }else
         {
             return val[$scope.order];
@@ -101,11 +93,12 @@ function projectsCtrl($scope,filterFilter,projectsService,categories,$filter,$st
     }
     $scope.projectfilter =function(val){
         var patt = new RegExp($scope.slug,'i');
-        
-        if(patt.test(val.title))
+        if(patt.test(val.translations[0].title))
             return true;
-        if(patt.test(val.category.title))
-            return true;
+        if(val.category){
+            if(patt.test(val.category.title))
+                return true;
+        }
         if(patt.test($filter('date')(val.date,'dd MMMM')))
             return true;
 
@@ -121,10 +114,8 @@ function projectsCtrl($scope,filterFilter,projectsService,categories,$filter,$st
 
 }]);
 
-app.controller('addprojectsCtrl',['$scope','$stateParams','filterFilter','projectsService','$state','categories',
-function addprojectsCtrl($scope,$stateParams,filterFilter,projectsService ,$state,categories) {
-    console.log('ADD PROJECT');
-    console.log('ADD PROJECT');
+app.controller('addprojectsCtrl',['$scope','$stateParams','filterFilter','projectsService','$state','categories','messageCenterService',
+function addprojectsCtrl($scope,$stateParams,filterFilter,projectsService ,$state,categories,messageCenterService) {
     $scope.categories= categories;
     $scope.newProject={};
     $scope.translation={};
@@ -154,15 +145,12 @@ function addprojectsCtrl($scope,$stateParams,filterFilter,projectsService ,$stat
             $scope.newProject.title='';
             $state.go('/.projects.projects');
         },function(err) {
-            console.log(err);
-            console.log(err.error.invalidAttributes);
             if(err.error.invalidAttributes)
             {
+                messageCenterService.add('danger', 'Veuillez revoir votre saisie', { status: messageCenterService.status.unseen, timeout: 4000 });
                 invalAttrs = err.error.invalidAttributes;
-                console.log(invalAttrs);
                 for(var i in invalAttrs)
                 {
-                    console.log(i);
                     $('[name="'+i+'"]').parent().addClass('has-error');
                 }
             }
@@ -170,11 +158,9 @@ function addprojectsCtrl($scope,$stateParams,filterFilter,projectsService ,$stat
         
     };
 }]);
-app.controller('editprojectsCtrl',['$scope','$stateParams','filterFilter','configService','projectsService','$state','$filter','project','categories',
-function editprojectsCtrl($scope,$stateParams,filterFilter,configService ,projectsService ,$state,$filter,project,categories) {
+app.controller('editprojectsCtrl',['$scope','$stateParams','filterFilter','configService','projectsService','$state','$filter','project','categories','messageCenterService',
+function editprojectsCtrl($scope,$stateParams,filterFilter,configService ,projectsService ,$state,$filter,project,categories,messageCenterService) {
     $scope.categories= categories;
-    console.log($scope.categories);
-    console.log('modalalalalalallalal');
     $('.editModal').modal();
     $('.editModal').on('hidden.bs.modal',function(e) {
         $state.go('/.projects.projects');
@@ -182,28 +168,13 @@ function editprojectsCtrl($scope,$stateParams,filterFilter,configService ,projec
     $scope.editProject = project;
     $scope.lang='fr';
     $scope.languages= configService.languages;
-
-// console.log($scope.editProject.translations[getIndexInBy($scope.editProject.translations,'lang',$scope.lang)].title);
-    // console.log(getIndexInBy(project.translations,'lang','fr'));
-    // INIT 
     $scope.currenttranslation = getIndexInBy($scope.editProject.translations,'lang',$scope.lang)
-
-    // $scope.editProject.title = $scope.editProject.translations[getIndexInBy($scope.editProject.translations,'lang',$scope.lang)].title;
-    // $scope.editProject.content = $scope.editProject.translations[getIndexInBy($scope.editProject.translations,'lang',$scope.lang)].content;
-    // $scope.editProject.shortcontent = $scope.editProject.translations[getIndexInBy($scope.editProject.translations,'lang',$scope.lang)].shortcontent;
-    // $scope.editProject.keyword = $scope.editProject.translations[getIndexInBy($scope.editProject.translations,'lang',$scope.lang)].keyword;
-    // $scope.editProject.description = $scope.editProject.translations[getIndexInBy($scope.editProject.translations,'lang',$scope.lang)].description;
-    // $scope.editProject.rewriteurl = $scope.editProject.translations[getIndexInBy($scope.editProject.translations,'lang',$scope.lang)].rewriteurl;
-    // FIN INIT 
 
     $scope.changeLanguage = function() {
 
         var index = getIndexInBy($scope.editProject.translations,'lang',$scope.lang)
-        console.log('INDEX = '+index);
-        // console.log($scope.currenttranslation);
         if(typeof(index)=='undefined')
         {
-            console.log($scope.editProject.translations);
            $scope.editProject.translations.push(
            {
                 'lang':$scope.lang,
@@ -215,33 +186,20 @@ function editprojectsCtrl($scope,$stateParams,filterFilter,configService ,projec
                 'rewriteurl':'',
            });
         }
-        console.log($scope.editProject);
         $scope.currenttranslation = getIndexInBy($scope.editProject.translations,'lang',$scope.lang)
     };
 
-    console.log($scope.editProject);
-    // $scope.editProject.category = $scope.editProject.category.id;
-    // $scope.$apply();
-
     $scope.submitEdit = function() {
 
-        console.log('EDITEDITEDITEDITEDITEDITEDITEDITEDITEDITEDITEDIT');
-        console.log($scope.editProject.category);
-        console.log($scope.editProject.category.id);
-        // $scope.editProject.category =$scope.editProject.category.id;
-        console.log($scope.editProject);
         projectsService.edit($scope.editProject).then(function() {
             $('.editModal').modal('hide');
         },function(err) {
-            console.log(err);
-            console.log(err.error.invalidAttributes);
             if(err.error.invalidAttributes)
             {
+                messageCenterService.add('danger', 'Veuillez revoir votre saisie', { status: messageCenterService.status.unseen, timeout: 4000 });
                 invalAttrs = err.error.invalidAttributes;
-                console.log(invalAttrs);
                 for(var i in invalAttrs)
                 {
-                    console.log(i);
                     $('[name="'+i+'"]').parent().addClass('has-error');
                 }
             }
@@ -250,8 +208,8 @@ function editprojectsCtrl($scope,$stateParams,filterFilter,configService ,projec
 
 
 }]);
-app.controller('editimageprojectsCtrl',['$scope','$stateParams','filterFilter','projectsService','$state','$filter','project',
-function editimageprojectsCtrl($scope,$stateParams,filterFilter,projectsService ,$state,$filter,project) {
+app.controller('editimageprojectsCtrl',['$scope','$stateParams','filterFilter','projectsService','$state','$filter','project','messageCenterService',
+function editimageprojectsCtrl($scope,$stateParams,filterFilter,projectsService ,$state,$filter,project,messageCenterService) {
     
     $scope.resizeStep = $scope.resizeConfig.project;
     $('.editimageModal').modal();
@@ -276,11 +234,8 @@ function editimageprojectsCtrl($scope,$stateParams,filterFilter,projectsService 
     };
     $scope.sortableOptions = {
         update: function(e, ui) {
-            // console.log(ui); 
             startIndex = ui.item.sortable.index;
             dropIndex = ui.item.sortable.dropindex;
-            console.log(startIndex +' ----'+dropIndex);
-            console.log($scope.project.images);
             if(dropIndex<startIndex)
             {
                 for(var i in $scope.project.images)
@@ -320,19 +275,14 @@ function editimageprojectsCtrl($scope,$stateParams,filterFilter,projectsService 
                 }
 
             }
-            console.log($scope.project.images);
             
 
         },
         sort:function() {
-            // console.log('sort');
         },
         out:function() {
-            // console.log('out');
         },
         start:function(e,ui) {
-            // console.log('start');
-            // console.log($(e.target).height($(e.target).height()-100));
         }
     };
 

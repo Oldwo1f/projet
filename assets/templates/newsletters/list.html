@@ -36,7 +36,7 @@
 	</thead>
 	<tbody >
 		
-	    <tr ng-repeat="abonne in abonnes | filter:listfilter |  orderBy:sortFunction:reverse " class="animate-repeat ligne" rel="{{abonne.id}}"  >
+	    <tr ng-repeat="abonne in abonnes | filter:listfilter |  orderBy:sortFunction:reverse track by $index" class="animate-repeat ligne" rel="{{abonne.id}}"  >
 	    		<td >
 	    			<input type="checkbox" ng-model="abonne.checked" >
 	    		</td>

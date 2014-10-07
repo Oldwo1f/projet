@@ -1,4 +1,4 @@
-app.factory('comentsService', ['$http','$q',function ($http,$q) {
+app.factory('comentsService', ['$http','$q','messageCenterService',function ($http,$q,messageCenterService) {
     var service = {};
     service.coments=[];
 
@@ -10,8 +10,8 @@ app.factory('comentsService', ['$http','$q',function ($http,$q) {
             service.coments =data;
             deferred.resolve(data);
         }).error(function (data,status) {
+            messageCenterService.add('danger', 'Erreur de récupération des commentaires', { status: messageCenterService.status.unseen, timeout: 4000 });
             deferred.reject('error perso');
-            console.log('ERROR');
         })
 
         return deferred.promise;
@@ -23,11 +23,10 @@ app.factory('comentsService', ['$http','$q',function ($http,$q) {
         var deferred = $q.defer();
 
         $http.get('/coment/'+id).success(function (data,status) {
-           console.log(data);
             deferred.resolve(data);
         }).error(function (data,status) {
+            messageCenterService.add('danger', 'Impossible de récupérer l\'envoi', { status: messageCenterService.status.unseen, timeout: 4000 });
             deferred.reject('error perso');
-            console.log('ERROR');
         })
 
         return deferred.promise;
@@ -36,44 +35,44 @@ app.factory('comentsService', ['$http','$q',function ($http,$q) {
 
 
 
-    service.addNew=function(coment){
-        var deferred = $q.defer();
+    // service.addNew=function(coment){
+    //     var deferred = $q.defer();
 
-        $http.post('/coment',coment).success(function (data2,status2) {
-            $http.get('/coment/'+data2.id).success(function (data,status) {
-                service.coments.unshift(data);
-                deferred.resolve(data);
-            })
-        }).error(function (data,status) {
-             deferred.reject(data);
-        })
+    //     $http.post('/coment',coment).success(function (data2,status2) {
+    //         $http.get('/coment/'+data2.id).success(function (data,status) {
+    //             service.coments.unshift(data);
+    //             deferred.resolve(data);
+    //         })
+    //     }).error(function (data,status) {
+    //          deferred.reject(data);
+    //     })
         
-        return deferred.promise;      
-    }
+    //     return deferred.promise;      
+    // }
 
-    service.edit=function(coment){
-        var deferred = $q.defer();
-        $http.put('/coment/'+coment.id,coment).success(function (data2,status) {
-            $http.get('/coment/'+coment.id).success(function (data,status) {
-                console.log(data);
-                service.coments.splice(getIndexInBy(service.coments,'id',coment.id),1,data)
-                deferred.resolve(data);
-            })
-        }).error(function (data,status) {
-            deferred.reject(data);
-        })
-        return deferred.promise;
-    }
+    // service.edit=function(coment){
+    //     var deferred = $q.defer();
+    //     $http.put('/coment/'+coment.id,coment).success(function (data2,status) {
+    //         $http.get('/coment/'+coment.id).success(function (data,status) {
+    //             service.coments.splice(getIndexInBy(service.coments,'id',coment.id),1,data)
+    //             messageCenterService.add('success', 'Projet enregistré', { status: messageCenterService.status.unseen, timeout: 4000 });
+    //             deferred.resolve(data);
+    //         })
+    //     }).error(function (data,status) {
+    //         deferred.reject(data);
+    //     })
+    //     return deferred.promise;
+    // }
     service.changeStatusComent=function(array,status){
         var deferred = $q.defer();
         for(var i in array)
         {
             array[i].status =status;
             $http.put('/coment/'+array[i].id,array[i]).success(function (coment,status) {
-                console.log(coment);
                 service.coments.splice(getIndexInBy(service.coments,'id',coment.id),1,coment)
+                messageCenterService.add('success', 'Status enregistré', { status: messageCenterService.status.unseen, timeout: 4000 });
             }).error(function (data,status) {
-                console.log('ERROR');
+                messageCenterService.add('danger', 'Erreur dans le changement de status', { status: messageCenterService.status.unseen, timeout: 4000 });
                 deferred.reject(data);
             })
         }
@@ -83,25 +82,24 @@ app.factory('comentsService', ['$http','$q',function ($http,$q) {
         for(var i in catArray)
         {
             $http.delete('/coment/'+catArray[i].id).success(function (coment,status) {
-                console.log(coment);
                  service.coments.splice(getIndexInBy(service.coments,'id',coment.id),1)
+                messageCenterService.add('success', 'Commentaire supprimé', { status: messageCenterService.status.unseen, timeout: 4000 });
             }).error(function (data,status) {
-                console.log('ERROR');
+                messageCenterService.add('danger', 'Erreur dans la suppression', { status: messageCenterService.status.unseen, timeout: 4000 });
             })
         }
          
     }
-    service.removeimage=function(coment,image){
-        $http.delete('/image/'+image.id).success(function (data,status) {
+    // service.removeimage=function(coment,image){
+    //     $http.delete('/image/'+image.id).success(function (data,status) {
 
-            coment.images.splice(getIndexInBy(coment.images,'id',image.id),1);
-            service.coments.splice(getIndexInBy(service.coments,'id',coment.id),1,coment)
+    //         coment.images.splice(getIndexInBy(coment.images,'id',image.id),1);
+    //         service.coments.splice(getIndexInBy(service.coments,'id',coment.id),1,coment)
 
 
-        }).error(function (data,status) {
-            console.log('ERROR');
-        })
-    }
+    //     }).error(function (data,status) {
+    //     })
+    // }
 
     service.replace=function(coment){
         
@@ -110,14 +108,12 @@ app.factory('comentsService', ['$http','$q',function ($http,$q) {
     }
     service.updateImgIndex=function(image,coment){
         var deferred = $q.defer();
-        console.log(image);
         $http.put('/image/'+image.id,image).success(function (image,status) {
             image.comentcoment = image.comentcoment.id;
             coment.images.splice(getIndexInBy(coment.images,'id',image.id),1,image);
             service.coments.splice(getIndexInBy(service.coments,'id',coment.id),1,coment)
             deferred.resolve(image);
         }).error(function (data,status) {
-            console.log('ERROR');
             deferred.reject(data);
         })
         return deferred.promise;

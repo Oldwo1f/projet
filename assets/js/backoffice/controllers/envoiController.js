@@ -1,15 +1,15 @@
 app.controller('envoiCtrl',['$scope','filterFilter','$filter','$state','envois','envoiService','$stateParams',
 function envoiCtrl($scope,filterFilter,$filter,$state,envois,envoiService,$stateParams) {
 
-
-
+    $scope.Math = window.Math;
+    $scope.order='createdAt';
+    $scope.reverse=true;
     $scope.envois= envois;
 
     $scope.linkaddList =function(){
         $state.go('/.newsletters.list.add');
     }
     $scope.linkenvoi =function(){
-        console.log('YOYOYOYOYOYO');
         $state.go('/.newsletters.envoi.envoiserie');
     }
 
@@ -37,6 +37,29 @@ function envoiCtrl($scope,filterFilter,$filter,$state,envois,envoiService,$state
 
     }
 
+    $scope.envoifilter =function(val){
+        var patt = new RegExp($scope.slug,'i');
+        
+        if(patt.test(val.name))
+            return true;
+        // if(patt.test(val.category.title))
+        //     return true;
+        if(patt.test($filter('date')(val.createdAt,'dd MMMM')))
+            return true;
+
+        val.checked=false;
+        return false;
+    }
+    $scope.sortFunction =function(val){
+
+        if($scope.order === 'category')
+        {
+            return val[$scope.order].title;
+        }else
+        {
+            return val[$scope.order];
+        }
+    }
 
 
 }]);
@@ -54,7 +77,6 @@ app.filter('bytes', function() {
 app.controller('envoiserieCtrl',['$scope','$upload','filterFilter','$filter','$state','envoiService','$stateParams','mailingLists',
 function envoiserieCtrl($scope,$upload,filterFilter,$filter,$state,envoiService,$stateParams,mailingLists) {
 
-    console.log('envoiserie');
 
     $('.newModal').modal();
     $('.newModal').on('hidden.bs.modal',function(e) {
@@ -66,7 +88,6 @@ function envoiserieCtrl($scope,$upload,filterFilter,$filter,$state,envoiService,
     $scope.newEnvoi.content='';
     $scope.pjs=[];$scope.filelist;
     $scope.mailingLists=mailingLists;
-    console.log($scope.mailingLists);
 
     $scope.clickAddPj = function($event) {
         setTimeout(function() {
@@ -74,20 +95,12 @@ function envoiserieCtrl($scope,$upload,filterFilter,$filter,$state,envoiService,
         },0);
     }  
     $scope.removePj = function($index) {
-        console.log('here');
         $scope.pjs={};
         $scope.filelist={};
 
-        console.log($scope.newEnvoi);
-        console.log($scope.filelist);
     }   
 
 
-    // $scope.$watch('newEnvoi',function() {
-
-    //     console.log($scope.newEnvoi);
-
-    // })
     $scope.Envoi=function() {
 
         $scope.newEnvoi.destinataire=[];
@@ -95,137 +108,16 @@ function envoiserieCtrl($scope,$upload,filterFilter,$filter,$state,envoiService,
         {
             if($scope.mailingLists[i].checked === true)
             {
-                console.log('COOL');
                 $scope.newEnvoi.destinataire.push($scope.mailingLists[i].id)
             }
         }
         $scope.newEnvoi.client= $scope.client.checked;
 
-
-
-        console.log('ENVOIENVOIENVOIENVOIENVOIENVOIENVOI');
-        console.log($scope.newEnvoi);
-        console.log($scope.filelist);
-        // var fileList = new FileList();
-        // console.log(fileList);
-        // for(i in $scope.pjs)
-        // {
-        //     fileList[''+i] =$scope.pjs[i].file;
-        // }
-        // fileList['length'] = $scope.pjs.length;
-        // console.log(fileList);
-        envoiService.send($scope.newEnvoi,$scope.filelist)
+        envoiService.send($scope.newEnvoi,$scope.filelist,function(data){
+            $state.go('/.newsletters.envoi');
+        })
 
     };
 
-	// $scope.linkaddList =function(){
- //        $state.go('/.newsletters.list.add');
- //    }
- //    $scope.linkenvoi =function(){
-	// 	console.log('YOYOYOYOYOYO');
- //        $state.go('/.newsletters.envois.envoi');
- //    }
-
- //    $scope.totalChecked = function()
- //    {
- //        if(filterFilter($scope.envois,{checked : true}).length == $scope.envois.length)
- //            $scope.allChecked = true;
- //        else
- //            $scope.allChecked = false;
- //        return filterFilter($scope.envois,{checked : true}).length;
- //    }
- //    $scope.toggleAllcheck = function()
- //    {
- //        allchecked = !$scope.allChecked;
- //        $scope.envois.forEach(function(envoi) {
- //            envoi.checked = allchecked;
- //        });
- //    }
-
-
- //    $scope.removeselected =function(){
- //        envoiService.remove(filterFilter($scope.envois,{checked : true}),function(envois) {
- //        	$scope.envois=envois;
- //        })
-
- //    }
-
-
-
 }]);
 
-
-// app.controller('addmailinglistCtrl',['$scope','filterFilter','$filter','$state','envoiService',
-// function addmailinglistCtrl($scope,filterFilter,$filter,$state,envoiService) {
-// 	$scope.newList={};
-// 	console.log('mailingListsCTRL');
-// 	$('.newModal').modal();
-//     $('.newModal').on('hidden.bs.modal',function(e) {
-//         $state.go('/.newsletters.list');
-//     });
-
-//     $scope.submitNew=function() {
-        
-//         if($scope.newList.title)
-//         {
-
-// 	        envoiService.addNew($scope.newList).then(function() {
-// 	            $scope.newList.title='';
-// 	            $state.go('/.newsletters.list');
-// 	        },function(err) {
-// 	            console.log(err);
-// 	            console.log(err.error.invalidAttributes);
-// 	            if(err.error.invalidAttributes)
-// 	            {
-// 	                invalAttrs = err.error.invalidAttributes;
-// 	                console.log(invalAttrs);
-// 	                for(var i in invalAttrs)
-// 	                {
-// 	                    console.log(i);
-// 	                    $('[name="'+i+'"]').parent().addClass('has-error');
-// 	                }
-// 	            }
-// 	        })
-//         }
-        
-//     };
-
-// }]);
-// app.controller('addabonneCtrl',['$scope','filterFilter','$filter','$state','envoiService',
-// function addabonneCtrl($scope,filterFilter,$filter,$state,envoiService) {
-// 	$scope.newAbonne={};
-// 	console.log('addabonneCtrl');
-// 	$('.newModal').modal();
-//     $('.newModal').on('hidden.bs.modal',function(e) {
-//         $state.go('/.newsletters.list');
-//     });
-
-//     $scope.submitNew=function() {
-//         console.log('heheheheheh');
-//         if($scope.newAbonne.email && $scope.currentList != null)
-//         {
-
-// console.log('heheheheheh');
-// 	        envoiService.addNewabonne($scope.newAbonne,$scope.currentList).then(function(data) {
-// 	            $scope.newAbonne.email='';
-// 	            $scope.abonnes.unshift(data)
-// 	            $state.go('/.newsletters.list');
-// 	        },function(err) {
-// 	            console.log(err);
-// 	            console.log(err.error.invalidAttributes);
-// 	            if(err.error.invalidAttributes)
-// 	            {
-// 	                invalAttrs = err.error.invalidAttributes;
-// 	                console.log(invalAttrs);
-// 	                for(var i in invalAttrs)
-// 	                {
-// 	                    console.log(i);
-// 	                    $('[name="'+i+'"]').parent().addClass('has-error');
-// 	                }
-// 	            }
-// 	        })
-//         }
-        
-//     };
-
-// }]);

@@ -6,7 +6,6 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 	$scope.articlestabs=configService.articlestabs;
 	$scope.projectstabs=configService.projectstabs;
 	$scope.newsletterstabs=configService.newsletterstabs;
-	console.log($scope.newsletterstabs);
 	$scope.galerytabs=configService.galerytabs;
 	$scope.userstabs=configService.userstabs;
 	$scope.resizeConfig=configService.frontConfig.imageResize;
@@ -14,38 +13,21 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 	moment.locale('fr');
 	$scope.navbarOff=false;
 
-	console.log($scope.me);
 	if($auth.isAuthenticated())
 	{
-		// setTimeout(function() {
 		accountService.getProfile().then(function(data) {
-			console.log(data);
 			$scope.me = data
 		});
-		// },3000)
-			console.log('IS AUTHENTICATED');
 		
 	}
-	console.log($scope.me);
-	// $scope.me = accountService.me
-	// $scope.$apply()
-	// console.log($scope.me);
-	// console.log();
-	// $scope.backState=function() {
-	// 	$location.path('/profile')
-	// };
 
 	$scope.profile=function() {
 		$location.path('/profile')
 	};
 
-	console.log($scope.me);
-
-	// $scope.articleResizeImageSteps= configService.frontConfig.imageResize.articleCategory;
 	$scope.logout=function() {
 		$auth.logout();
 	};
-	// console.log($scope.articleResizeImageSteps);
 
 
 
@@ -54,61 +36,34 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 
 
 
-	$scope.$on("$stateChangeStart", 
-    function (event, toState, toParams, 
-              fromState, fromParams) {
-    	// $location.path("/login"); 
+	$scope.$on("$stateChangeStart", function (event, toState, toParams,fromState, fromParams) {
 
     	$scope.navbarOff=false;
 		if(toState.name === "/login"){
 			$scope.navbarOff=true;
 		}
-		// return false;
+		if($auth.isAuthenticated())
+		{
+			if(toState.name === "/")
+					$location.path('/dashboard')
+			return true;
+		}else
+		{
+			$scope.navbarOff=true;
+			// $state.go('/login');
+			$location.path('/login')
+			return false
+		}
+    
+	});
 
-    	console.log(toState);
-    	console.log('STATECHANGE START');
-    // $scope.$apply(function() { 
-    // });
-    // console.log($auth.isAuthenticated());
-    // $auth.logout()
-	if($auth.isAuthenticated())
-	{
-		if(toState.name === "/")
-				$location.path('/dashboard')
-		return true;
-	}else
-	{
-		$scope.navbarOff=true;
-		// $state.go('/login');
-		$location.path('/login')
-		return false
-	}
-    // if (!Auth.authorize(toState.data.access)) {
-    //     $rootScope.error = "Access denied";
-    //     event.preventDefault();
-    //     console.log('UNOTHORIZE');
-    //     if(fromState.url === '^') {
-    //         if(Auth.isLoggedIn())
-    //             $state.go('user.home');
-    //         else {
-    //             $rootScope.error = null;
-    //             $state.go('anon.login');
-    //         }
-    //     }
-    // }
-});
-
-	$scope.$on('$stateChangeSuccess', 
-	function(event, toState, toParams, fromState, fromParams){
+	$scope.$on('$stateChangeSuccess',function (event, toState, toParams, fromState, fromParams){
 		$scope.$previousState = fromState;
-		console.log('STAGECHANGE SUCCESS');
-		console.log(toState);
 		$scope.navbarOff=false;
 		if(toState.name === "/login"){
 			$scope.navbarOff=true;
 			return true;
 		}
-		// console.log(toParams);
 		var deep = toState.url.split('/');
 		for (var i = $scope.maintabs.length - 1; i >= 0; i--) {
 			if(typeof toState.data != "undefined"){
@@ -122,7 +77,6 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 			return true
 		if(toState.data.mainTabs === "articles")
 		{
-				console.log('-----------------------------------------');
 			for (var i = $scope.articlestabs.length - 1; i >= 0; i--) {
 				if(typeof toState.data != "undefined"){
 					if($scope.articlestabs[i]['name']===toState.data.articlesTabs)
@@ -158,7 +112,6 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 		{
 			for (var i = $scope.galerytabs.length - 1; i >= 0; i--) {
 				if(typeof toState.data != "undefined"){
-					console.log(toState.data.galeryTabs);
 					if($scope.galerytabs[i]['name']===toState.data.galeryTabs)
 		    			$scope.galerytabs[i].active = true
 		    		else	
@@ -195,7 +148,6 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 		}
 		if(fromState.name === "/.articles.category.editimage")
 		{
-			console.log('here');
 			
 		}
 		if(toState.name === "/.projects.category")
@@ -216,7 +168,6 @@ function appCtrl($scope,configService,$state,$location,$auth,accountService) {
 		}
 		if(fromState.name === "/.projects.category.editimage")
 		{
-			// console.log('here');
 			
 		}
 

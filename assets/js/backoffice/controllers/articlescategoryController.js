@@ -1,6 +1,5 @@
-
-app.controller('articlescategoryCtrl',['$scope','filterFilter','articlescategoryService','$filter','$state','categories',
-function articlescategoryCtrl($scope,filterFilter,articlescategoryService,$filter,$state,categories) {
+app.controller('articlescategoryCtrl',['$scope','filterFilter','articlescategoryService','$filter','$state','categories','messageCenterService',
+function articlescategoryCtrl($scope,filterFilter,articlescategoryService,$filter,$state,categories,messageCenterService) {
 
 	$scope.categories= categories;
 	$scope.order='title';
@@ -21,7 +20,6 @@ function articlescategoryCtrl($scope,filterFilter,articlescategoryService,$filte
 		});
 	}
 	$scope.linkedit=function(id){
-		// console.log(filterFilter($scope.categories,{checked : true}));
 		if(id){
 			clearSelection()
 			$state.go('/.articles.category.edit',{id: id})
@@ -53,8 +51,8 @@ function articlescategoryCtrl($scope,filterFilter,articlescategoryService,$filte
 
 }]);
 
-app.controller('addarticlescategoryCtrl',['$scope','$stateParams','filterFilter','articlescategoryService','$state',
-function addarticlescategoryCtrl($scope,$stateParams,filterFilter,articlescategoryService ,$state) {
+app.controller('addarticlescategoryCtrl',['$scope','$stateParams','filterFilter','articlescategoryService','$state','messageCenterService',
+function addarticlescategoryCtrl($scope,$stateParams,filterFilter,articlescategoryService ,$state,messageCenterService) {
 	$('.newModal').modal();
 	$('.newModal').on('hidden.bs.modal',function(e) {
 		$state.go('/.articles.category');
@@ -68,24 +66,56 @@ function addarticlescategoryCtrl($scope,$stateParams,filterFilter,articlescatego
 		
 	};
 }]);
-app.controller('editarticlescategoryCtrl',['$scope','$stateParams','filterFilter','articlescategoryService','$state','$filter','category',
-function editarticlescategoryCtrl($scope,$stateParams,filterFilter,articlescategoryService ,$state,$filter,category) {
+app.controller('editarticlescategoryCtrl',['$scope','$stateParams','filterFilter','articlescategoryService','$state','$filter','category','messageCenterService','configService',
+function editarticlescategoryCtrl($scope,$stateParams,filterFilter,articlescategoryService ,$state,$filter,category,messageCenterService,configService) {
 
 	$('.editModal').modal();
 	$('.editModal').on('hidden.bs.modal',function(e) {
 		$state.go('/.articles.category');
 	});
 	$scope.category = category;
+
+
+    $scope.lang='fr';
+    $scope.languages= configService.languages;
+
+    $scope.currenttranslation = getIndexInBy($scope.category.translations,'lang',$scope.lang)
+
+
+    $scope.changeLanguage = function() {
+
+        var index = getIndexInBy($scope.category.translations,'lang',$scope.lang)
+        if(typeof(index)=='undefined')
+        {
+           $scope.category.translations.push(
+           {
+                'lang':$scope.lang,
+                'title':'',
+           });
+        }
+        $scope.currenttranslation = getIndexInBy($scope.category.translations,'lang',$scope.lang)
+    };
+
 	$scope.submitEdit = function() {
 		articlescategoryService.edit(category).then(function() {
 			$('.editModal').modal('hide');
+		},function(err) {
+			if(err.error.invalidAttributes)
+            {
+                messageCenterService.add('danger', 'Veuillez revoir votre saisie', { status: messageCenterService.status.unseen, timeout: 4000 });
+                invalAttrs = err.error.invalidAttributes;
+                for(var i in invalAttrs)
+                {
+                    $('[name="'+i+'"]').parent().addClass('has-error');
+                }
+            }
 		})
 	};
 
 
 }]);
-app.controller('editimagearticlescategoryCtrl',['$scope','$stateParams','filterFilter','articlescategoryService','$state','$filter','category',
-function editimagearticlescategoryCtrl($scope,$stateParams,filterFilter,articlescategoryService ,$state,$filter,category) {
+app.controller('editimagearticlescategoryCtrl',['$scope','$stateParams','filterFilter','articlescategoryService','$state','$filter','category','messageCenterService',
+function editimagearticlescategoryCtrl($scope,$stateParams,filterFilter,articlescategoryService ,$state,$filter,category,messageCenterService) {
 	
 	$scope.resizeStep = $scope.resizeConfig.articleCategory;
 
@@ -97,7 +127,17 @@ function editimagearticlescategoryCtrl($scope,$stateParams,filterFilter,articles
 	$scope.submitEdit = function() {
 		articlescategoryService.edit(category).then(function() {
 			$('.editimageModal').modal('hide');
-		})
+		},function(err) {
+            if(err.error.invalidAttributes)
+            {
+                messageCenterService.add('danger', 'Veuillez revoir votre saisie', { status: messageCenterService.status.unseen, timeout: 4000 });
+                invalAttrs = err.error.invalidAttributes;
+                for(var i in invalAttrs)
+                {
+                    $('[name="'+i+'"]').parent().addClass('has-error');
+                }
+            }
+        })
 	};
 
 	$scope.recupImage = function(data) {
@@ -109,14 +149,10 @@ function editimagearticlescategoryCtrl($scope,$stateParams,filterFilter,articles
 
 		articlescategoryService.removeimage(category,imagetoremove)
 	};
-console.log($scope.category.images);
 	$scope.sortableOptions = {
 	    update: function(e, ui) {
-	     	// console.log(ui); 
 	     	startIndex = ui.item.sortable.index;
 	     	dropIndex = ui.item.sortable.dropindex;
-	     	console.log(startIndex +' ----'+dropIndex);
-	     	console.log($scope.category.images);
 	     	if(dropIndex<startIndex)
 	     	{
 	     		for(var i in $scope.category.images)
@@ -156,19 +192,14 @@ console.log($scope.category.images);
 	     		}
 
 	     	}
-	     	console.log($scope.category.images);
 	     	
 
 		},
 		sort:function() {
-			// console.log('sort');
 		},
 		out:function() {
-			// console.log('out');
 		},
 		start:function(e,ui) {
-			// console.log('start');
-			// console.log($(e.target).height($(e.target).height()-100));
 		}
   	};
 

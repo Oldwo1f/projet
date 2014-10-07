@@ -1,4 +1,4 @@
-var app = angular.module('app', ['gapi','satellizer','markdownpreview','Csv','ngLocale','ui.router','clientresize','ui.bootstrap','ngAnimate','ui.bootstrap.datetimepicker','ui.sortable','angular-loading-bar']);
+var app = angular.module('app', ['gapi','MessageCenterModule','satellizer','markdownpreview','Csv','ngLocale','ui.router','clientresize','ui.bootstrap','ngAnimate','ui.bootstrap.datetimepicker','ui.sortable','angular-loading-bar']);
 
 
 app.config(['cfpLoadingBarProvider', function(cfpLoadingBarProvider) {
@@ -116,7 +116,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                               data:{'usersTabs':'user'},
                               resolve:{
                                 users : function(userService) {
-                                  console.log('resolve users');
                                   return userService.fetchUsers();
                                 }
                               }
@@ -140,7 +139,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                             controller:'edituserCtrl',
                                             resolve:{
                                               user : function(userService,$stateParams) {
-                                                console.log('resolveEDitCat');
                                                 return userService.fetchUser($stateParams.id);
                                               }
                                             }
@@ -157,7 +155,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                               data:{'usersTabs':'client'},
                               resolve:{
                                 users : function(userService) {
-                                  console.log('resolve users');
                                   return userService.fetchClients();
                                 }
                               }
@@ -181,7 +178,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                             controller:'editclientCtrl',
                                             resolve:{
                                               user : function(userService,$stateParams) {
-                                                console.log('resolveEDitCat');
                                                 return userService.fetchUser($stateParams.id);
                                               }
                                             }
@@ -197,9 +193,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 controller:'dashboardCtrl',
                 resolve:{
                    count: function(dashboardService) {
-                    // console.log(analitycsreporter);
-                    console.log('thisthisthisthisthisthisthisthisthisthisthisthisthisthisthisthis');
-                    // console.log(analitycsreporterCtrl.toto());
                       return dashboardService.fetchStats()
                    }
                 }
@@ -216,7 +209,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 controller:'goldenbookCtrl',
                 resolve:{
                   goldenbooks : function(goldenbookService) {
-                    console.log('resolve gBook');
                     return goldenbookService.fetchGoldenbooks();
                   }
                 }
@@ -243,8 +235,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                   controller:'galeryCtrl',
                                   resolve:{
                                     galery : function(galeryService) {
-                                      console.log('resolve galeryService');
-                                      // return ['tototototototot'];
+                                      console.log('here');
                                       return galeryService.fetchHomeGalery();
                                     }
                                   }
@@ -272,12 +263,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
                               data:{'newslettersTabs':'list'},
                               resolve:{
                                 mailingLists : function(mailingListsService) {
-                                  console.log('resolve mailingLists');
                                   return mailingListsService.fetchmailingLists();
                                 },
                                 abonnes : function(mailingListsService,$stateParams) {
-                                  console.log('resolve mailingLists');
-                                  console.log($stateParams);
                                   if($stateParams.id)
                                   return mailingListsService.fetchmailingList($stateParams.id);
                                   else
@@ -315,12 +303,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
                               data:{'newslettersTabs':'envoi'},
                               resolve:{
                                 envois : function(envoiService) {
-                                  console.log('resolve mailingLists');
                                   return envoiService.fetchenvois();
                                 },
                                 // abonnes : function(mailingListsService,$stateParams) {
-                                //   console.log('resolve mailingLists');
-                                //   console.log($stateParams);
                                 //   if($stateParams.id)
                                 //   return mailingListsService.fetchmailingList($stateParams.id);
                                 //   else
@@ -338,7 +323,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                         controller:'envoiserieCtrl',
                                         resolve:{
                                           mailingLists : function(mailingListsService) {
-                                            console.log('resolve mailingLists');
                                             return mailingListsService.fetchmailingLists();
                                           }
                                         }
@@ -375,7 +359,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                               data:{'projectsTabs':'category'},
                               resolve:{
                                 categories : function(projectscategoryService) {
-                                  console.log('resolve projectscategoryService');
                                   return projectscategoryService.fetchCategories();
                                 }
                               }
@@ -400,7 +383,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                             controller:'editprojectscategoryCtrl',
                                             resolve:{
                                               category : function(projectscategoryService,$stateParams) {
-                                                console.log('resolveEDitCat');
                                                 return projectscategoryService.fetchCategory($stateParams.id);
                                               }
                                             }
@@ -437,7 +419,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                   return projectsService.fetchProjects();
                                 },
                                 categories:  function(projectscategoryService){
-                                  console.log('resolve');
                                   // return ['test'];
                                   return projectscategoryService.fetchCategories();
                                 }
@@ -455,7 +436,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                         },
                                         resolve:{
                                           categories:  function(projectscategoryService){
-                                            console.log('resolve');
                                             // return ['test'];
                                             return projectscategoryService.fetchCategories();
                                           }
@@ -473,11 +453,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                         },
                                         resolve:{
                                           categories:  function(projectscategoryService){
-                                            console.log('esolve project editCat');
                                             return projectscategoryService.fetchCategories();
                                           },
                                           project:  function(projectsService,$stateParams){
-                                            console.log('esolve project edit');
                                             return projectsService.fetchProject($stateParams.id);
                                           }
                                         }
@@ -493,7 +471,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                         },
                                         resolve:{
                                             project:  function(projectsService,$stateParams){
-                                              console.log('editimage ->project');
 
                                               return projectsService.fetchProject($stateParams.id);
                                             }
@@ -569,7 +546,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                         },
                                         resolve:{
                                             article:  function(articlesService,$stateParams){
-                                              console.log('editimage ->article');
 
                                               return articlesService.fetchArticle($stateParams.id);
                                             }
@@ -610,7 +586,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                                             controller:'editarticlescategoryCtrl',
                                             resolve:{
                                               category : function(articlescategoryService,$stateParams) {
-                                                console.log('resolveEDitCat');
                                                 return articlescategoryService.fetchCategory($stateParams.id);
                                               }
                                             }
@@ -644,7 +619,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                               controller:'comentsCtrl',
                               resolve:{
                                 coments : function(comentsService) {
-                                  console.log('resolve');
                                   return comentsService.fetchComents();
                                 }
                               }
@@ -669,7 +643,6 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 controller:'profileCtrl',
                 resolve:{
                   myself : function(accountService) {
-                    console.log('resolve');
                     return accountService.getProfile();
                   }
                 }

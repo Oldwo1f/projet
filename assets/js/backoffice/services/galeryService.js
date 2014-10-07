@@ -1,4 +1,4 @@
-app.factory('galeryService', ['$http','$q',function ($http,$q) {
+app.factory('galeryService', ['$http','$q','messageCenterService',function ($http,$q,messageCenterService) {
     var service = {};
     service.galeries=[];
 
@@ -8,11 +8,11 @@ app.factory('galeryService', ['$http','$q',function ($http,$q) {
 
         $http.get('/galery').success(function (data,status) {
             service.galeries =data;
-            console.log(data);
             deferred.resolve(data);
         }).error(function (data,status) {
+            messageCenterService.add('danger', 'Erreur de récupération des galeries d\'images', { status: messageCenterService.status.unseen, timeout: 4000 });
+
             deferred.reject('error perso');
-            console.log('ERROR');
         })
 
         return deferred.promise;
@@ -20,14 +20,15 @@ app.factory('galeryService', ['$http','$q',function ($http,$q) {
 
     service.fetchHomeGalery= function() {
         var deferred = $q.defer();
-
+        console.log('OTOTOTOTOTOTOT');
         $http.get('/galery?where={"title":"home"}').success(function (data,status) {
+            console.log(data);
             service.galery =data[0];
-            console.log(data[0]);
             deferred.resolve(data[0]);
         }).error(function (data,status) {
+            messageCenterService.add('danger', 'Impossible de récupérer la galerie d\'images', { status: messageCenterService.status.unseen, timeout: 4000 });
+
             deferred.reject('error perso');
-            console.log('ERROR');
         })
 
         return deferred.promise;
@@ -39,11 +40,9 @@ app.factory('galeryService', ['$http','$q',function ($http,$q) {
         var deferred = $q.defer();
 
         $http.get('/galery/'+id).success(function (data,status) {
-           console.log(data);
             deferred.resolve(data);
         }).error(function (data,status) {
             deferred.reject('error perso');
-            console.log('ERROR');
         })
 
         return deferred.promise;
@@ -58,6 +57,7 @@ app.factory('galeryService', ['$http','$q',function ($http,$q) {
         $http.post('/galery',galery).success(function (data2,status2) {
             $http.get('/galery/'+data2.id).success(function (data,status) {
                 service.galeries.unshift(data);
+                messageCenterService.add('success', 'Galerie ajouté', { status: messageCenterService.status.unseen, timeout: 4000 });
                 deferred.resolve(data);
             })
         }).error(function (data,status) {
@@ -71,7 +71,6 @@ app.factory('galeryService', ['$http','$q',function ($http,$q) {
         var deferred = $q.defer();
         $http.put('/galery/'+galery.id,galery).success(function (data2,status) {
             $http.get('/galery/'+galery.id).success(function (data,status) {
-                console.log(data);
                 service.galeries.splice(getIndexInBy(service.galeries,'id',galery.id),1,data)
                 deferred.resolve(data);
             })
@@ -86,10 +85,8 @@ app.factory('galeryService', ['$http','$q',function ($http,$q) {
         {
             array[i].status =status;
             $http.put('/galery/'+array[i].id,array[i]).success(function (galery,status) {
-                console.log(galery);
                 service.galeries.splice(getIndexInBy(service.galeries,'id',galery.id),1,galery)
             }).error(function (data,status) {
-                console.log('ERROR');
                 deferred.reject(data);
             })
         }
@@ -99,10 +96,10 @@ app.factory('galeryService', ['$http','$q',function ($http,$q) {
         for(var i in catArray)
         {
             $http.delete('/galery/'+catArray[i].id).success(function (galery,status) {
-                console.log(galery);
                  service.galeries.splice(getIndexInBy(service.galeries,'id',galery.id),1)
+                messageCenterService.add('success', 'Galerie supprimé', { status: messageCenterService.status.unseen, timeout: 4000 });
             }).error(function (data,status) {
-                console.log('ERROR');
+                messageCenterService.add('danger', 'Erreur dans la suppression', { status: messageCenterService.status.unseen, timeout: 4000 });
             })
         }
          
@@ -112,10 +109,9 @@ app.factory('galeryService', ['$http','$q',function ($http,$q) {
 
             galery.images.splice(getIndexInBy(galery.images,'id',image.id),1);
             service.galeries.splice(getIndexInBy(service.galeries,'id',galery.id),1,galery)
-
-
+            messageCenterService.add('success', 'Image supprimée', { status: messageCenterService.status.unseen, timeout: 4000 });
         }).error(function (data,status) {
-            console.log('ERROR');
+            messageCenterService.add('danger', 'Erreur dans la suppression', { status: messageCenterService.status.unseen, timeout: 4000 });
         })
     }
 
@@ -126,14 +122,12 @@ app.factory('galeryService', ['$http','$q',function ($http,$q) {
     }
     service.updateImgIndex=function(image,galery){
         var deferred = $q.defer();
-        console.log(image);
         $http.put('/image/'+image.id,image).success(function (image,status) {
             image.galery = image.galery;
             galery.images.splice(getIndexInBy(galery.images,'id',image.id),1,image);
             service.galeries.splice(getIndexInBy(service.galeries,'id',galery.id),1,galery)
             deferred.resolve(image);
         }).error(function (data,status) {
-            console.log('ERROR');
             deferred.reject(data);
         })
         return deferred.promise;

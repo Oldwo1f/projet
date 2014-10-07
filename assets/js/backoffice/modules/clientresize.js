@@ -2,7 +2,6 @@ var clientResize = angular.module('clientresize',['angularFileUpload']);
 clientResize.factory('clientResizeService',['$scope', function($scope) {
     var service = {};
 
-    console.log('ANALYTICS Service');
     service.toto=function() { return 'youpi'};
 
 
@@ -17,9 +16,6 @@ clientResize.directive('clientresize', function() {
       templateUrl:'js/backoffice/modules/clientresize.html',
       scope:{ callback: '=callback', multiple:'=',boxsize :'=boxsize',itemid:"=itemid", itemtype:"=itemtype",steps :'=steps',uploadurl :'=uploadurl'},
       controller :function($scope,$http,$upload,configService) {
-      		console.log('controller');
-      		console.log($scope.itemid);
-      		console.log(configService);
       		//ATTRIBUT
       		$scope.uploadArray = [];
       		
@@ -39,8 +35,6 @@ clientResize.directive('clientresize', function() {
 			*********************************************************************************************
 			********************************************************************************************/
       		$scope.clickAddImg = function($event) {
-		    	console.log($($event.target).find('input'))
-		    	// console.log($($event.target))
 		    	setTimeout(function() {
 		    		$($event.target).find('input').click();
 		    	},0);
@@ -51,7 +45,6 @@ clientResize.directive('clientresize', function() {
 			*********************************************************************************************
 			********************************************************************************************/
       		$scope.onFileSelect = function($files) {
-		    	console.log($files);
 		    	var startindex = $scope.uploadArray.length;
 		    	$scope.countImg= $files.length;
 		    	$scope.currentImg=0;
@@ -65,13 +58,10 @@ clientResize.directive('clientresize', function() {
 		    		var index = $scope.uploadArray.push($f);
 		    		index--;
 		    		// --> Start upload
-		    		console.log($scope.uploadArray);
 		    		$scope.addResizeQueu(index)
 
 		    	};
 		    	 // = $scope.uploadArray.concat($filess)
-		    	console.log($scope.uploadArray);
-		    	console.log('onFileSelect --> END');
 		    	$scope.startResizeQueu(startindex);
 		    }      		
 		    /** *****************************************************************************************
@@ -80,14 +70,10 @@ clientResize.directive('clientresize', function() {
 		    *********************************************************************************************
 		    ********************************************************************************************/
 		    $scope.startUpload = function(index) {
-		    	console.log('UPLOAD --> START');
 		    	$scope.uploadArray[index].statusUpload = 'starting';
-		    	console.log($scope.uploadArray[index]);
 		    	resizeStuffCopy =$scope.uploadArray[index]['resizeStuff']
-		    	console.log(resizeStuffCopy);
 
 				// arr =_.map(resizeStuffCopy,function(item) {return _.map(item,function(it) {  return _.map(it,function(ite) {return angular.toJson(ite)}); })})
-				console.log(JSON.stringify(resizeStuffCopy,function(k,v) { return JSON.stringify(v)}));
 
 		    	$scope.upload = $upload.upload({
 			        url: 'image/upload', //upload.php script, node.js route, or servlet url
@@ -108,21 +94,10 @@ clientResize.directive('clientresize', function() {
 			    	}
 
 			      }).progress(function(evt) {
-			        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
 			      }).success(function(data, status, headers, config) {
 			        // file is uploaded successfully
-			        console.log('success upload');
-			        console.log(data);
 			        $scope.$parent.recupImage(data);
 			      });
-			      //.error(...)
-			      //.then(success, error, progress); 
-			      //.xhr(function(xhr){xhr.upload.addEventListener(...)})// access and attach any event listener to XMLHttpRequest.
-			    // }
-		    	
-
-
-		    	console.log('UPLOAD --> END');
 		    }  		
 		    /** *****************************************************************************************
 		    *********************************************************************************************
@@ -139,7 +114,6 @@ clientResize.directive('clientresize', function() {
 		    *********************************************************************************************
 		    ********************************************************************************************/
 		    $scope.startResizeQueu = function(startindex) {
-		    	console.log(startindex);
 		    	$('#myModal').modal('show');	    	
 		    	$scope.resize(startindex);
                	
@@ -154,10 +128,7 @@ clientResize.directive('clientresize', function() {
 		    	$scope.currentImg++;
 
 		    	$scope.imageResizing = imgId;
-		    	console.log($scope.uploadArray[imgId]['file']);
-		    	console.log('FILEREADER DEFINED' + typeof(FileReader) !== "undefined");
 		    	if (window.FileReader && $scope.uploadArray[imgId]['file'].type.indexOf('image') > -1) {
-		    		console.log('here');
 	        		var fileReader = new FileReader();
 	                fileReader.readAsDataURL($scope.uploadArray[imgId]['file']);
 	                // $scope.selectedFiles[i]['fileReader']=fileReader;
@@ -168,19 +139,13 @@ clientResize.directive('clientresize', function() {
 	                        //   $scope.uploadFile(imgId);
 	                        // });
 
-	                		console.log('onload');
-	                		console.log(e.target);
 	                    	$scope.uploadArray[imgId]['statusResize'] ='resizing';
 	                    	$scope.uploadArray[imgId]['img'] = new Image;
 				            $scope.uploadArray[imgId]['img']['src'] = e.target.result;
 				            $scope.uploadArray[imgId]['img']['onload'] = function() {
-				            	console.log('LOADEDLOADED');
 				            	$scope.originalWidth = $scope.uploadArray[imgId]['img'].width
 				            	$scope.originalHeight = $scope.uploadArray[imgId]['img'].height
-				            	console.log($scope);
 				            };
-				            // console.log();
-				            
 				            $scope.step(0);
 	                	}
 	                }(imgId));
@@ -197,8 +162,6 @@ clientResize.directive('clientresize', function() {
 		    	
 		    	// $scope.imageResizing;
 		    	$scope.currentstep =step;
-		    	console.log($scope.steps[step].width);
-		    	console.log($scope.steps[step]);
 		    	$('.cl-borderBox').css({'width':$scope.steps[step].width+'px','height':$scope.steps[step].height+'px','margin-left':(-$scope.steps[step].width/2)+'px','margin-top':(-$scope.steps[step].height/2)+'px'})
 		    	$scope.currentzoom=1;
 				$scope.currentX=0;
@@ -221,7 +184,6 @@ clientResize.directive('clientresize', function() {
 		          left:  0 + 'px'
 		        }).width($scope.originalWidth);
 
-		    	// console.log($scope.currentSrc);
 		    }      		
 		    /********************************************************************************************
 		    *********************************************************************************************
@@ -230,10 +192,7 @@ clientResize.directive('clientresize', function() {
 		    ********************************************************************************************/
 		    $scope.zomming = function() {
 		    	
-		    	// $scope.imageResizing;
 		    	
-		    	console.log('ZOOMING');
-		    	console.log($scope.originalWidth);
 		    }
 		    /** *****************************************************************************************
 		    *********************************************************************************************
@@ -241,7 +200,6 @@ clientResize.directive('clientresize', function() {
 		    *********************************************************************************************
 		    ********************************************************************************************/
 		    $scope.validateStep = function() {
-		    	console.log('VALIDATESTEP');
 		    	var step = $scope.currentstep;
       			var container = $('.cl-imgContainer');
 
@@ -253,9 +211,6 @@ clientResize.directive('clientresize', function() {
 		    	$scope.uploadArray[$scope.imageResizing].resizeStuff[step].zoom=$scope.currentzoom;
 		    	$scope.uploadArray[$scope.imageResizing].resizeStuff[step].x= -$scope.currentX +(container.width()/2)-($scope.steps[step].width/2);
 		    	$scope.uploadArray[$scope.imageResizing].resizeStuff[step].y= -$scope.currentY+(container.height()/2)-($scope.steps[step].height/2);
-
-		    	console.log($scope.uploadArray[$scope.imageResizing].resizeStuff[step].x);
-		    	console.log($scope.uploadArray[$scope.imageResizing].resizeStuff[step].y);
 
 		    	$scope.uploadArray[$scope.imageResizing].resizeStuff[step].cropWidth=$scope.steps[step].width;
 		    	$scope.uploadArray[$scope.imageResizing].resizeStuff[step].cropHeight=$scope.steps[step].height;
@@ -272,28 +227,22 @@ clientResize.directive('clientresize', function() {
 
 		    	}else{
 			    	
-			    	console.log($scope.uploadArray);
 		    		//check si image suivante
 		    		$scope.startUpload($scope.imageResizing)
 
 		    		if($scope.uploadArray.length === $scope.imageResizing+1)
 		    		{
-		    			console.log('Dernier image');
-		    			console.log($scope.uploadArray);
 		    			//CLIENT RESIZE FINISH
 		    			$('#myModal').modal('hide');	
 		    		}else{
-		    			console.log('next image');
 		    			$scope.imageResizing++;
 		    			$scope.resize($scope.imageResizing);
 		    		}
 		    	}
 		    	
-		    	// console.log($scope.currentSrc);
 		    }
       },
       link:function(scope,elem, attrs) {
-      		console.log('link');
       		$('body > #myModal').remove()
       		$('body').prepend($('#myModal'));
       		
@@ -321,12 +270,9 @@ clientResize.directive('myOndragstart', function($document) {
       element.on('mousedown', function(event) {
         // Prevent default dragging of selected content
         event.preventDefault();
-        console.log(event);
-         x = 0, y = 0;
+         x = scope.currentX || 0, y = scope.currentY || 0;
         startX = event.pageX - x;
         startY = event.pageY - y;
-        // console.log(startX);
-        // console.log(startY);
         $document.on('mousemove', mousemove);
         $document.on('mouseup', mouseup);
       });
@@ -334,26 +280,11 @@ clientResize.directive('myOndragstart', function($document) {
       function mousemove(event) {
         y = event.pageY - startY;
         x = event.pageX - startX;
-        // if(x >20) x = 20;
-        // if(y >20) y = 20;
 
-        // console.log(element)
-        // console.log(element.context)
-        // console.log(element.context.nextElementSibling)
-        // console.log();
-
-        // console.log(-element.width());
-        // if(x < -element.width() + $(element.context.nextElementSibling).width()+26) x = -element.width() + $(element.context.nextElementSibling).width()+26;
-        // if(y < -element.height() + $(element.context.nextElementSibling).height()+26) y = -element.height() + $(element.context.nextElementSibling).height()+26;
-
-
-
-        // console.log(x +' <==> '+y);
         element.css({
           top: y + 'px',
           left:  x + 'px'
         });
-        
 
       }
  
@@ -364,8 +295,6 @@ clientResize.directive('myOndragstart', function($document) {
 
         $document.unbind('mousemove', mousemove);
         $document.unbind('mouseup', mouseup);
-        // startX =0;x=0;
-        // starty =0;y=0;
       }
     }
   });

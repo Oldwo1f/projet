@@ -3,7 +3,7 @@
    <div class="modal-content">
     	<h2>Editer ce Projet</h2>
       
-      <select name="lang" class="form-control" ng-model="lang" ng-change="changeLanguage()" required>
+      <select name="lang" class="form-control langselector" ng-model="lang" ng-change="changeLanguage()" required>
                   <option ng-repeat="langage in languages" value="{{langage}}" ng-selected="langage == 'fr'">{{langage}}</option>
       </select>
     	<hr>

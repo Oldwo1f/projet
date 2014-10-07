@@ -8,11 +8,15 @@ var async = require('async');
 module.exports = {
 
   attributes: {
-  		title : {type:'STRING',required:true},
+  		// title : {type:'STRING',required:true},
   		images: {
 			collection: 'image',
 			via: 'articlecategory'
-		}
+		},
+	    translations: {
+	        collection: 'categoryArticleTranslation',
+	        via: 'categoryArticle'
+	    },
   } ,
   beforeDestroy: function (values, cb) {
 	

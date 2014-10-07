@@ -1,9 +1,7 @@
-app.controller('usersCtrl',['$scope','filterFilter','userService','$filter','$state','users',
-function usersCtrl($scope,filterFilter,userService,$filter,$state,users) {
+app.controller('usersCtrl',['$scope','filterFilter','userService','$filter','$state','users','messageCenterService',
+function usersCtrl($scope,filterFilter,userService,$filter,$state,users,messageCenterService) {
 
     $scope.users= users;
-    console.log('USER CTRL');
-    console.log(users);
     $scope.order='date';
     $scope.reverse=true;
     $scope.filterActif = true;
@@ -25,7 +23,6 @@ function usersCtrl($scope,filterFilter,userService,$filter,$state,users) {
         });
     }
     $scope.linkedit=function(id){
-        // console.log(filterFilter($scope.users,{checked : true}));
         if(id){
             clearSelection()
             $state.go('/.users.user.edit',{id: id})
@@ -33,34 +30,17 @@ function usersCtrl($scope,filterFilter,userService,$filter,$state,users) {
         else
             $state.go('/.users.user.edit',{id: filterFilter($scope.users,{checked : true})[0].id})
     }
-    // $scope.linkeditimages =function(id){
-    //     if(id){
-    //         clearSelection()
-    //         $state.go('/.users.users.editimage',{id: id})
-    //     }
-    //     else
-    //         $state.go('/.users.users.editimage',{id: filterFilter($scope.users,{checked : true})[0].id})
-    // }
+   
     $scope.linkadd =function(){
-        // console.log('tototo');
             $state.go('/.users.user.add');
-            console.log($state);
     }
-
-
     $scope.removeselected =function(){
             userService.remove(filterFilter($scope.users,{checked : true}))
     }
-    // $scope.changestatus = function(status) {
-    //     userService.changeStatusUser(filterFilter($scope.users,{checked : true}),status)
-        
-    // };
-
     $scope.sortFunction =function(val){
 
         if($scope.order === 'category')
         {
-            console.log(val[$scope.order]);
             return val[$scope.order].title;
         }else
         {
@@ -113,10 +93,8 @@ function usersCtrl($scope,filterFilter,userService,$filter,$state,users) {
 
 }]);
 
-app.controller('adduserCtrl',['$scope','$stateParams','filterFilter','userService','$state',
-function adduserCtrl($scope,$stateParams,filterFilter,userService ,$state) {
-    console.log('ADD PROJECT');
-    console.log('ADD PROJECT');
+app.controller('adduserCtrl',['$scope','$stateParams','filterFilter','userService','$state','messageCenterService',
+function adduserCtrl($scope,$stateParams,filterFilter,userService ,$state,messageCenterService) {
     $scope.newUser={};
     
     $scope.newUser.email='';
@@ -137,15 +115,13 @@ function adduserCtrl($scope,$stateParams,filterFilter,userService ,$state) {
             $scope.newUser.email='';
             $state.go('/.users.user');
         },function(err) {
-            console.log(err);
-            console.log(err.error.invalidAttributes);
             if(err.error.invalidAttributes)
             {
+                messageCenterService.add('danger', 'Veuillez revoir votre saisie', { status: messageCenterService.status.unseen, timeout: 4000 });
+
                 invalAttrs = err.error.invalidAttributes;
-                console.log(invalAttrs);
                 for(var i in invalAttrs)
                 {
-                    console.log(i);
                     $('[name="'+i+'"]').parent().addClass('has-error');
                 }
             }
@@ -153,32 +129,24 @@ function adduserCtrl($scope,$stateParams,filterFilter,userService ,$state) {
         
     };
 }]);
-app.controller('edituserCtrl',['$scope','$stateParams','filterFilter','userService','$state','$filter','user',
-function edituserCtrl($scope,$stateParams,filterFilter,userService ,$state,$filter,user) {
-    console.log('modalalalalalallalal');
+app.controller('edituserCtrl',['$scope','$stateParams','filterFilter','userService','$state','$filter','user','messageCenterService',
+function edituserCtrl($scope,$stateParams,filterFilter,userService ,$state,$filter,user,messageCenterService) {
     $('.editModal').modal();
     $('.editModal').on('hidden.bs.modal',function(e) {
         $state.go('/.users.user');
     });
     $scope.editUser = user;
-    console.log($scope.editUser);
-    // $scope.editUser.category = $scope.editUser.category.id;
-    // $scope.$apply();
 
     $scope.submitEdit = function() {
-        console.log($scope.editUser);
         userService.edit($scope.editUser).then(function() {
             $('.editModal').modal('hide');
         },function(err) {
-            console.log(err);
-            console.log(err.error.invalidAttributes);
             if(err.error.invalidAttributes)
             {
+                messageCenterService.add('danger', 'Veuillez revoir votre saisie', { status: messageCenterService.status.unseen, timeout: 4000 });
                 invalAttrs = err.error.invalidAttributes;
-                console.log(invalAttrs);
                 for(var i in invalAttrs)
                 {
-                    console.log(i);
                     $('[name="'+i+'"]').parent().addClass('has-error');
                 }
             }
@@ -213,11 +181,8 @@ function editimageuserCtrl($scope,$stateParams,filterFilter,userService ,$state,
     };
     $scope.sortableOptions = {
         update: function(e, ui) {
-            // console.log(ui); 
             startIndex = ui.item.sortable.index;
             dropIndex = ui.item.sortable.dropindex;
-            console.log(startIndex +' ----'+dropIndex);
-            console.log($scope.user.images);
             if(dropIndex<startIndex)
             {
                 for(var i in $scope.user.images)
@@ -257,19 +222,14 @@ function editimageuserCtrl($scope,$stateParams,filterFilter,userService ,$state,
                 }
 
             }
-            console.log($scope.user.images);
             
 
         },
         sort:function() {
-            // console.log('sort');
         },
         out:function() {
-            // console.log('out');
         },
         start:function(e,ui) {
-            // console.log('start');
-            // console.log($(e.target).height($(e.target).height()-100));
         }
     };
 

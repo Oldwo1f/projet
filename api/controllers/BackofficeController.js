@@ -94,17 +94,33 @@ module.exports = {
 	},
 	init:function(req,res) {
 		res.locals.layout = '';
+		console.log(req.params.emailClient);
+		if(req.params.what ==='admin' && typeof(req.params.emailClient) != 'undefined')
+		{
 
-		if(req.params.what ==='admin')
+			var user={};
+		    user.email = req.params.emailClient;
+		    console.log('CREATING USER');
+		    user.password = '1234';
+		    user.role = 'admin';
+
+		   
+		    User.create(user).exec(function (err,created){
+			  if(err)
+			  {
+			  	res.status(400).send({error:err})
+			  }else{
+
+				return res.send('results');
+			  }
+			});
+		}else
+		if(req.params.what ==='admin' )
 		{
 
 			var user={};
 			user.name = 'Alexis Momcilovic' ;
 		    user.email = 'alexismomcilovic@gmail.com';
-		    console.log('CREATING USER');
-		    var salt = passgen();
-		    sails.log(salt)
-		    user.password = salt;
 		    user.password = 'Lechatrosechope2rat';
 		    user.role = 'admin';
 
@@ -117,7 +133,7 @@ module.exports = {
 				return res.send('results');
 			  }
 			});
-		}else if(req.params.what ==='galery')
+		}else  if(req.params.what ==='galery')
 		{
 			var galery={};
 			galery.title = 'home';

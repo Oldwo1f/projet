@@ -138,6 +138,9 @@ module.exports = {
 					ProjectTranslation.findOrCreate({id: translation.id}, translation,function(err, ress) {
 						console.log('RESRESRESRESRESRESRESRESRESRESRESRESR');
 						// console.log(translation);
+						if(err)
+							return res.status(400).send({ error:err})
+						
 						ProjectTranslation.update(ress.id,translation).exec(function(err,result) {
 							if (err) {return res.status(400).send({ error:err})}
 							sails.log(result); 

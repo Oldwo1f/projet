@@ -26,7 +26,6 @@
         $scope.md2Html();
       };
       $scope.toogleCheat = function() {
-        console.log('toogleCheat');
           $scope.cheatVisible = !$scope.cheatVisible;
       };
     }
@@ -59,7 +58,6 @@
           scope.initFromText(attrs.text);
         }
         // scope.model = attrs.model;
-        console.log(scope.model);
       }
     };
   });

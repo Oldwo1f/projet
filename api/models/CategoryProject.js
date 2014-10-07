@@ -9,14 +9,14 @@ module.exports = {
   schema: true,
   attributes: {
   		// title : {type:'STRING'},
-  		images: {
+  	images: {
 			collection: 'image',
 			via: 'project'
 		},
-        translations: {
-            collection: 'categoryProjectTranslation',
-            via: 'categoryProject'
-        },
+    translations: {
+        collection: 'categoryProjectTranslation',
+        via: 'categoryProject'
+    }
   } ,
   beforeDestroy: function (values, cb) {
 	

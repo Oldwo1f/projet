@@ -12,18 +12,13 @@ app.directive('inputcount', function($compile) {
         $input = $(element)
         $input.after($compile('<div class="inlinecountdown">{{remaining}}</div>')(scope));
         $input.on('input propertychange',function(e) {
-          // scope.$parent.$digest();
-          // scope.$digest();
             scope.model = $(this).val()
             scope.remaining = scope.maxChar - scope.model.length;
             if(scope.remaining <= 0)
             {
-              // console.log('REMAINING');
               scope.remaining=0;
               scope.model = scope.model.substr(0,scope.maxChar)
               $(this).val(scope.model)
-              // scope.$apply();
-              // scope.$parent.$apply();
             }
         })
       }

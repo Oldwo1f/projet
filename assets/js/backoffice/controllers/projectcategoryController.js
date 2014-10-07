@@ -1,7 +1,5 @@
-
-app.controller('projectscategoryCtrl',['$scope','filterFilter','projectscategoryService','$filter','$state','categories',
-function projectscategoryCtrl($scope,filterFilter,projectscategoryService,$filter,$state,categories) {
-console.log('CTRL');
+app.controller('projectscategoryCtrl',['$scope','filterFilter','projectscategoryService','$filter','$state','categories','messageCenterService',
+function projectscategoryCtrl($scope,filterFilter,projectscategoryService,$filter,$state,categories,messageCenterService) {
 	$scope.categories= categories;
 	$scope.order='title';
 	$scope.reverse=false;
@@ -21,7 +19,6 @@ console.log('CTRL');
 		});
 	}
 	$scope.linkedit=function(id){
-		// console.log(filterFilter($scope.categories,{checked : true}));
 		if(id){
 			clearSelection()
 			$state.go('/.projects.category.edit',{id: id})
@@ -53,8 +50,8 @@ console.log('CTRL');
 
 }]);
 
-app.controller('addprojectscategoryCtrl',['$scope','$stateParams','filterFilter','projectscategoryService','$state',
-function addprojectscategoryCtrl($scope,$stateParams,filterFilter,projectscategoryService ,$state) {
+app.controller('addprojectscategoryCtrl',['$scope','$stateParams','filterFilter','projectscategoryService','$state','messageCenterService',
+function addprojectscategoryCtrl($scope,$stateParams,filterFilter,projectscategoryService ,$state,messageCenterService) {
 	$('.newModal').modal();
 	$('.newModal').on('hidden.bs.modal',function(e) {
 		$state.go('/.projects.category');
@@ -64,12 +61,23 @@ function addprojectscategoryCtrl($scope,$stateParams,filterFilter,projectscatego
 		projectscategoryService.addNew($scope.newCategory).then(function() {
 			$scope.newCategory.title='';
 			$state.go('/.projects.category');
+		},function(err) {
+			if(err.error.invalidAttributes)
+            {
+                messageCenterService.add('danger', 'Veuillez revoir votre saisie', { status: messageCenterService.status.unseen, timeout: 4000 });
+
+                invalAttrs = err.error.invalidAttributes;
+                for(var i in invalAttrs)
+                {
+                    $('[name="'+i+'"]').parent().addClass('has-error');
+                }
+            }
 		})
 		
 	};
 }]);
-app.controller('editprojectscategoryCtrl',['$scope','$stateParams','configService','filterFilter','projectscategoryService','$state','$filter','category',
-function editprojectscategoryCtrl($scope,$stateParams,configService,filterFilter,projectscategoryService ,$state,$filter,category) {
+app.controller('editprojectscategoryCtrl',['$scope','$stateParams','configService','filterFilter','projectscategoryService','$state','$filter','category','messageCenterService',
+function editprojectscategoryCtrl($scope,$stateParams,configService,filterFilter,projectscategoryService ,$state,$filter,category,messageCenterService) {
 
 	$('.editModal').modal();
 	$('.editModal').on('hidden.bs.modal',function(e) {
@@ -86,18 +94,14 @@ function editprojectscategoryCtrl($scope,$stateParams,configService,filterFilter
     $scope.changeLanguage = function() {
 
         var index = getIndexInBy($scope.category.translations,'lang',$scope.lang)
-        console.log('INDEX = '+index);
-        // console.log($scope.currenttranslation);
         if(typeof(index)=='undefined')
         {
-            console.log($scope.category.translations);
            $scope.category.translations.push(
            {
                 'lang':$scope.lang,
                 'title':'',
            });
         }
-        console.log($scope.category);
         $scope.currenttranslation = getIndexInBy($scope.category.translations,'lang',$scope.lang)
     };
 
@@ -105,6 +109,16 @@ function editprojectscategoryCtrl($scope,$stateParams,configService,filterFilter
 	$scope.submitEdit = function() {
 		projectscategoryService.edit(category).then(function() {
 			$('.editModal').modal('hide');
+		},function(err) {
+			if(err.error.invalidAttributes)
+            {
+                messageCenterService.add('danger', 'Veuillez revoir votre saisie', { status: messageCenterService.status.unseen, timeout: 4000 });
+                invalAttrs = err.error.invalidAttributes;
+                for(var i in invalAttrs)
+                {
+                    $('[name="'+i+'"]').parent().addClass('has-error');
+                }
+            }
 		})
 	};
 
@@ -134,14 +148,10 @@ function editimageprojectscategoryCtrl($scope,$stateParams,filterFilter,projects
 
 		projectscategoryService.removeimage(category,imagetoremove)
 	};
-console.log($scope.category.images);
 	$scope.sortableOptions = {
 	    update: function(e, ui) {
-	     	// console.log(ui); 
 	     	startIndex = ui.item.sortable.index;
 	     	dropIndex = ui.item.sortable.dropindex;
-	     	console.log(startIndex +' ----'+dropIndex);
-	     	console.log($scope.category.images);
 	     	if(dropIndex<startIndex)
 	     	{
 	     		for(var i in $scope.category.images)
@@ -181,19 +191,14 @@ console.log($scope.category.images);
 	     		}
 
 	     	}
-	     	console.log($scope.category.images);
 	     	
 
 		},
 		sort:function() {
-			// console.log('sort');
 		},
 		out:function() {
-			// console.log('out');
 		},
 		start:function(e,ui) {
-			// console.log('start');
-			// console.log($(e.target).height($(e.target).height()-100));
 		}
   	};
 

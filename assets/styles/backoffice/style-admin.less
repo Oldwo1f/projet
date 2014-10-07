@@ -129,8 +129,9 @@ div.add{
 .ligneDajout .btn {margin-right: 5px;margin-left: 5px;line-height: 27px;}
 
 
-.listimages{margin:0;padding:0;}
-.listimages li {display:inline-block;list-style:none; margin-left:3px;}
+.listimages{margin:0;padding:0;height:30px;}
+.listimages li {display:inline-block;position:relative;list-style:none; margin-left:3px;}
+.listimages li .badge{position:absolute;top:-22px;}
 
 .listbigimages{margin:0;padding:0;}
 .listbigimages li {display:inline-block;list-style:none; margin-left:10px; margin-bottom:10px;position:relative;border:4px solid #EAEAEA;}
@@ -326,7 +327,7 @@ h2.text-center {font-size: 1.8em;margin-bottom: 15px;color: #CCC;}
 font-size: 1.8em;
 margin: 10px 2px;
 }
-
+.langselector {width: 70px;position: absolute;right: 25px;top: 20px;}
 
 .gestionlist .pull-right{margin-left:10px;margin-top: 30px;}
 .gestionlist select{background:none;padding:5px;font-size:2em;}
@@ -346,9 +347,13 @@ margin: 10px 2px;
 .dashitem a{z-index:2;position:absolute; bottom:5px;left:20px;display:inline;}
 
 
+.pointer.has-error span{color:red;}
+.pointer.has-success span{color:green;}
 
-
-
+.thSeparation{}
+.tdSeparation{border-right:1px solid grey;}
+.thStats{width:110px;text-align:center;}
+.tdStats{width:110px;text-align:center;}
 
 /*LOGIN FORM*/
 table .label{display:inline-block;}
@@ -449,6 +454,26 @@ table .label{display:inline-block;}
   border-radius: 2px;
   outline: none;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+}
+
+
+div#mc-messages-wrapper {
+position: absolute;
+z-index: 9999999;
+left: 0px;
+right: 0px;
+text-align: center;
+}
+div#mc-messages-wrapper .alert{
+  display: inline-block;
+  padding: 5px 20px;
+}
+div#mc-messages-wrapper .alert > span{
+  margin-top: 10px;
+  line-height: 22px;
+}
+div#mc-messages-wrapper a.close {
+margin-left: 20px;
 }
 
 /*.btn {

@@ -1,18 +1,16 @@
-app.factory('goldenbookService', ['$http','$q',function ($http,$q) {
+app.factory('goldenbookService',['$http','$q','messageCenterService',function ($http,$q,messageCenterService) {
     var service = {};
     service.goldenbook=[];
 
 
     service.fetchGoldenbooks= function() {
         var deferred = $q.defer();
-        console.log('yoyoyoyoyoyoyoyoyoy');
         $http.get('/goldenbook').success(function (data,status) {
-        	console.log(data);
             service.goldenbook =data;
             deferred.resolve(data);
         }).error(function (data,status) {
+            messageCenterService.add('danger', 'Erreur de récupération des avis', { status: messageCenterService.status.unseen, timeout: 4000 });
             deferred.reject('error perso');
-            console.log('ERROR');
         })
 
         return deferred.promise;
@@ -24,11 +22,11 @@ app.factory('goldenbookService', ['$http','$q',function ($http,$q) {
         var deferred = $q.defer();
 
         $http.get('/goldenbook/'+id).success(function (data,status) {
-           console.log(data);
             deferred.resolve(data);
         }).error(function (data,status) {
+            messageCenterService.add('danger', 'Impossible de récupérer cet avis', { status: messageCenterService.status.unseen, timeout: 4000 });
+
             deferred.reject('error perso');
-            console.log('ERROR');
         })
 
         return deferred.promise;
@@ -37,26 +35,25 @@ app.factory('goldenbookService', ['$http','$q',function ($http,$q) {
 
 
 
-    service.addNew=function(goldenbook){
-        var deferred = $q.defer();
+    // service.addNew=function(goldenbook){
+    //     var deferred = $q.defer();
 
-        $http.post('/goldenbook',goldenbook).success(function (data2,status2) {
-            $http.get('/goldenbook/'+data2.id).success(function (data,status) {
-                service.goldenbook.unshift(data);
-                deferred.resolve(data);
-            })
-        }).error(function (data,status) {
-             deferred.reject(data);
-        })
+    //     $http.post('/goldenbook',goldenbook).success(function (data2,status2) {
+    //         $http.get('/goldenbook/'+data2.id).success(function (data,status) {
+    //             service.goldenbook.unshift(data);
+    //             deferred.resolve(data);
+    //         })
+    //     }).error(function (data,status) {
+    //          deferred.reject(data);
+    //     })
         
-        return deferred.promise;      
-    }
+    //     return deferred.promise;      
+    // }
 
     // service.edit=function(goldenbook){
     //     var deferred = $q.defer();
     //     $http.put('/goldenbook/'+goldenbook.id,goldenbook).success(function (data2,status) {
     //         $http.get('/goldenbook/'+goldenbook.id).success(function (data,status) {
-    //             console.log(data);
     //             service.goldenbook.splice(getIndexInBy(service.goldenbook,'id',goldenbook.id),1,data)
     //             deferred.resolve(data);
     //         })
@@ -71,10 +68,8 @@ app.factory('goldenbookService', ['$http','$q',function ($http,$q) {
         {
             array[i].status =status;
             $http.put('/goldenbook/'+array[i].id,array[i]).success(function (goldenbook,status) {
-                console.log(goldenbook);
                 service.goldenbook.splice(getIndexInBy(service.goldenbook,'id',goldenbook.id),1,goldenbook)
             }).error(function (data,status) {
-                console.log('ERROR');
                 deferred.reject(data);
             })
         }
@@ -84,10 +79,11 @@ app.factory('goldenbookService', ['$http','$q',function ($http,$q) {
         for(var i in catArray)
         {
             $http.delete('/goldenbook/'+catArray[i].id).success(function (goldenbook,status) {
-                console.log(goldenbook);
                  service.goldenbook.splice(getIndexInBy(service.goldenbook,'id',goldenbook.id),1)
+                messageCenterService.add('success', 'Avis supprimé', { status: messageCenterService.status.unseen, timeout: 4000 });
             }).error(function (data,status) {
-                console.log('ERROR');
+
+                messageCenterService.add('danger', 'Erreur dans la suppression', { status: messageCenterService.status.unseen, timeout: 4000 });
             })
         }
          
@@ -100,7 +96,7 @@ app.factory('goldenbookService', ['$http','$q',function ($http,$q) {
 
 
     //     }).error(function (data,status) {
-    //         console.log('ERROR');
+    //         .log('ERROR');
     //     })
     // }
 

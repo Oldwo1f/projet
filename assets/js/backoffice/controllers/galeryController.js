@@ -1,13 +1,7 @@
 app.controller('galeryCtrl',['$scope','$stateParams','filterFilter','galeryService','$state','$filter','galery',
 function galeryCtrl($scope,$stateParams,filterFilter,galeryService ,$state,$filter,galery) {
-	
+	console.log('galerycontroller');
 	$scope.resizeStep = $scope.resizeConfig.homeGalery;
-	console.log('$scope.resizeStep');
-	console.log($scope.resizeStep);
-	// $('.editimageModal').modal();
-	// $('.editimageModal').on('hidden.bs.modal',function(e) {
-	// 	$state.go('/.projects.galery');
-	// });
 	$scope.galery = galery;
 	$scope.submitEdit = function() {
 		galeryService.edit(galery).then(function() {
@@ -26,11 +20,8 @@ function galeryCtrl($scope,$stateParams,filterFilter,galeryService ,$state,$filt
 	};
 	$scope.sortableOptions = {
 	    update: function(e, ui) {
-	     	// console.log(ui); 
 	     	startIndex = ui.item.sortable.index;
 	     	dropIndex = ui.item.sortable.dropindex;
-	     	console.log(startIndex +' ----'+dropIndex);
-	     	console.log($scope.galery.images);
 	     	if(dropIndex<startIndex)
 	     	{
 	     		for(var i in $scope.galery.images)
@@ -70,19 +61,14 @@ function galeryCtrl($scope,$stateParams,filterFilter,galeryService ,$state,$filt
 	     		}
 
 	     	}
-	     	console.log($scope.galery.images);
 	     	
 
 		},
 		sort:function() {
-			// console.log('sort');
 		},
 		out:function() {
-			// console.log('out');
 		},
 		start:function(e,ui) {
-			// console.log('start');
-			// console.log($(e.target).height($(e.target).height()-100));
 		}
   	};
 

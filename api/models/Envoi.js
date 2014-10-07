@@ -6,9 +6,15 @@
 */
 
 module.exports = {
-
-  attributes: {
-
-  }
+	schema: true,
+    attributes: {
+      	name : {type:'string',required:true},
+      	cId : {type:'string',required:true},
+      	subject : {type:'string'},
+	    // : {
+	        // collection: 'image',
+	        // via: 'galery'
+	    // }
+    },
 };
 

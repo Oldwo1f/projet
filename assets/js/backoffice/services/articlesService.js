@@ -1,4 +1,4 @@
-app.factory('articlesService', ['$http','$q',function ($http,$q) {
+app.factory('articlesService', ['$http','$q','messageCenterService',function ($http,$q,messageCenterService) {
     var service = {};
     service.articles=[];
 
@@ -10,8 +10,8 @@ app.factory('articlesService', ['$http','$q',function ($http,$q) {
             service.articles =data;
             deferred.resolve(data);
         }).error(function (data,status) {
+            messageCenterService.add('danger', 'Erreur de récupération des articles', { status: messageCenterService.status.unseen, timeout: 4000 });
             deferred.reject('error perso');
-            console.log('ERROR');
         })
 
         return deferred.promise;
@@ -23,11 +23,10 @@ app.factory('articlesService', ['$http','$q',function ($http,$q) {
         var deferred = $q.defer();
 
         $http.get('/article/'+id).success(function (data,status) {
-           console.log(data);
             deferred.resolve(data);
         }).error(function (data,status) {
+            messageCenterService.add('danger', 'Impossible de récupérer l\'article', { status: messageCenterService.status.unseen, timeout: 4000 });
             deferred.reject('error perso');
-            console.log('ERROR');
         })
 
         return deferred.promise;
@@ -39,9 +38,12 @@ app.factory('articlesService', ['$http','$q',function ($http,$q) {
     service.addNew=function(article){
         var deferred = $q.defer();
 
+console.log(article);
         $http.post('/article',article).success(function (data2,status2) {
             $http.get('/article/'+data2.id).success(function (data,status) {
                 service.articles.unshift(data);
+                messageCenterService.add('success', 'Article ajouté', { status: messageCenterService.status.unseen, timeout: 4000 });
+
                 deferred.resolve(data);
             })
         }).error(function (data,status) {
@@ -55,8 +57,8 @@ app.factory('articlesService', ['$http','$q',function ($http,$q) {
         var deferred = $q.defer();
         $http.put('/article/'+article.id,article).success(function (data2,status) {
             $http.get('/article/'+article.id).success(function (data,status) {
-                console.log(data);
                 service.articles.splice(getIndexInBy(service.articles,'id',article.id),1,data)
+                messageCenterService.add('success', 'Article enregistré', { status: messageCenterService.status.unseen, timeout: 4000 });
                 deferred.resolve(data);
             })
         }).error(function (data,status) {
@@ -70,10 +72,10 @@ app.factory('articlesService', ['$http','$q',function ($http,$q) {
         {
             array[i].status =status;
             $http.put('/article/'+array[i].id,{'status':array[i].status}).success(function (article,status) {
-                console.log(article);
                 service.articles.splice(getIndexInBy(service.articles,'id',article.id),1,article)
+                messageCenterService.add('success', 'Status enregistré', { status: messageCenterService.status.unseen, timeout: 4000 });
             }).error(function (data,status) {
-                console.log('ERROR');
+                messageCenterService.add('danger', 'Erreur dans le changement de status', { status: messageCenterService.status.unseen, timeout: 4000 });
                 deferred.reject(data);
             })
         }
@@ -83,10 +85,10 @@ app.factory('articlesService', ['$http','$q',function ($http,$q) {
         for(var i in catArray)
         {
             $http.delete('/article/'+catArray[i].id).success(function (article,status) {
-                console.log(article);
                  service.articles.splice(getIndexInBy(service.articles,'id',article.id),1)
+                messageCenterService.add('success', 'Article supprimé', { status: messageCenterService.status.unseen, timeout: 4000 });
             }).error(function (data,status) {
-                console.log('ERROR');
+                messageCenterService.add('danger', 'Erreur dans la suppression', { status: messageCenterService.status.unseen, timeout: 4000 });
             })
         }
          
@@ -96,10 +98,9 @@ app.factory('articlesService', ['$http','$q',function ($http,$q) {
 
             article.images.splice(getIndexInBy(article.images,'id',image.id),1);
             service.articles.splice(getIndexInBy(service.articles,'id',article.id),1,article)
-
-
+            messageCenterService.add('success', 'Image supprimée', { status: messageCenterService.status.unseen, timeout: 4000 });
         }).error(function (data,status) {
-            console.log('ERROR');
+            messageCenterService.add('danger', 'Erreur dans la suppression', { status: messageCenterService.status.unseen, timeout: 4000 });
         })
     }
 
@@ -110,14 +111,12 @@ app.factory('articlesService', ['$http','$q',function ($http,$q) {
     }
     service.updateImgIndex=function(image,article){
         var deferred = $q.defer();
-        console.log(image);
         $http.put('/image/'+image.id,image).success(function (image,status) {
-            image.articlearticle = image.articlearticle.id;
+            image.article = image.article.id;
             article.images.splice(getIndexInBy(article.images,'id',image.id),1,image);
             service.articles.splice(getIndexInBy(service.articles,'id',article.id),1,article)
             deferred.resolve(image);
         }).error(function (data,status) {
-            console.log('ERROR');
             deferred.reject(data);
         })
         return deferred.promise;

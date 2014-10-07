@@ -1,4 +1,4 @@
-app.factory('envoiService', ['$http','$q','$upload',function ($http,$q,$upload) {
+app.factory('envoiService', ['$http','$q','$upload','messageCenterService',function ($http,$q,$upload,messageCenterService) {
     var service = {};
     service.envois=[];
 
@@ -6,22 +6,20 @@ app.factory('envoiService', ['$http','$q','$upload',function ($http,$q,$upload) 
     service.fetchenvois= function() {
         var deferred = $q.defer();
 
-        $http.get('/envoi').success(function (data,status) {
+        $http.get('/getenvoi').success(function (data,status) {
             service.envois =data;
-            console.log(data);
             deferred.resolve(data);
         }).error(function (data,status) {
+            messageCenterService.add('danger', 'Erreur de récupération des envois', { status: messageCenterService.status.unseen, timeout: 4000 });
+
             deferred.reject('error perso');
-            console.log('ERROR');
         })
 
         return deferred.promise;
     };
 
-    service.send= function(envoi,files) {
+    service.send= function(envoi,files,calllback) {
         var deferred = $q.defer();
-        console.log(files);
-        console.log(envoi);
         $upload.upload({
             url: '/envoiserie',
             method: 'POST',
@@ -38,53 +36,28 @@ app.factory('envoiService', ['$http','$q','$upload',function ($http,$q,$upload) 
             data: envoi
 
         }).progress(function(evt) {
-            console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
         }).success(function(data, status, headers, config) {
-            // file is uploaded successfully
-            console.log('success upload');
-            console.log(data);
-            // $scope.$parent.recupImage(data);
+            service.envois.push(data)
+                messageCenterService.add('success', 'Votre envoi est accepté', { status: messageCenterService.status.unseen, timeout: 4000 });
+            calllback(data);
         });
-
-
-
-        // $http.post('/envoiserie',envoi).success(function (data,status) {
-        //     // service.envois =data;
-        //     console.log(data);
-        //     deferred.resolve(data);
-        // }).error(function (data,status) {
-        //     deferred.reject('error perso');
-        //     console.log('ERROR');
-        // })
 
         return deferred.promise;
     };
     
-    
-    service.remove=function(abonnes, list,cb){
-    	console.log('here2');
-    	console.log(abonnes);
-        for(var i in abonnes)
+    service.remove=function(catArray){
+
+        for(var i in catArray)
         {
-            $http.delete('/abonne/'+abonnes[i].id).success(function (envoi,status) {
-                console.log(envoi);
-                console.log(service.envois[getIndexInBy(service.envois,'id',list)]);
-
-                console.log(service.envois[getIndexInBy(service.envois,'id',list)].abonnes);
-                console.log(getIndexInBy(service.envois[getIndexInBy(service.envois,'id',list)].abonnes,'id',envoi.id));
-
-                service.envois[getIndexInBy(service.envois,'id',list)].abonnes.splice(getIndexInBy(service.envois[getIndexInBy(service.envois,'id',list)].abonnes,'id',envoi.id),1)
-            	
-
-            	console.log(service.envois);
-            	cb(service.envois[getIndexInBy(service.envois,'id',list)].abonnes)
-
+            $http.delete('/campagne/'+catArray[i].id).success(function (envoi,status) {
+                 service.envois.splice(getIndexInBy(service.envois,'id',envoi.id),1)
+                messageCenterService.add('success', 'Campagne supprimé', { status: messageCenterService.status.unseen, timeout: 4000 });
             }).error(function (data,status) {
-                console.log('ERROR');
+                messageCenterService.add('danger', 'Erreur dans la suppression', { status: messageCenterService.status.unseen, timeout: 4000 });
             })
         }
          
     }
-
+  
     return service;
 }]);
