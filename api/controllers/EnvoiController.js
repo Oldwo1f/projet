@@ -113,7 +113,7 @@ module.exports = {
 						 	name: req.body.title
 						}
 			        	
-			        	mailgun.post('/mailing.momcreation.fr/campaigns', campagne, function (error, body) {
+			        	mailgun.post('/'+sails.config.MG_DOMAIN+'/campaigns', campagne, function (error, body) {
 							console.log(error);
 							console.log(body);
 							if(body.message ==="Campaign created")
@@ -185,7 +185,7 @@ module.exports = {
 			function(item,cb) {
 
 				console.log(item.cId);
-				mailgun.get('/mailing.momcreation.fr/campaigns/'+item.cId, function (error, body) {
+				mailgun.get('/'+sails.config.MG_DOMAIN+'/campaigns/'+item.cId, function (error, body) {
 					console.log(body);
 					console.log(error);
 					if(error)
@@ -210,7 +210,7 @@ console.log('deleteCampagne');
 console.log(req.params.id);
 		Envoi.findOne(req.params.id).exec(function(err,data) {
 				console.log(data.cId);
-				mailgun.delete('/mailing.momcreation.fr/campaigns/'+data.cId, function (error, body) {
+				mailgun.delete('/'+sails.config.MG_DOMAIN+'/campaigns/'+data.cId, function (error, body) {
 					if(error)
 						res.status(400).send(error);
 
@@ -250,7 +250,7 @@ console.log(req.body);
 							})
 						}	
 					}
-					mailgun.delete('/mailing.momcreation.fr/unsubscribes/'+unsubID, function (error, body) {
+					mailgun.delete('/'+sails.config.MG_DOMAIN+'/unsubscribes/'+unsubID, function (error, body) {
 					if(error)
 						res.status(400).send(error);
 
@@ -294,7 +294,7 @@ console.log(req.body);
 							})
 						}	
 					}
-					mailgun.delete('/mailing.momcreation.fr/bounced/'+unsubID, function (error, body) {
+					mailgun.delete('/'+sails.config.MG_DOMAIN+'/bounced/'+unsubID, function (error, body) {
 					if(error)
 						res.status(400).send(error);
 
