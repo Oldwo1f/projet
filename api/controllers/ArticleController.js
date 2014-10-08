@@ -118,8 +118,8 @@ module.exports = {
 
 	},
 	edit:function(req,res) {
-		sails.log('HERE  EDIT USER FUNCTION')
-
+		sails.log('HERE  EDIT ARTICLE FUNCTION')
+		console.log(req.body);
 		Article.findOne(req.body.id).exec(function(err,proj) {
 
 			if(err)
@@ -133,7 +133,8 @@ module.exports = {
 			proj.date = req.body.date;
 			proj.status = req.body.status;
 			console.log(proj);
-			proj.save(function(err,proj) {
+			console.log('--------------');
+			proj.save(function(err,proj2) {
 				async.map(req.body.translations, function(translation, cb) {
 					
 					ArticleTranslation.findOrCreate({id: translation.id}, translation,function(err, ress) {
@@ -150,8 +151,8 @@ module.exports = {
 								console.log('ALlREADY');
 								cb(err,result[0]);
 							}else{
-								proj.translations.add(result[0])
-								proj.save(cb)
+								proj2.translations.add(result[0])
+								proj2.save(cb)
 
 
 								console.log(this);
@@ -161,31 +162,33 @@ module.exports = {
 					});
 				}, function done (err, tagRecords) {
 					if (err) {return res.status(400).send({ error:err})}
-					return res.status(200).send(proj);
-					// Article.findOne(proj.id).populateAll().exec(function(err,proj2) {
 
-					// 	if(typeof(proj2.category))
-					// 	{
-					// 		CategoryArticle.find(proj.category.id).populateAll().exec(function(err,object) {
-					// 			console.log('objectobjectobject');
-					// 			var  deep = _.cloneDeep(proj2.category)
-					// 			console.log(proj2.category);
-					// 			delete proj2.category
-					// 			proj2.category = _.merge(deep,object[0])
-					// 			console.log(proj2);
-					// 			var deep2 = _.cloneDeep(proj2)
-					// 			console.log(JSON.stringify(proj2));
-					// 			console.log('*********************************************************');
-					// 			console.log(JSON.stringify(deep2));
-					// 			return res.status(200).send(JSON.stringify(deep2));
-					// 		})	
-					// 	}else{
-					// 		return res.status(200).send(proj2);
+						console.log(proj);
+					// return res.status(200).send(proj);
+					Article.findOne(proj.id).populateAll().exec(function(err,proj2) {
 
-					// 	}
+						if(typeof(proj2.category)!='undefined')
+						{
+							CategoryArticle.find(proj.category.id).populateAll().exec(function(err,object) {
+								console.log('objectobjectobject');
+								var  deep = _.cloneDeep(proj2.category)
+								console.log(proj2.category);
+								delete proj2.category
+								proj2.category = _.merge(deep,object[0])
+								console.log(proj2);
+								var deep2 = _.cloneDeep(proj2)
+								console.log(JSON.stringify(proj2));
+								console.log('*********************************************************');
+								console.log(JSON.stringify(deep2));
+								return res.status(200).send(JSON.stringify(deep2));
+							})	
+						}else{
+							return res.status(200).send(proj2);
+
+						}
 
 
-					// });	
+					});	
 
 				});
 			})

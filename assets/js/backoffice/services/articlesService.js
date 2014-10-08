@@ -71,15 +71,22 @@ console.log(article);
         for(var i in array)
         {
             array[i].status =status;
-            $http.put('/article/'+array[i].id,{'status':array[i].status}).success(function (article,status) {
+            $http.put('/article/'+array[i].id,array[i]).success(function (article,status) {
+                console.log(article);
+                console.log(service.articles);
+                console.log('index:'+getIndexInBy(service.articles,'id',article.id));
                 service.articles.splice(getIndexInBy(service.articles,'id',article.id),1,article)
-                messageCenterService.add('success', 'Status enregistré', { status: messageCenterService.status.unseen, timeout: 4000 });
+                console.log(service.articles);
+                // messageCenterService.add('success', 'Status enregistré', { status: messageCenterService.status.unseen, timeout: 4000 });
             }).error(function (data,status) {
                 messageCenterService.add('danger', 'Erreur dans le changement de status', { status: messageCenterService.status.unseen, timeout: 4000 });
                 deferred.reject(data);
             })
         }
+        messageCenterService.add('success', 'Status enregistré(s)', { status: messageCenterService.status.unseen, timeout: 4000 });
+
     }
+     
     service.remove=function(catArray){
 
         for(var i in catArray)

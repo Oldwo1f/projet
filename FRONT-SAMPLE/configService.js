@@ -107,7 +107,7 @@ app.factory('configService', ['$http','$q',function ($http,$q) {
     ];
     service.newsletterstabs=[
     {'title':'Mes listes','name' :'list','active':false},
-    {'title':'Envoie de mail','name' :'emailing','active':false},
+    {'title':'Envoie de mail','name' :'envoi','active':false},
     ];
 
     service.languages=['fr','en'];

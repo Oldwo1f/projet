@@ -18,8 +18,7 @@ module.exports = {
   		// category : {type:'string'},
   		status : {type:'string',required:true},
   		category: {
-			model: 'categoryArticle',
-            required:true
+			model: 'categoryArticle'
 		},
         images: {
             collection: 'image',

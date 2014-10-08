@@ -161,31 +161,33 @@ module.exports = {
 					});
 				}, function done (err, tagRecords) {
 					if (err) {return res.status(400).send({ error:err})}
-					return res.status(200).send(proj);
-					// Project.findOne(proj.id).populateAll().exec(function(err,proj2) {
+						console.log(proj);
+					// return res.status(200).send(proj);
+					Project.findOne(proj.id).populateAll().exec(function(err,proj2) {
 
-					// 	if(typeof(proj2.category))
-					// 	{
-					// 		CategoryProject.find(proj.category.id).populateAll().exec(function(err,object) {
-					// 			console.log('objectobjectobject');
-					// 			var  deep = _.cloneDeep(proj2.category)
-					// 			console.log(proj2.category);
-					// 			delete proj2.category
-					// 			proj2.category = _.merge(deep,object[0])
-					// 			console.log(proj2);
-					// 			var deep2 = _.cloneDeep(proj2)
-					// 			console.log(JSON.stringify(proj2));
-					// 			console.log('*********************************************************');
-					// 			console.log(JSON.stringify(deep2));
-					// 			return res.status(200).send(JSON.stringify(deep2));
-					// 		})	
-					// 	}else{
-					// 		return res.status(200).send(proj2);
+						if(typeof(proj2.category)!='undefined')
+						{
+							console.log('different undefined');
+							CategoryProject.find(proj.category.id).populateAll().exec(function(err,object) {
+								console.log('objectobjectobject');
+								var  deep = _.cloneDeep(proj2.category)
+								console.log(proj2.category);
+								delete proj2.category
+								proj2.category = _.merge(deep,object[0])
+								console.log(proj2);
+								var deep2 = _.cloneDeep(proj2)
+								console.log(JSON.stringify(proj2));
+								console.log('*********************************************************');
+								console.log(JSON.stringify(deep2));
+								return res.status(200).send(JSON.stringify(deep2));
+							})	
+						}else{
+							return res.status(200).send(proj2);
 
-					// 	}
+						}
 
 
-					// });	
+					});	
 
 				});
 			})
